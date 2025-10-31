@@ -18,11 +18,11 @@ public class CreateCharacter {
 
     public void createCharObject() throws IOException {
 
-        Char newChar = new Char();
+        Character newCharacter = new Character();
 
-        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + newChar.login + "\\" + newChar.login + ".txt"),
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + newCharacter.login + "\\" + newCharacter.login + ".txt"),
                 "{\"userData\":{" +
-                        "\"nickname\":\""+ newChar.login +"\"," +
+                        "\"nickname\":\""+ newCharacter.login +"\"," +
                         "\"level\":1," +
                         "\"body\"{:" +
                             "\"lefthand\":\"Плоть\"," +

@@ -1,8 +1,7 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Char {
+public class Character {
     String login; // логин игрока
     int level; // уровень игрока. Высчитывается исходя из статов
     /*
