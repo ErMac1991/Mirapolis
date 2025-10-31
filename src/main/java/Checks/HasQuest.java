@@ -14,7 +14,7 @@ public class HasQuest {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String json = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + charLogin + "\\Персонаж.txt"));
-        //Object obj = new JSONParser().parse(json);
+        //characterValues = new JSONParser().parse(json);
 
         System.out.println();
     }
