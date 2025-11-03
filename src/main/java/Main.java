@@ -1,13 +1,18 @@
-import Checks.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        HasQuest hasQuest = new HasQuest();
-        hasQuest.isBusy("the_ErMac_strm");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String incomingCommand;
 
-        CharacterValues characterValues = new CharacterValues();
+
+
+        Checks checks = new Checks();
+        checks.isBusy("the_ErMac_strm");
+
+
 
     }
 }
