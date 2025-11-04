@@ -1,10 +1,12 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateCharacter {
+public class CharacterHelper {
 
     String charJson;
     String login; // логин игрока
@@ -34,17 +36,12 @@ public class CreateCharacter {
     String[] bag = new String[4]; // Массив сумки на 4 места
     List<String> storage = new ArrayList<>();
     String quest;
+    String key;
 
-    public static void createCharacterFile(String userLogin){ // создаёт текстовый файл для хранения джейсона персонажа
+    public static void createCharacterFile(String userLogin) throws IOException { // создаёт текстовый файл для хранения джейсона персонажа
 
-        try {
             Files.createDirectory(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
             Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\" + userLogin + ".txt"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public static void fillCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа
@@ -87,6 +84,13 @@ public class CreateCharacter {
                         "\"place4\":\"Пусто\"}," +
                         "\"storage\":[]}," +
                         "\"quest\":null}");
+    }
+
+    public boolean isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
+        String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+        CharacterHelper parsedCharacterJson = ParseJson.parseCharacterJsonFromString(stringToJson, objectMapper);
+        this.key = key;
+        parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
     }
 }
 

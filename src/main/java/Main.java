@@ -9,10 +9,5 @@ public class Main {
 
 
 
-        Checks checks = new Checks();
-        checks.isBusy("the_ErMac_strm");
-
-
-
     }
 }

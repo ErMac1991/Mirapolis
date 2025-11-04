@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Character {
+public class Character { // КЛАСС ПОД УДАЛЕНИЕ
     String login; // логин игрока
     int level; // уровень игрока. Высчитывается исходя из статов
     /*
