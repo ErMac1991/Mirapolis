@@ -91,6 +91,7 @@ public class CharacterHelper {
         CharacterHelper parsedCharacterJson = ParseJson.parseCharacterJsonFromString(stringToJson, objectMapper);
         this.key = key;
         parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
+        // Создать расширение класса ObjectMapper или посмотреть методы JSONtoPOJO()
     }
 }
 
