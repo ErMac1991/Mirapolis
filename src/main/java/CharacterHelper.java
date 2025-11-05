@@ -86,11 +86,11 @@ public class CharacterHelper {
                         "\"quest\":null}");
     }
 
-    public boolean isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
+    public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
         String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
         CharacterHelper parsedCharacterJson = ParseJson.parseCharacterJsonFromString(stringToJson, objectMapper);
         this.key = key;
-        parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
+        //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
         // Создать расширение класса ObjectMapper или посмотреть методы JSONtoPOJO()
     }
 }

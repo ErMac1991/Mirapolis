@@ -8,15 +8,16 @@ import java.nio.file.Path;
 public class Checks {
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
 
-    public static boolean isFileExist(String fileName, String category){
-        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + fileName + "\\" + fileName + ".txt"));
+    public static boolean isFileExist(String fileName,String subCategory, String category){
+        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + subCategory + "\\" + fileName + ".txt"));
     }
 
-    public void isSystemUpdated(){
+    public void isSystemUpdated(ObjectMapper objectMapper) throws IOException {
 
         while (true) {
             if (actionsQueueFile.exists()) {
                 System.out.println("Файл найден!");
+                ActionExecutor.executeActions(actionsQueueFile, objectMapper);
                 //break; // Выходим из цикла, если файл найден
             } else {
                 System.out.println("Файл не найден, ждем 5 секунд...");
