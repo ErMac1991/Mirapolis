@@ -19,9 +19,9 @@ public class CommandHelper {
             case "ТЕСТ":
                 System.out.println("Команда из бота принята и обработана");
             case "Создать персонажа":
-                if (Checks.isFileExist(userLogin,"Персонажи") == false){
+                if (Checks.isFileExist("Персонажи", userLogin,"Персонаж") == false){
                     CharacterHelper.createCharacterFile(userLogin);
-                    CharacterHelper.fillCharacterFile(userLogin);
+                    CharacterHelper.fillNewCharacterFile(userLogin);
                 }
 
 

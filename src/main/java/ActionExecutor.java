@@ -11,7 +11,7 @@ public class ActionExecutor {
     List<String> actionArray;
     String[] changeModule = new String[2];
 
-    public static boolean isValueInt(String stringValue) {
+    public static boolean isValueInt(String stringValue) { // метод под удаление, реализовать через json
         try {
             Integer.parseInt(stringValue);
             return true;
@@ -26,8 +26,10 @@ public class ActionExecutor {
 
         while ((reader.readLine()) != null){
             firstLine = reader.readLine();
-            System.out.println("Подтянута строка из файла ActionsQueue: "+firstLine);
-            ParseJson.parseCharacterJsonFromString(firstLine,objectMapper);
+            System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + firstLine);
+            CharacterHelper.updateCharacter(ParseJson.parseCharacterJsonFromString(firstLine,objectMapper).getUserLogin(),
+                    firstLine,
+                    objectMapper); ;
 
         }
 

@@ -6,13 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Checks {
-    final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
+
 
     public static boolean isFileExist(String fileName,String subCategory, String category){
         return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + subCategory + "\\" + fileName + ".txt"));
     }
 
-    public void isSystemUpdated(ObjectMapper objectMapper) throws IOException {
+    public static void isSystemUpdated(ObjectMapper objectMapper) throws IOException {
+
+        final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
 
         while (true) {
             if (actionsQueueFile.exists()) {
