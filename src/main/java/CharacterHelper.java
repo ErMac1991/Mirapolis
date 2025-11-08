@@ -13,10 +13,10 @@ public class CharacterHelper {
     int level; // уровень игрока. Высчитывается исходя из статов
     String head; // Голова. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     String body; // Туловище. Указывается "Плоть", если родное или восстановленное ИЛИ модель протеза
-    String lefthand; // Левая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
-    String righthand; // Правая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
-    String leftleg; // Левая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
-    String rightleg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String leftHand; // Левая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String rightHand; // Правая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String leftLeg; // Левая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String rightLeg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     int endurance; // выносливость
     int attentiveness; // внимательность
     int reaction; // реакция
@@ -52,17 +52,17 @@ public class CharacterHelper {
     public String getBody() {return body;}
     public void setBody(String body) {this.body = body;}
 
-    public String getLefthand() {return lefthand;}
-    public void setLefthand(String lefthand) {this.lefthand = lefthand;}
+    public String getLeftHand() {return leftHand;}
+    public void setLeftHand(String leftHand) {this.leftHand = leftHand;}
 
-    public String getRighthand() {return righthand;}
-    public void setRighthand(String righthand) {this.righthand = righthand;}
+    public String getRightHand() {return rightHand;}
+    public void setRightHand(String rightHand) {this.rightHand = rightHand;}
 
-    public String getLeftleg() {return leftleg;}
-    public void setLeftleg(String leftleg) {this.leftleg = leftleg;}
+    public String getLeftLeg() {return leftLeg;}
+    public void setLeftLeg(String leftLeg) {this.leftLeg = leftLeg;}
 
-    public String getRightleg() {return rightleg;}
-    public void setRightleg(String rightleg) {this.rightleg = rightleg;}
+    public String getRightLeg() {return rightLeg;}
+    public void setRightLeg(String rightLeg) {this.rightLeg = rightLeg;}
 
     public int getEndurance() {return endurance;}
     public void setEndurance(int endurance) {this.endurance = endurance;}
@@ -107,11 +107,9 @@ public class CharacterHelper {
     public void setLuckMod(int luckMod) {this.luckMod = luckMod;}
 
     public int getFameMod() {return fameMod;}
-
     public void setFameMod(int fameMod) {this.fameMod = fameMod;}
 
     public int getMentalHealthMod() {return mentalHealthMod;}
-
     public void setMentalHealthMod(int mentalHealthMod) {this.mentalHealthMod = mentalHealthMod;}
 
     public String[] getBag() {return bag;}
@@ -173,16 +171,27 @@ public class CharacterHelper {
                         "\"quest\":null}");
     }
 
+    public void changeCharacter(String userLogin, CharacterHelper character){
+        if (!Checks.isFileExist("Персонажи", userLogin, "Персонаж")){
+            System.out.println("Файл персонажа " + userLogin + " не найден");
+            return;
+        }
+
+
+
+
+    }
+
     public static void updateCharacter(String userLogin, String updateData, ObjectMapper objectMapper) throws IOException {
 
         String charJson = String.valueOf(Files.readAllLines(Paths.get("file.txt"))); // Переделать с учётом входных данных
-        ParseJson.parseCharacterJsonFromString(charJson, objectMapper);
+        ParseJson.parseCharacterStringJsonToPojo(charJson, objectMapper);
         //charJson.readValue();
     }
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
         String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
-        CharacterHelper parsedCharacterJson = ParseJson.parseCharacterJsonFromString(stringToJson, objectMapper);
+        CharacterHelper parsedCharacterJson = ParseJson.parseCharacterStringJsonToPojo(stringToJson, objectMapper);
         this.key = key;
         //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
         // Создать расширение класса ObjectMapper или посмотреть методы JSONtoPOJO()

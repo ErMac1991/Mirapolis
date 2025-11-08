@@ -6,11 +6,11 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        CharacterHelper characterHelper = new CharacterHelper();
+        CharacterHelper character = new CharacterHelper();
 
         String updateData;
 
-        Checks.isSystemUpdated(objectMapper);
+        Checks.isSystemUpdated(objectMapper, character);
 
 
         String incomingCommand;

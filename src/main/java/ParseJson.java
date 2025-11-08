@@ -5,9 +5,9 @@ import java.io.IOException;
 public class ParseJson {
 
 
-    public static CharacterHelper parseCharacterJsonFromString(String stringToJson, ObjectMapper objectMapper) throws IOException {
-        CharacterHelper parsedCharacterJson = objectMapper.readValue(stringToJson.getBytes(), CharacterHelper.class);
-        return parsedCharacterJson;
+    public static CharacterHelper parseCharacterStringJsonToPojo(String stringToJson, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+        character = objectMapper.readValue(stringToJson.getBytes(), CharacterHelper.class);
+        return character;
     }
 
 }
