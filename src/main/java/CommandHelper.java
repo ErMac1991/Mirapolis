@@ -1,7 +1,14 @@
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandHelper {
-    String command;
+    String command; // команда полученная через аргументы
+    String lineOfChanges;
+    String changedSubject;
+    List<String> storage = new ArrayList<>();
 
     public String commandShaper(String[] args){
         command="";
@@ -12,6 +19,29 @@ public class CommandHelper {
             }
         }
         return command.substring(0, command.length() - 1);
+    }
+
+    public void changedSubject(File actionsQueueFile, ObjectMapper objectMapper) throws IOException { // определяет изменяемый субъект
+
+        lineOfChanges = null;
+        changedSubject = null;
+
+        BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
+
+        while ((reader.readLine()) != null) {
+            lineOfChanges = reader.readLine();
+            System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + lineOfChanges);
+        }
+
+        changedSubject = lineOfChanges.split("\" ")[1];
+
+        switch (changedSubject) {
+            case "character":
+
+                break;
+        }
+
+
     }
 
     public void commandsSwitcher(String userLogin,String command) throws IOException {

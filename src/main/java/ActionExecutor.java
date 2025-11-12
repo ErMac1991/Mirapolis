@@ -20,6 +20,8 @@ public class ActionExecutor {
         }
     }
 
+
+
     public static void executeActions(File actionsQueueFile, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
@@ -29,7 +31,7 @@ public class ActionExecutor {
             System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + firstLine);
             CharacterHelper.updateCharacter(ParseJson.parseCharacterStringJsonToPojo(firstLine,objectMapper, character).getUserLogin(),
                     firstLine,
-                    objectMapper); ;
+                    objectMapper);
 
         }
 
