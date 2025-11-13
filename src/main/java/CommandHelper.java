@@ -6,8 +6,7 @@ import java.util.List;
 
 public class CommandHelper {
     String command; // команда полученная через аргументы
-    String lineOfChanges;
-    String changedSubject;
+
     List<String> storage = new ArrayList<>();
 
     public String commandShaper(String[] args){
@@ -21,10 +20,9 @@ public class CommandHelper {
         return command.substring(0, command.length() - 1);
     }
 
-    public void changedSubject(File actionsQueueFile, ObjectMapper objectMapper) throws IOException { // определяет изменяемый субъект
+    public static void changedSubject(File actionsQueueFile, ObjectMapper objectMapper, CharacterHelper character) throws IOException { // определяет изменяемый субъект
 
-        lineOfChanges = null;
-        changedSubject = null;
+        String lineOfChanges = null;
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
 
@@ -33,10 +31,11 @@ public class CommandHelper {
             System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + lineOfChanges);
         }
 
-        changedSubject = lineOfChanges.split("\" ")[1];
+        String changedSubject = lineOfChanges.split("\" ")[1];
 
         switch (changedSubject) {
             case "character":
+                CharacterHelper.changeCharacter(lineOfChanges.split("\" ")[4],objectMapper,character);
 
                 break;
         }

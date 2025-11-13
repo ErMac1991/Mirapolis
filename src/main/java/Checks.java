@@ -18,8 +18,8 @@ public class Checks {
 
         while (true) {
             if (actionsQueueFile.exists()) {
-                System.out.println("Файл найден!");
-                ActionExecutor.executeActions(actionsQueueFile, objectMapper, character); // исключить вложенный метод
+                System.out.println("Файл обновлений найден!");
+                CommandHelper.changedSubject(actionsQueueFile, objectMapper, character);
                 //break; // Выходим из цикла, если файл найден
             } else {
                 System.out.println("Файл не найден, ждем 5 секунд...");

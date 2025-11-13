@@ -171,14 +171,14 @@ public class CharacterHelper {
                         "\"quest\":null}");
     }
 
-    public void changeCharacter(String userLogin, CharacterHelper character){
+    public static void changeCharacter(String userLogin, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
         if (!Checks.isFileExist("Персонажи", userLogin, "Персонаж")){
             System.out.println("Файл персонажа " + userLogin + " не найден");
             return;
         }
-
-
-
+        ParseJson.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
+        System.out.println("Персонаж " + character.userLogin + " и его квест:  " + character.quest);
 
     }
 
