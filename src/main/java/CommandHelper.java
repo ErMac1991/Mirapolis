@@ -16,31 +16,35 @@ public class CommandHelper {
             for (int i = 0; i < args.length; i++) {
                 command += args[0] + " ";
             }
+            return command.substring(0, command.length() - 1);
         }
-        return command.substring(0, command.length() - 1);
+        return "Передана пустая команда (не найдены агрументы)";
     }
 
-    public static void changedSubject(File actionsQueueFile, ObjectMapper objectMapper, CharacterHelper character) throws IOException { // определяет изменяемый субъект
+    public static String getLineOfChangesFromFile(File actionsQueueFile) throws IOException {
 
         String lineOfChanges = null;
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
 
-        while ((reader.readLine()) != null) {
+        if ((reader.readLine()) != null) {
             lineOfChanges = reader.readLine();
             System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + lineOfChanges);
+            return lineOfChanges;
         }
+        else {
+            return "Полученная строка изменений пуста";
+        }
+    }
 
-        String changedSubject = lineOfChanges.split("\" ")[1];
-
-        switch (changedSubject) {
+    public static void switchSubjectType(String lineOfChanges, ObjectMapper objectMapper, Object subject){ // возвращает изменяемый субъект: персонаж/противник/квест.
+        // РЕАЛИЗОВАТЬ СВИТЧЕР ТИПА ИЗМЕНЯЕМОГО СУБЪЕКТА. СОЗДАТЬ ПЕРЕОПРЕДЕЛЯЕМЫЙ МЕТОД С РАЗНЫМИ ВХОДНЫМИ ОБЪЕКТАМИ
+        switch (lineOfChanges.split("\" ")[1]) { // тип изменяемого субъекта: персонаж/противник/квест
             case "character":
-                CharacterHelper.changeCharacter(lineOfChanges.split("\" ")[4],objectMapper,character);
-
+                CharacterHelper.changeCharacter(lineOfChanges.split("\" ")[4],objectMapper,subject);
+                ActionExecutor.executeActions(lineOfChanges, objectMapper, subject);
                 break;
         }
-
-
     }
 
     public void commandsSwitcher(String userLogin,String command) throws IOException {

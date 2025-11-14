@@ -32,10 +32,15 @@ public class ActionExecutor {
             CharacterHelper.updateCharacter(ParseJson.parseCharacterStringJsonToPojo(firstLine,objectMapper, character).getUserLogin(),
                     firstLine,
                     objectMapper);
-
         }
+    }
 
 
+    public static void executeActions(String lineOfChanges, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+
+            CharacterHelper.updateCharacter(ParseJson.parseCharacterStringJsonToPojo(lineOfChanges ,objectMapper, character).getUserLogin(),
+                    lineOfChanges,
+                    objectMapper);
 
     }
 

@@ -178,15 +178,16 @@ public class CharacterHelper {
         }
         ParseJson.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
-        System.out.println("Персонаж " + character.userLogin + " и его квест:  " + character.quest);
+        System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
 
     }
 
-    public static void updateCharacter(String userLogin, String updateData, ObjectMapper objectMapper) throws IOException {
+    public static void updateCharacter(CharacterHelper character, ObjectMapper objectMapper, CharacterHelper charactersChanges) throws IOException {
+        //ПРОПИСАТЬ ИЗМЕНЕНИЕ ВСЕХ ПОЛЕЙ ПЕСОНАЖА. ПОКА МЕНЯЕМ ТОЛЬКО КВЕСТ
+        character.setQuest(charactersChanges.getQuest());
+        System.out.println(character.getQuest());
 
-        String charJson = String.valueOf(Files.readAllLines(Paths.get("file.txt"))); // Переделать с учётом входных данных
-        ParseJson.parseCharacterStringJsonToPojo(charJson, objectMapper);
-        //charJson.readValue();
+
     }
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {

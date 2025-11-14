@@ -12,17 +12,16 @@ public class Checks {
         return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + subCategory + "\\" + fileName + ".txt"));
     }
 
-    public static void isSystemUpdated(ObjectMapper objectMapper, CharacterHelper character) throws IOException {
-
-        final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
+    public static boolean isSystemUpdated(File actionsQueueFile) throws IOException {
 
         while (true) {
             if (actionsQueueFile.exists()) {
                 System.out.println("Файл обновлений найден!");
-                CommandHelper.changedSubject(actionsQueueFile, objectMapper, character);
-                //break; // Выходим из цикла, если файл найден
+
+                return true;
+
             } else {
-                System.out.println("Файл не найден, ждем 5 секунд...");
+                System.out.println("Файл не найден, ждем 2 секунды...");
                 }
 
             try {
@@ -33,6 +32,7 @@ public class Checks {
                 break;
             }
         }
+        return false;
     }
 
 

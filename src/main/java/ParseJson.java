@@ -10,4 +10,6 @@ public class ParseJson {
         return character;
     }
 
+    //ПРОПИСАТЬ МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
+
 }
