@@ -176,7 +176,7 @@ public class CharacterHelper {
             System.out.println("Файл персонажа " + userLogin + " не найден");
             return;
         }
-        ParseJson.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
+        FileManager.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
         System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
 

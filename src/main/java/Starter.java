@@ -16,19 +16,17 @@ public class Starter {
             updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
             switch (updateData.split("\"")[1]) { // тип изменяемого субъекта: персонаж/противник/квест
                 case "character":
-                    charactersChanges = ParseJson.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
+                    charactersChanges = FileManager.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
                     if((updateData.split("\"")[4]).equals(charactersChanges.getUserLogin())){
                         System.out.println("Логин игрока из файла: " + updateData.split("\"")[3] + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                         CharacterHelper.chooseCharacter(charactersChanges.userLogin,objectMapper,character);// Переключение на изменяемого персонажа
                         CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
                         // Перенос данных из Pojo персонажа в Json файл персонажа
-                        //
+                        FileManager.eraseLineFromFile(actionsQueueFile, 0);// Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
                     }
                     else{
                         System.out.println("Логин игрока из файла: " + updateData.split("\"")[3] + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                     }
-
-                    // Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
 
                     // Очищение переменных
                     charactersChanges = null;
