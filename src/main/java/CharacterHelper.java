@@ -171,7 +171,7 @@ public class CharacterHelper {
                         "\"quest\":null}");
     }
 
-    public static void changeCharacter(String userLogin, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+    public static void chooseCharacter(String userLogin, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
         if (!Checks.isFileExist("Персонажи", userLogin, "Персонаж")){
             System.out.println("Файл персонажа " + userLogin + " не найден");
             return;
@@ -182,7 +182,7 @@ public class CharacterHelper {
 
     }
 
-    public static void updateCharacter(CharacterHelper character, ObjectMapper objectMapper, CharacterHelper charactersChanges) throws IOException {
+    public static void updateCharacterPojo(CharacterHelper character, CharacterHelper charactersChanges) throws IOException {
         //ПРОПИСАТЬ ИЗМЕНЕНИЕ ВСЕХ ПОЛЕЙ ПЕСОНАЖА. ПОКА МЕНЯЕМ ТОЛЬКО КВЕСТ
         character.setQuest(charactersChanges.getQuest());
         System.out.println(character.getQuest());
@@ -192,7 +192,7 @@ public class CharacterHelper {
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
         String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
-        CharacterHelper parsedCharacterJson = ParseJson.parseCharacterStringJsonToPojo(stringToJson, objectMapper);
+
         this.key = key;
         //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
         // Создать расширение класса ObjectMapper или посмотреть методы JSONtoPOJO()

@@ -12,6 +12,14 @@ public class Checks {
         return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + subCategory + "\\" + fileName + ".txt"));
     }
 
+    public static boolean isFileExist(String category, String  fileName){
+        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + fileName + ".txt"));
+    }
+
+    public static boolean isFileExist(String  fileName){
+        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + fileName + ".txt"));
+    }
+
     public static boolean isSystemUpdated(File actionsQueueFile) throws IOException {
 
         while (true) {

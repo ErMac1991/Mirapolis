@@ -29,18 +29,14 @@ public class ActionExecutor {
         while ((reader.readLine()) != null){
             firstLine = reader.readLine();
             System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + firstLine);
-            CharacterHelper.updateCharacter(ParseJson.parseCharacterStringJsonToPojo(firstLine,objectMapper, character).getUserLogin(),
-                    firstLine,
-                    objectMapper);
+
         }
     }
 
 
     public static void executeActions(String lineOfChanges, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
 
-            CharacterHelper.updateCharacter(ParseJson.parseCharacterStringJsonToPojo(lineOfChanges ,objectMapper, character).getUserLogin(),
-                    lineOfChanges,
-                    objectMapper);
+
 
     }
 

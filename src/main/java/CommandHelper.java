@@ -37,15 +37,6 @@ public class CommandHelper {
         }
     }
 
-    public static void switchSubjectType(String lineOfChanges, ObjectMapper objectMapper, Object subject){ // возвращает изменяемый субъект: персонаж/противник/квест.
-        // РЕАЛИЗОВАТЬ СВИТЧЕР ТИПА ИЗМЕНЯЕМОГО СУБЪЕКТА. СОЗДАТЬ ПЕРЕОПРЕДЕЛЯЕМЫЙ МЕТОД С РАЗНЫМИ ВХОДНЫМИ ОБЪЕКТАМИ
-        switch (lineOfChanges.split("\" ")[1]) { // тип изменяемого субъекта: персонаж/противник/квест
-            case "character":
-                CharacterHelper.changeCharacter(lineOfChanges.split("\" ")[4],objectMapper,subject);
-                ActionExecutor.executeActions(lineOfChanges, objectMapper, subject);
-                break;
-        }
-    }
 
     public void commandsSwitcher(String userLogin,String command) throws IOException {
         switch (command) {
