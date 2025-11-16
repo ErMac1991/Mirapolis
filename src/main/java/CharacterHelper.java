@@ -129,10 +129,9 @@ public class CharacterHelper {
             Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
     }
 
-    public static void fillNewCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа
+    public static void fillNewCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа ПОД ПЕРЕНОС В ФАЙЛМАНАГЕР
 
-        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\" +
-                        userLogin + ".txt"),
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
                 "{\"userData\":{" +
                         "\"nickname\":\""+ userLogin +"\"," +
                         "\"level\":1," +
