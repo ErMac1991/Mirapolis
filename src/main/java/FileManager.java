@@ -1,15 +1,42 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class FileManager {
+
+    public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
+        actionsQueueFile.createNewFile();
+        System.out.println("Создан файл с очередью действий " + actionsQueueFile.getName());
+        //actionsQueueFile =  File.createTempFile("ActionsQueueFile",".txt", new File("G:\\Проекты\\Стримы\\Mirapolis\\"));
+    }
+
+    public static void fillActionsQueueFile(File actionsQueueFile, String command) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(actionsQueueFile));
+        BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile));
+
+
+        if (!Checks.isFileExist(actionsQueueFile.getName())) {
+            System.out.println("При попытке заполнения, не найден файл " + actionsQueueFile.getName());
+        }
+        System.out.println("Строки в ридере: " + reader.readLine().toString());
+
+        if (!reader.readLine().toString().equals(null)) {
+
+            writer.write("\n");
+        }
+
+        writer.write(command);
+        writer.close();
+        reader.close();
+        System.out.println("Заполнен файл с очередью действий " + actionsQueueFile.getName());
+
+
+    }
+
 
     public static CharacterHelper parseCharacterStringJsonToPojo(String stringToJson, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
         character = objectMapper.readValue(stringToJson.getBytes(), CharacterHelper.class);
@@ -19,7 +46,7 @@ public class FileManager {
     public static void eraseLineFromFile(File file, int lineNumber) throws IOException { // удалить строку из файла
 
         List<String> lines = Files.readAllLines(Path.of(file.getPath()));
-        File tempFile = File.createTempFile("TempFile",".txt", new File("F:\\Проекты\\Стримы\\Mirapolis\\"));
+        File tempFile = File.createTempFile("TempFile", ".txt", new File("G:\\Проекты\\Стримы\\Mirapolis\\"));
 
         // Заполняем временный файл строками из исходного, за исключением удаляемой строки
         BufferedWriter writer = null;
@@ -30,12 +57,11 @@ public class FileManager {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < lines.size(); i++){
-            if(i != lineNumber - 1) {
+        for (int i = 0; i < lines.size(); i++) {
+            if (i != lineNumber - 1) {
                 writer.write(lines.get(i));
-            }
-            else {
-                System.out.println("Строка "+lineNumber+" найдена и не включена во временный файл");
+            } else {
+                System.out.println("Строка " + lineNumber + " найдена и не включена во временный файл");
             }
         }
         System.out.println("Временный файл заполнен");
@@ -46,7 +72,7 @@ public class FileManager {
     }
 
     public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
-        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
+        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
                 "{\"userData\":{" +
                         "\"nickname\":\"" + character.getUserLogin() + "\"," +
                         "\"level\":" + character.getLevel() + "," +
@@ -86,7 +112,6 @@ public class FileManager {
 
 
     }
-
 
 
 }

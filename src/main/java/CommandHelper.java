@@ -1,24 +1,35 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHelper {
-    String command; // команда полученная через аргументы
+
 
     List<String> storage = new ArrayList<>();
 
-    public String commandShaper(String[] args){
-        command="";
+    public static String commandShaperFromArgsToString(String[] args){
+        String command = ""; // команда полученная через аргументы
         // Проверяем, что есть хотя бы один аргумент и формируем общую команду
         if (args.length > 0) {
             for (int i = 0; i < args.length; i++) {
-                command += args[0] + " ";
+                System.out.println("Армумент " + i + " = " + args[i]);
+
+                if (i == args.length - 1){
+                    command += args[i];
+                }
+                else {
+                    command += args[i] + " ";
+                }
             }
-            return command.substring(0, command.length() - 1);
+            //command.replace("} {","}\n{");
+            System.out.println("Сформированная команда: " + command);
+            return command;
+            //return command.substring(0, command.length() - 1);
         }
-        return "Передана пустая команда (не найдены агрументы)";
+        else {
+            System.out.println("Передана пустая команда (не найдены агрументы)");
+            return null;
+        }
     }
 
     public static String getLineOfChangesFromFile(File actionsQueueFile) throws IOException {
@@ -44,8 +55,7 @@ public class CommandHelper {
                 System.out.println("Команда из бота принята и обработана");
             case "Создать персонажа":
                 if (Checks.isFileExist("Персонажи", userLogin,"Персонаж") == false){
-                    CharacterHelper.createCharacterFile(userLogin);
-                    CharacterHelper.fillNewCharacterFile(userLogin);
+                    CharacterHelper.createCharacter(userLogin);
                 }
 
 
