@@ -21,7 +21,7 @@ public class Starter {
                         System.out.println("Логин игрока из файла: " + updateData.split("\"")[3] + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                         CharacterHelper.chooseCharacter(charactersChanges.userLogin,objectMapper,character);// Переключение на изменяемого персонажа
                         CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
-                        // Перенос данных из Pojo персонажа в Json файл персонажа
+                        FileManager.fillPojoToJsonFile(character);// Перенос данных из Pojo персонажа в Json файл персонажа
                         FileManager.eraseLineFromFile(actionsQueueFile, 0);// Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
                     }
                     else{
