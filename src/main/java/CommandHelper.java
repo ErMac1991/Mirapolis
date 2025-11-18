@@ -33,16 +33,18 @@ public class CommandHelper {
     }
 
     public static String getLineOfChangesFromFile(File actionsQueueFile) throws IOException {
-        //Todo: Разобраться, почему проверка (reader.read() == -1) съедает первый символ reader.readLine()
+
         String lineOfChanges = null;
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
+
+        lineOfChanges = reader.readLine();
 
         if (reader.read() == -1) {
             reader.close();
             return "Полученная строка изменений пуста";
         }
-            lineOfChanges = reader.readLine();
+
             System.out.println("Считываем 1ю строку из файла: " + lineOfChanges);
             System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + lineOfChanges);
             reader.close();
@@ -57,7 +59,7 @@ public class CommandHelper {
             case "ТЕСТ":
                 System.out.println("Команда из бота принята и обработана");
             case "Создать персонажа":
-                if (Checks.isFileExist("Персонажи", userLogin,"Персонаж") == false){
+                if (Checks.isFileExist("Персонажи", userLogin,"Персонаж.txt") == false){
                     CharacterHelper.createCharacter(userLogin);
                 }
 

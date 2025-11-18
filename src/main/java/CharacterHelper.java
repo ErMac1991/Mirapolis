@@ -135,6 +135,7 @@ public class CharacterHelper {
         fillNewCharacterFile(userLogin);
         System.out.println("Персонаж создан");
 
+
     }
 
     private static void createCharacterFile(String userLogin) throws IOException { // создаёт и заполняет текстовый файл для хранения джейсона персонажа
@@ -195,12 +196,11 @@ public class CharacterHelper {
 
     }
 
-    public static void updateCharacterPojo(CharacterHelper character, CharacterHelper charactersChanges) throws IOException {
+    public static CharacterHelper updateCharacterPojo(CharacterHelper character, CharacterHelper charactersChanges) throws IOException {
         //ПРОПИСАТЬ ИЗМЕНЕНИЕ ВСЕХ ПОЛЕЙ ПЕСОНАЖА. ПОКА МЕНЯЕМ ТОЛЬКО КВЕСТ
         character.setQuest(charactersChanges.getQuest());
         System.out.println(character.getQuest());
-
-
+        return character;
     }
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {

@@ -9,8 +9,8 @@ public class Starter {
     CharacterHelper charactersChanges = new CharacterHelper();
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
-    String typeOfSubject;
-    String userName;
+    String typeOfSubjectFromArgs;
+    String userNameFromArgs;
 
     public void updateGameData(String[] args) throws IOException {
 
@@ -31,29 +31,38 @@ public class Starter {
             }
 
         updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
-        typeOfSubject = updateData.split("\"")[1];
-        userName=updateData.split("\"")[3];
+        typeOfSubjectFromArgs = updateData.split("\"")[3];
 
-        switch (typeOfSubject) { // тип изменяемого субъекта: персонаж/противник/квест
+
+        switch (typeOfSubjectFromArgs) { // тип изменяемого субъекта: персонаж/противник/квест
 
             case "newCharacter":
                 System.out.println("Тип субъекта - Новый персонаж");
-                CharacterHelper.createCharacter(userName);
-                Checks.isSystemUpdated(actionsQueueFile);
+                updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
+                userNameFromArgs =updateData.split("\"")[7];
+                CharacterHelper.createCharacter(userNameFromArgs);
+                // Внести метод удаления верхней строки из файла очереди действий
+
 
             case "character":
                 System.out.println("Тип субъекта - Существующий персонаж");
+                updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
+                userNameFromArgs =updateData.split("\"")[7];
                 System.out.println("updateData = " + updateData);
                 charactersChanges = FileManager.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
-                if ((updateData.split("\"")[4]).equals(charactersChanges.getUserLogin())) {
-                    System.out.println("Логин игрока из файла: " + updateData.split("\"")[3] + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
-                    CharacterHelper.chooseCharacter(charactersChanges.userLogin, objectMapper, character);// Переключение на изменяемого персонажа
-                    CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
+                if (!userNameFromArgs.equals(charactersChanges.getUserLogin())) {
+                    System.out.println("Логин игрока из файла: " + userNameFromArgs + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
+                    return;
+                }
+                    System.out.println("Логин игрока из файла: " + userNameFromArgs + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
+                    CharacterHelper.chooseCharacter(charactersChanges.getUserLogin(), objectMapper, character);// Переключение на изменяемого персонажа
+                    System.out.println("Квест персонажа до изменений: " + character.getQuest());
+                    System.out.println("Квест в изменениях: " + charactersChanges.getQuest());
+                    character = CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
+                    System.out.println("Квест персонажа после изменений: " + character.getQuest());
                     FileManager.fillPojoToJsonFile(character);// Перенос данных из Pojo персонажа в Json файл персонажа
                     FileManager.eraseLineFromFile(actionsQueueFile, 0);// Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
-                } else {
-                    System.out.println("Логин игрока из файла: " + updateData.split("\"")[3] + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
-                }
+
 
                 // Очищение переменных
                 charactersChanges = null;
