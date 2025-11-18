@@ -1,0 +1,8 @@
+services:
+  mirapolisapp:
+    build: .
+    environment:
+      DEBUG: true
+      DEBUG_PORT: 1234
+    ports:
+      - "8000:1234"

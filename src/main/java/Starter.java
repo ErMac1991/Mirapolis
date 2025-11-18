@@ -7,7 +7,7 @@ public class Starter {
     ObjectMapper objectMapper = new ObjectMapper();
     CharacterHelper character = new CharacterHelper();
     CharacterHelper charactersChanges = new CharacterHelper();
-    final File actionsQueueFile = new File("G:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
+    final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubject;
     String userName;
@@ -22,7 +22,7 @@ public class Starter {
             System.out.println("Файл с очередью действий не найден");
             FileManager.createActionsQueueFile(actionsQueueFile);
             FileManager.fillActionsQueueFile(actionsQueueFile,CommandHelper.commandShaperFromArgsToString(args));
-            System.out.println("Файл с очередью действий " + actionsQueueFile.getName() + "создан и заполнен");
+            System.out.println("Файл с очередью действий " + actionsQueueFile.getName() + " создан и заполнен");
         }
 
         if (!Checks.isSystemUpdated(actionsQueueFile)) {
@@ -37,10 +37,13 @@ public class Starter {
         switch (typeOfSubject) { // тип изменяемого субъекта: персонаж/противник/квест
 
             case "newCharacter":
+                System.out.println("Тип субъекта - Новый персонаж");
                 CharacterHelper.createCharacter(userName);
-                break;
+                Checks.isSystemUpdated(actionsQueueFile);
 
             case "character":
+                System.out.println("Тип субъекта - Существующий персонаж");
+                System.out.println("updateData = " + updateData);
                 charactersChanges = FileManager.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
                 if ((updateData.split("\"")[4]).equals(charactersChanges.getUserLogin())) {
                     System.out.println("Логин игрока из файла: " + updateData.split("\"")[3] + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
@@ -56,7 +59,7 @@ public class Starter {
                 charactersChanges = null;
                 character = null;
                 updateData = null;
-                break;
+                Checks.isSystemUpdated(actionsQueueFile);
 
             default:
                 System.out.println("Тип изменяемого субъекта: " + updateData.split("\"")[1] + " не распознан!");

@@ -6,7 +6,53 @@
 
     <groupId>org.example</groupId>
     <artifactId>MirapolisJava</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+
+
+
+    <profiles>
+    <profile>
+        <id>hello-jar-profile</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>create-jar-for-main1</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                            <configuration>
+                                <archive>
+                                    <manifest>
+                                        <mainClass>src.main.java.Main1</mainClass>
+                                    </manifest>
+                                </archive>
+                                <descriptorRefs>
+                                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                                </descriptorRefs>
+                                <finalName>main1-runnable</finalName>
+                                <appendAssemblyId>false</appendAssemblyId>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>MirapolisJava/</classpathPrefix>
+                                <mainClass>src.main.java.Main1</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    </profiles>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

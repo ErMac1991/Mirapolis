@@ -11,10 +11,11 @@ public class FileManager {
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
         actionsQueueFile.createNewFile();
         System.out.println("Создан файл с очередью действий " + actionsQueueFile.getName());
-        //actionsQueueFile =  File.createTempFile("ActionsQueueFile",".txt", new File("G:\\Проекты\\Стримы\\Mirapolis\\"));
+
     }
 
     public static void fillActionsQueueFile(File actionsQueueFile, String command) throws IOException {
+
         BufferedWriter writer = new BufferedWriter(new FileWriter(actionsQueueFile));
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile));
 
@@ -22,9 +23,9 @@ public class FileManager {
         if (!Checks.isFileExist(actionsQueueFile.getName())) {
             System.out.println("При попытке заполнения, не найден файл " + actionsQueueFile.getName());
         }
-        System.out.println("Строки в ридере: " + reader.readLine().toString());
+        System.out.println("Код первого символа в : " + reader.read());
 
-        if (!reader.readLine().toString().equals(null)) {
+        if (reader.read()!=-1) {
 
             writer.write("\n");
         }
@@ -46,7 +47,7 @@ public class FileManager {
     public static void eraseLineFromFile(File file, int lineNumber) throws IOException { // удалить строку из файла
 
         List<String> lines = Files.readAllLines(Path.of(file.getPath()));
-        File tempFile = File.createTempFile("TempFile", ".txt", new File("G:\\Проекты\\Стримы\\Mirapolis\\"));
+        File tempFile = File.createTempFile("TempFile", ".txt", new File("F:\\Проекты\\Стримы\\Mirapolis\\"));
 
         // Заполняем временный файл строками из исходного, за исключением удаляемой строки
         BufferedWriter writer = null;
@@ -72,7 +73,7 @@ public class FileManager {
     }
 
     public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
-        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
                 "{\"userData\":{" +
                         "\"nickname\":\"" + character.getUserLogin() + "\"," +
                         "\"level\":" + character.getLevel() + "," +

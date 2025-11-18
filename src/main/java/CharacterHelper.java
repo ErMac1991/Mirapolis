@@ -9,6 +9,7 @@ import java.util.List;
 
 public class CharacterHelper {
 
+    String subject; // субъект применения действия
     String userLogin; // логин игрока
     int level; // уровень игрока. Высчитывается исходя из статов
     String head; // Голова. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
@@ -39,6 +40,9 @@ public class CharacterHelper {
     String key;
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
+
+    public String getSubject() {return subject;}
+    public void setSubject(String subject) {this.subject = subject;}
 
     public String getUserLogin() {return userLogin;}
     public void setUserLogin(String userLogin) {this.userLogin = userLogin;}
@@ -122,6 +126,11 @@ public class CharacterHelper {
     public void setQuest(String quest) {this.quest = quest;}
 
     public static void createCharacter(String userLogin) throws IOException {
+
+        if (Checks.isFileExist("Персонажи", userLogin, "Персонаж.txt")){
+            System.out.println("Персонаж с логином " + userLogin + " уже существует.");
+            return;
+        }
         createCharacterFile(userLogin);
         fillNewCharacterFile(userLogin);
         System.out.println("Персонаж создан");
@@ -130,13 +139,13 @@ public class CharacterHelper {
 
     private static void createCharacterFile(String userLogin) throws IOException { // создаёт и заполняет текстовый файл для хранения джейсона персонажа
 
-            Files.createDirectory(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
-            Files.createFile(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+            Files.createDirectory(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
+            Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
     }
 
     private static void fillNewCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа ПОД ПЕРЕНОС В ФАЙЛМАНАГЕР
 
-        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
                 "{\"userData\":{" +
                         "\"nickname\":\""+ userLogin +"\"," +
                         "\"level\":1," +
@@ -144,9 +153,9 @@ public class CharacterHelper {
                         "\"lefthand\":\"Плоть\"," +
                         "\"righthand\":\"Плоть\"," +
                         "\"leftleg\":\"Плоть\"," +
-                        "\"rightleg\": \"Плоть\"," +
-                        "\"body\": \"Плоть\", " +
-                        "\"head\": \"Плоть\"}," +
+                        "\"rightleg\":\"Плоть\"," +
+                        "\"body\":\"Плоть\", " +
+                        "\"head\":\"Плоть\"}," +
                         "\"stats\":{" +
                         "\"endurance\":5," +
                         "\"attentiveness\":5," +
@@ -181,7 +190,7 @@ public class CharacterHelper {
             return;
         }
         FileManager.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
-                "G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
         System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
 
     }
@@ -195,7 +204,7 @@ public class CharacterHelper {
     }
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
-        String stringToJson = Files.readString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+        String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
 
         this.key = key;
         //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
