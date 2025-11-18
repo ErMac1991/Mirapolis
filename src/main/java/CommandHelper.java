@@ -38,12 +38,17 @@ public class CommandHelper {
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
 
-        lineOfChanges = reader.readLine();
-
-        if (reader.read() == -1) {
+        /*if (reader.read() == -1) {
             reader.close();
             return "Полученная строка изменений пуста";
+        }*/
+        try{
+            lineOfChanges = reader.readLine();
         }
+        catch (Exception e){
+            System.out.println("В файле " + actionsQueueFile.getName() + " отсутствует 1я строка из файла: ");
+            return e.getMessage();
+        };
 
             System.out.println("Считываем 1ю строку из файла: " + lineOfChanges);
             System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + lineOfChanges);

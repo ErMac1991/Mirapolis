@@ -9,16 +9,17 @@ public class Checks {
 
 
     public static boolean isFileExist(String category, String subCategory, String  fileName){
-        return Files.exists(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + subCategory + "\\" + fileName));
+        //if (!isFileExist(category){}
+        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + subCategory + "\\" + fileName));
     }
 
     public static boolean isFileExist(String category, String  fileName){
-        return Files.exists(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + fileName));
+        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + category + "\\" + fileName));
     }
 
     public static boolean isFileExist(String  fileName){
         System.out.println("Ищу файл: " + fileName);
-        return Files.exists(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\" + fileName));
+        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + fileName));
     }
 
     public static boolean isSystemUpdated(File actionsQueueFile) throws IOException {

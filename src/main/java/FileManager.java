@@ -44,19 +44,13 @@ public class FileManager {
         return character;
     }
 
-    public static void eraseLineFromFile(File file, int lineNumber) throws IOException { // удалить строку из файла
+    public static void eraseLineFromFile(File file, int lineNumber, boolean deleteEmptyFile) throws IOException { // удалить строку из файла
 
         List<String> lines = Files.readAllLines(Path.of(file.getPath()));
-        File tempFile = File.createTempFile("TempFile", ".txt", new File("G:\\Проекты\\Стримы\\Mirapolis\\"));
+        File tempFile = File.createTempFile("TempFile", ".txt", new File("F:\\Проекты\\Стримы\\Mirapolis\\"));
 
         // Заполняем временный файл строками из исходного, за исключением удаляемой строки
-        BufferedWriter writer = null;
-
-        try {
-            writer = new BufferedWriter(new FileWriter(tempFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
         for (int i = 0; i < lines.size(); i++) {
             if (i != lineNumber - 1) {
@@ -70,21 +64,36 @@ public class FileManager {
         writer.close();
         file.delete(); // удалить исходный файл
         tempFile.renameTo(file); // переименовываем временный файл в исходное имя файла
+        System.out.println("Путь актуального файла: " + file.getPath() + " а название: " + file.getName());
+
+        if (deleteEmptyFile == false){
+            System.out.println("Файл не нужно удалять, даже если он пустой");
+            return;
+        }
+
+        System.out.println("Удалить пустой файл " + file.getName());
+
+        lines = Files.readAllLines(Path.of(file.getPath()));
+
+        System.out.println(lines);
+
+        if (lines.isEmpty()){
+            file.delete();
+            System.out.println("Пустой файл " + file.getName() + " удалён");
+        }
+
     }
 
     public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
-        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
-                "{\"userData\":{" +
-                        "\"nickname\":\"" + character.getUserLogin() + "\"," +
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
+                "{\"userLogin\":\"" + character.getUserLogin() + "\"," +
                         "\"level\":" + character.getLevel() + "," +
-                        "\"body\"{:" +
-                        "\"lefthand\":\"" + character.getLeftHand() + "\"," +
-                        "\"righthand\":\"" + character.getRightHand() + "\"," +
-                        "\"leftleg\":\"" + character.getLeftLeg() + "\"," +
-                        "\"rightleg\": \"" + character.getRightLeg() + "\"," +
+                        "\"leftHand\":\"" + character.getLeftHand() + "\"," +
+                        "\"rightHand\":\"" + character.getRightHand() + "\"," +
+                        "\"leftLeg\":\"" + character.getLeftLeg() + "\"," +
+                        "\"rightLeg\": \"" + character.getRightLeg() + "\"," +
                         "\"body\": \"" + character.getLeftHand() + "\", " +
-                        "\"head\": \"" + character.getHead() + "\"}," +
-                        "\"stats\":{" +
+                        "\"head\": \"" + character.getHead() + "\"," +
                         "\"endurance\":" + character.getEndurance() + "," +
                         "\"attentiveness\":" + character.getAttentiveness() + "," +
                         "\"reaction\":" + character.getReaction() + "," +
@@ -92,24 +101,21 @@ public class FileManager {
                         "\"inventiveness\":" + character.getInventiveness() + "," +
                         "\"luck\":" + character.getLuck() + "," +
                         "\"fame\":" + character.getFame() + "," +
-                        "\"mentalhealth\":" + character.getMentalHealth() + "}," +
-                        "\"mods\":{" +
-                        "\"endurance\":" + character.getEnduranceMod() + "," +
-                        "\"attentiveness\":" + character.getAttentivenessMod() + "," +
-                        "\"reaction\":" + character.getReactionMod() + "," +
-                        "\"strength\":" + character.getStrengthMod() + "," +
-                        "\"inventiveness\":" + character.getInventivenessMod() + "," +
-                        "\"luck\":" + character.getLuckMod() + "," +
-                        "\"fame\":" + character.getFameMod() + "," +
-                        "\"mentalhealth\":" + character.getMentalHealthMod() + "}}," +
-                        "\"inventory\":{" +
-                        "\"bag\":" +
-                        "{\"place1\":\"" + character.getBag()[0] + "\"," +
-                        "\"place2\":\"" + character.getBag()[1] + "\"," +
-                        "\"place3\":\"" + character.getBag()[2] + "\"," +
-                        "\"place4\":\"" + character.getBag()[3] + "\"}," +
-                        "\"storage\":[" + character.getStorage() + "]}," + // Проверить как записывается
-                        "\"quest\":" + character.getQuest() + "}");
+                        "\"mentalHealth\":" + character.getMentalHealth() + "," +
+                        "\"enduranceMod\":" + character.getEnduranceMod() + "," +
+                        "\"attentivenessMod\":" + character.getAttentivenessMod() + "," +
+                        "\"reactionMod\":" + character.getReactionMod() + "," +
+                        "\"strengthMod\":" + character.getStrengthMod() + "," +
+                        "\"inventivenessMod\":" + character.getInventivenessMod() + "," +
+                        "\"luckMod\":" + character.getLuckMod() + "," +
+                        "\"fameMod\":" + character.getFameMod() + "," +
+                        "\"mentalHealthMod\":" + character.getMentalHealthMod() + "," +
+                        "\"firstBagPlace\":\"" + character.getFirstBagPlace() + "\"," +
+                        "\"secondBagPlace\":\"" + character.getSecondBagPlace() + "\"," +
+                        "\"thirdBagPlace\":\"" + character.getThirdBagPlace() + "\"," +
+                        "\"fourthBagPlace\":\"" + character.getFourthBagPlace() + "\"," +
+                        "\"storage\":\"" + character.getStorage() + "\"," + // Проверить как записывается
+                        "\"quest\":\"" + character.getQuest() + "\"}");
 
 
     }

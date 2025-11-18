@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterHelper {
 
     String subject; // субъект применения действия
@@ -35,7 +37,12 @@ public class CharacterHelper {
     int fameMod; // модификатор известности
     int mentalHealthMod; // модификатор ментального здоровья
     String[] bag = new String[4]; // Массив сумки на 4 места
-    List<String> storage = new ArrayList<>();
+    String firstBagPlace; // Первое место в сумке
+    String secondBagPlace; // Первое место в сумке
+    String thirdBagPlace; // Первое место в сумке
+    String fourthBagPlace; // Первое место в сумке
+    List<String> storageList = new ArrayList<>();
+    String storage;
     String quest;
     String key;
 
@@ -119,8 +126,23 @@ public class CharacterHelper {
     public String[] getBag() {return bag;}
     public void setBag(String[] bag) {this.bag = bag;}
 
-    public List<String> getStorage() {return storage;}
-    public void setStorage(List<String> storage) {this.storage = storage;}
+    public String getFirstBagPlace() {return firstBagPlace;}
+    public void setFirstBagPlace(String firstBagPlace) {this.firstBagPlace = firstBagPlace;}
+
+    public String getSecondBagPlace() {return secondBagPlace;}
+    public void setSecondBagPlace(String secondBagPlace) {this.secondBagPlace = secondBagPlace;}
+
+    public String getThirdBagPlace() {return thirdBagPlace;}
+    public void setThirdBagPlace(String thirdBagPlace) {this.thirdBagPlace = thirdBagPlace;}
+
+    public String getFourthBagPlace() {return fourthBagPlace;}
+    public void setFourthBagPlace(String fourthBagPlace) {this.fourthBagPlace = fourthBagPlace;}
+
+    public List<String> getStorageList() {return storageList;}
+    public void setStorageList(List<String> storageList) {this.storageList = storageList;}
+
+    public String getStorage() {return storage;}
+    public void setStorage(String storage) {this.storage = storage;}
 
     public String getQuest() {return quest;}
     public void setQuest(String quest) {this.quest = quest;}
@@ -133,31 +155,28 @@ public class CharacterHelper {
         }
         createCharacterFile(userLogin);
         fillNewCharacterFile(userLogin);
-        System.out.println("Персонаж создан");
+        System.out.println("Персонаж с логином " + userLogin + " создан");
 
 
     }
 
     private static void createCharacterFile(String userLogin) throws IOException { // создаёт и заполняет текстовый файл для хранения джейсона персонажа
 
-            Files.createDirectory(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
-            Files.createFile(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+            Files.createDirectory(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
+            Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
     }
 
     private static void fillNewCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа ПОД ПЕРЕНОС В ФАЙЛМАНАГЕР
 
-        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
-                "{\"userData\":{" +
-                        "\"nickname\":\""+ userLogin +"\"," +
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
+                "{\"userLogin\":\""+ userLogin +"\"," +
                         "\"level\":1," +
-                        "\"body\"{:" +
-                        "\"lefthand\":\"Плоть\"," +
-                        "\"righthand\":\"Плоть\"," +
-                        "\"leftleg\":\"Плоть\"," +
-                        "\"rightleg\":\"Плоть\"," +
+                        "\"leftHand\":\"Плоть\"," +
+                        "\"rightHand\":\"Плоть\"," +
+                        "\"leftLeg\":\"Плоть\"," +
+                        "\"rightLeg\":\"Плоть\"," +
                         "\"body\":\"Плоть\", " +
-                        "\"head\":\"Плоть\"}," +
-                        "\"stats\":{" +
+                        "\"head\":\"Плоть\"," +
                         "\"endurance\":5," +
                         "\"attentiveness\":5," +
                         "\"reaction\":5," +
@@ -165,35 +184,37 @@ public class CharacterHelper {
                         "\"inventiveness\":5," +
                         "\"luck\":5," +
                         "\"fame\":0," +
-                        "\"mentalhealth\":95}," +
-                        "\"mods\":{" +
-                        "\"endurance\":0," +
-                        "\"attentiveness\":0," +
-                        "\"reaction\":0," +
-                        "\"strength\":0," +
-                        "\"inventiveness\":0," +
-                        "\"luck\":0," +
-                        "\"fame\":0," +
-                        "\"mentalhealth\":0}}," +
-                        "\"inventory\":{" +
-                        "\"bag\":" +
-                        "{\"place1\":\"Пусто\"," +
-                        "\"place2\":\"Пусто\"," +
-                        "\"place3\":\"Пусто\"," +
-                        "\"place4\":\"Пусто\"}," +
-                        "\"storage\":[]}," +
+                        "\"mentalHealth\":95," +
+                        "\"enduranceMod\":0," +
+                        "\"attentivenessMod\":0," +
+                        "\"reactionMod\":0," +
+                        "\"strengthMod\":0," +
+                        "\"inventivenessMod\":0," +
+                        "\"luckMod\":0," +
+                        "\"fameMod\":0," +
+                        "\"mentalHealthMod\":0," +
+                        "\"firstBagPlace\":\"Пусто\"," +
+                        "\"secondBagPlace\":\"Пусто\"," +
+                        "\"thirdBagPlace\":\"Пусто\"," +
+                        "\"fourthBagPlace\":\"Пусто\"," +
+                        "\"storage\":\"Пусто\"," +
                         "\"quest\":null}");
     }
 
-    public static void chooseCharacter(String userLogin, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
-        if (!Checks.isFileExist("Персонажи", userLogin, "Персонаж")){
-            System.out.println("Файл персонажа " + userLogin + " не найден");
-            return;
+    public static CharacterHelper chooseCharacter(String userLogin, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+        System.out.println(userLogin);
+        if (!Checks.isFileExist("Персонажи", userLogin, "Персонаж.txt")){
+            System.out.println("При выборе персонажа файл персонажа " + userLogin + " не найден");
+            return null;
         }
-        FileManager.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
-                "G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
+        System.out.println("При выборе персонажа файл персонажа " + userLogin + " найден");
+        System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt")));
+        character = FileManager.parseCharacterStringJsonToPojo(Files.readString(Paths.get(
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt")), objectMapper, character);
         System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
 
+        return character;
     }
 
     public static CharacterHelper updateCharacterPojo(CharacterHelper character, CharacterHelper charactersChanges) throws IOException {
@@ -204,7 +225,7 @@ public class CharacterHelper {
     }
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
-        String stringToJson = Files.readString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+        String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
 
         this.key = key;
         //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
