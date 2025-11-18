@@ -8,7 +8,7 @@ public class Main {
         ObjectMapper objectMapper = new ObjectMapper();
         CharacterHelper character = new CharacterHelper();
         CharacterHelper charactersChanges = new CharacterHelper();
-        final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
+        final File actionsQueueFile = new File("G:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
 
         String updateData; // Строка изменений
 

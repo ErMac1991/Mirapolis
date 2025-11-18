@@ -140,13 +140,13 @@ public class CharacterHelper {
 
     private static void createCharacterFile(String userLogin) throws IOException { // создаёт и заполняет текстовый файл для хранения джейсона персонажа
 
-            Files.createDirectory(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
-            Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+            Files.createDirectory(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
+            Files.createFile(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
     }
 
     private static void fillNewCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа ПОД ПЕРЕНОС В ФАЙЛМАНАГЕР
 
-        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
+        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
                 "{\"userData\":{" +
                         "\"nickname\":\""+ userLogin +"\"," +
                         "\"level\":1," +
@@ -191,7 +191,7 @@ public class CharacterHelper {
             return;
         }
         FileManager.parseCharacterStringJsonToPojo(String.valueOf(Files.readAllLines(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
+                "G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"))), objectMapper, character);
         System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
 
     }
@@ -204,7 +204,7 @@ public class CharacterHelper {
     }
 
     public void isStringValueMatched (String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
-        String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
+        String stringToJson = Files.readString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
 
         this.key = key;
         //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?

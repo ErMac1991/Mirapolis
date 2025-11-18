@@ -47,7 +47,7 @@ public class FileManager {
     public static void eraseLineFromFile(File file, int lineNumber) throws IOException { // удалить строку из файла
 
         List<String> lines = Files.readAllLines(Path.of(file.getPath()));
-        File tempFile = File.createTempFile("TempFile", ".txt", new File("F:\\Проекты\\Стримы\\Mirapolis\\"));
+        File tempFile = File.createTempFile("TempFile", ".txt", new File("G:\\Проекты\\Стримы\\Mirapolis\\"));
 
         // Заполняем временный файл строками из исходного, за исключением удаляемой строки
         BufferedWriter writer = null;
@@ -73,7 +73,7 @@ public class FileManager {
     }
 
     public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
-        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
+        Files.writeString(Path.of("G:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
                 "{\"userData\":{" +
                         "\"nickname\":\"" + character.getUserLogin() + "\"," +
                         "\"level\":" + character.getLevel() + "," +
