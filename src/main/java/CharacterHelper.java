@@ -10,6 +10,8 @@ import java.util.List;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterHelper {
+    //Todo СОЗДАТЬ РОДИТЕЛЬСКИЙ КЛАСС И НАСЛЫДОВАТЬ ОТ НЕГО КЛАССЫ ПЕРСОНАЖА, ПРОТИВНИКА, РОБОТА и т.д.
+
 
     String subject; // субъект применения действия
     String userLogin; // логин игрока
@@ -167,7 +169,7 @@ public class CharacterHelper {
     }
 
     private static void fillNewCharacterFile(String userLogin) throws IOException { //заполняем текстовый файл джейсоном персонажа ПОД ПЕРЕНОС В ФАЙЛМАНАГЕР
-
+    // Todo Объединить в один метод по заполнению файла персонажа
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"),
                 "{\"userLogin\":\""+ userLogin +"\"," +
                         "\"level\":1," +
@@ -218,7 +220,7 @@ public class CharacterHelper {
     }
 
     public static CharacterHelper updateCharacterPojo(CharacterHelper character, CharacterHelper charactersChanges) throws IOException {
-        //ПРОПИСАТЬ ИЗМЕНЕНИЕ ВСЕХ ПОЛЕЙ ПЕСОНАЖА. ПОКА МЕНЯЕМ ТОЛЬКО КВЕСТ
+        //Todo ПРОПИСАТЬ ИЗМЕНЕНИЕ ВСЕХ ПОЛЕЙ ПЕСОНАЖА. ПОКА МЕНЯЕМ ТОЛЬКО КВЕСТ
         character.setQuest(charactersChanges.getQuest());
         System.out.println(character.getQuest());
         return character;
