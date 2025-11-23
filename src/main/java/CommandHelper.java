@@ -59,13 +59,13 @@ public class CommandHelper {
     }
 
 
-    public void commandsSwitcher(String userLogin,String command) throws IOException {
+    public void commandsSwitcher(CharacterHelper character,String command) throws IOException {
         switch (command) {
             case "ТЕСТ":
                 System.out.println("Команда из бота принята и обработана");
             case "Создать персонажа":
-                if (Checks.isFileExist("Персонажи", userLogin,"Персонаж.txt") == false){
-                    CharacterHelper.createCharacter(userLogin);
+                if (Checks.isFileExist("Персонажи", character.userLogin,"Персонаж.txt") == false){
+                    CharacterHelper.createCharacter(character.userLogin);
                 }
 
 

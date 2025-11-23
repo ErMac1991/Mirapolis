@@ -52,13 +52,15 @@ public class Starter {
                 System.out.println("updateData = " + updateData);
                 userNameFromArgs = updateData.split("\"")[7];
                 System.out.println("userNameFromArgs = " + userNameFromArgs);
+                character = CharacterHelper.chooseCharacter(charactersChanges.getUserLogin(), objectMapper, character);// Переключение на изменяемого персонажа
+
+                charactersChanges = character;
                 charactersChanges = FileManager.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
                 if (!userNameFromArgs.equals(charactersChanges.getUserLogin())) {
                     System.out.println("Логин игрока из файла: " + userNameFromArgs + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                     return;
                 }
                 System.out.println("Логин игрока из файла: " + userNameFromArgs + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
-                character = CharacterHelper.chooseCharacter(charactersChanges.getUserLogin(), objectMapper, character);// Переключение на изменяемого персонажа
                 System.out.println("Квест персонажа " + character.getUserLogin() + " до изменений: " + character.getQuest());
                 System.out.println("Квест в изменениях: " + charactersChanges.getQuest());
                 character = CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
