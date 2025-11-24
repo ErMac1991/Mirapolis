@@ -10,7 +10,7 @@ public class Starter {
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubjectFromArgs;
-    String userNameFromArgs;
+    String userLoginFromArgs;
 
     public void updateGameData(String[] args) throws IOException {
 
@@ -38,9 +38,9 @@ public class Starter {
             case "newCharacter":
                 System.out.println("Тип субъекта - Новый персонаж");
                 updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
-                userNameFromArgs = updateData.split("\"")[7];
+                userLoginFromArgs = updateData.split("\"")[7];
                 System.out.println("updateData = " + updateData);
-                CharacterHelper.createCharacter(userNameFromArgs);
+                CharacterHelper.createCharacter(userLoginFromArgs);
                 FileManager.eraseLineFromFile(actionsQueueFile, 1,true);// метод удаления верхней строки из файла очереди действий
                 System.out.println("Из очереди удалено действие создания нового персонажа");
                 Checks.isSystemUpdated(actionsQueueFile);
@@ -50,17 +50,17 @@ public class Starter {
                 System.out.println("Тип субъекта - Существующий персонаж");
                 updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
                 System.out.println("updateData = " + updateData);
-                userNameFromArgs = updateData.split("\"")[7];
-                System.out.println("userNameFromArgs = " + userNameFromArgs);
-                character = CharacterHelper.chooseCharacter(charactersChanges.getUserLogin(), objectMapper, character);// Переключение на изменяемого персонажа
+                userLoginFromArgs = updateData.split("\"")[7];
+                System.out.println("userNameFromArgs = " + userLoginFromArgs);
+                character = CharacterHelper.chooseCharacter(userLoginFromArgs, objectMapper, character);// Переключение на изменяемого персонажа
 
                 charactersChanges = character;
                 charactersChanges = FileManager.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
-                if (!userNameFromArgs.equals(charactersChanges.getUserLogin())) {
-                    System.out.println("Логин игрока из файла: " + userNameFromArgs + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
+                if (!userLoginFromArgs.equals(charactersChanges.getUserLogin())) {
+                    System.out.println("Логин игрока из файла: " + userLoginFromArgs + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                     return;
                 }
-                System.out.println("Логин игрока из файла: " + userNameFromArgs + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
+                System.out.println("Логин игрока из файла: " + userLoginFromArgs + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                 System.out.println("Квест персонажа " + character.getUserLogin() + " до изменений: " + character.getQuest());
                 System.out.println("Квест в изменениях: " + charactersChanges.getQuest());
                 character = CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
