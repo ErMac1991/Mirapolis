@@ -9,6 +9,9 @@ import java.util.List;
 
 public class FileManager {
 
+    static int questCounter;
+    static final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\QuestsCounter.txt");
+
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
         actionsQueueFile.createNewFile();
         System.out.println("Создан файл с очередью действий " + actionsQueueFile.getName());
@@ -132,6 +135,21 @@ public class FileManager {
                         "\"storage\":\"" + character.getStorage() + "\"," + // Проверить как записывается
                         "\"quest\":\"" + character.getQuest() + "\"}");
 
+
+    }
+
+    public static int getQuestID() throws IOException { // Возвращает свободный ID квеста и обновляет счётчик квестов
+
+        if (!Checks.isFileExist("Квесты", "Пул", questCounterFile.getName())){
+            System.out.println("Не найдет файл счётчика квестов!");
+            return -1;
+        }
+
+        questCounter = Integer.parseInt(Files.readString(Path.of(questCounterFile.getPath())));
+        //eraseLineFromFile(questCounterFile, 1, false);
+        Files.writeString(Path.of(questCounterFile.getPath()), String.valueOf(questCounter + 1));
+
+        return questCounter;
 
     }
 

@@ -1,9 +1,12 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
 public class QuestConstructor {
     String questType; // тип задания
     String questName; // название задания
+    int questID; // идентификатор квеста
     int questLevel; // уровень квеста
     String questDifficulty; // обозначение сложности
     String stageName; // название территории этапа
@@ -17,6 +20,8 @@ public class QuestConstructor {
     List<String> systemsOnStage; // системы охраны на этапе
     int difficultyRatio; // коэффициент сложности квеста
     int[] questValues;
+    int royalty; // Награда за выполнение задания
+    int deposit; // Взнос за взятие квеста
 
     Random randomNumber = new Random();
 
@@ -31,6 +36,12 @@ public class QuestConstructor {
     }
     public void setQuestName(String questName) {
         this.questName = questName;
+    }
+    public int getQuestID() {
+        return questID;
+    }
+    public void setQuestID(int questID) {
+        this.questID = questID;
     }
     public String getStageName() {
         return stageName;
@@ -104,12 +115,6 @@ public class QuestConstructor {
     public void setDifficultyRatio(int difficultyRatio) {
         this.difficultyRatio = difficultyRatio;
     }
-    public Random getRandomNumber() {
-        return randomNumber;
-    }
-    public void setRandomNumber(Random randomNumber) {
-        this.randomNumber = randomNumber;
-    }
     public int[] getQuestValues() {
         return questValues;
     }
@@ -117,16 +122,12 @@ public class QuestConstructor {
         this.questValues = questValues;
     }
 
-    public void questStructureGenerate(){
+    public void generateVacantQuest() throws IOException {
 
         questLevel = randomNumber.nextInt(9) + 1; // Получаем уровень квеста
         System.out.println("Уровень квеста: " + questLevel);
 
-        int stageSize;
-        String stageType;
-        int stagesInQuest;
-        int stageNumber;
-
+        setQuestID(FileManager.getQuestID());
         questValues = new int[4];
 
         // Относим квест к категории сложности
@@ -135,7 +136,9 @@ public class QuestConstructor {
             System.out.println("Уровень " + questLevel + " попадает в раздел: " + questDifficulty);
             setDifficultyRatio(-3);
             setStagesInQuest(randomNumber.nextInt(3) + 2);
-            for(int i = 1; i <= getStagesInQuest(); i++){
+            System.out.println("Количество этапов в квесте: " + stagesInQuest);
+
+            for(int i = 1; i <= getStagesInQuest(); i++){ // цикл по созданию этапов
                 stageGenerate();
                 System.out.println("Этап " + i + " сгенерирован");
             }
