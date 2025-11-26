@@ -7,6 +7,7 @@ public class Starter {
     ObjectMapper objectMapper = new ObjectMapper();
     CharacterHelper character = new CharacterHelper();
     CharacterHelper charactersChanges = new CharacterHelper();
+    QuestConstructor quest = new QuestConstructor();
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubjectFromArgs;

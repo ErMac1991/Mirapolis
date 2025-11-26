@@ -122,23 +122,25 @@ public class QuestConstructor {
         this.questValues = questValues;
     }
 
-    public void generateVacantQuest() throws IOException {
+    public void generateVacantQuest(QuestConstructor quest) throws IOException {
+        //todo Разбить метод на создание неактивного квеста и генерацию этапов
+        quest = null;
 
-        questLevel = randomNumber.nextInt(9) + 1; // Получаем уровень квеста
-        System.out.println("Уровень квеста: " + questLevel);
+        quest.setQuestLevel(randomNumber.nextInt(29) + 1); // Получаем уровень квеста
+        System.out.println("Уровень квеста: " + quest.getQuestLevel());
 
         setQuestID(FileManager.getQuestID());
         questValues = new int[4];
 
         // Относим квест к категории сложности
-        if ( questLevel >= 1 && questLevel <=3) {
-            setQuestDifficulty("Лёгкий");
-            System.out.println("Уровень " + questLevel + " попадает в раздел: " + questDifficulty);
-            setDifficultyRatio(-3);
-            setStagesInQuest(randomNumber.nextInt(3) + 2);
-            System.out.println("Количество этапов в квесте: " + stagesInQuest);
+        if ( quest.getQuestLevel() >= 1 && quest.getQuestLevel() <=3) {
+            quest.setQuestDifficulty("Лёгкий");
+            System.out.println("Уровень " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
+            quest.setDifficultyRatio(-3);
+            quest.setStagesInQuest(randomNumber.nextInt(3) + 2);
+            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
 
-            for(int i = 1; i <= getStagesInQuest(); i++){ // цикл по созданию этапов
+            for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
                 stageGenerate();
                 System.out.println("Этап " + i + " сгенерирован");
             }
@@ -146,21 +148,21 @@ public class QuestConstructor {
 
             questValues = Formulas.getQuestValues(difficultyRatio);
 
-        } else if ( questLevel >= 4 && questLevel <=6) {
-            System.out.println("Уровень " + questLevel + " попадает в раздел средних квестов");
+        } else if ( quest.getQuestLevel() >= 4 && quest.getQuestLevel() <=6) {
+            System.out.println("Уровень " + quest.getQuestLevel() + " попадает в раздел средних квестов");
             setDifficultyRatio(0);
 
-        } else if ( questLevel >= 7 && questLevel <=9) {
-            System.out.println("Уровень " + questLevel + " попадает в раздел тяжёлых квестов");
+        } else if ( quest.getQuestLevel() >= 7 && quest.getQuestLevel() <=9) {
+            System.out.println("Уровень " + quest.getQuestLevel() + " попадает в раздел тяжёлых квестов");
             setDifficultyRatio(3);
 
-        } else if ( questLevel ==10) {
-            System.out.println("Уровень " + questLevel + " попадает в раздел хардкорных квестов");
+        } else if ( quest.getQuestLevel() >=10) {
+            System.out.println("Уровень " + quest.getQuestLevel() + " попадает в раздел хардкорных квестов");
             setDifficultyRatio(5);
 
         }
             else {
-            System.out.println("Вы ввели число больше 10.");
+            System.out.println("В уровне квеста записано что то непонятное: " + quest.getQuestLevel());
         }
     }
 

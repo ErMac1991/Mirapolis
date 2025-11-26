@@ -103,6 +103,7 @@ public class FileManager {
     }
 
     public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
+        //todo перегрузить метод под входящий объект quest
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
                 "{\"userLogin\":\"" + character.getUserLogin() + "\"," +
                         "\"level\":" + character.getLevel() + "," +
