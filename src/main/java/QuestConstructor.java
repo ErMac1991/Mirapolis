@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -146,7 +145,7 @@ public class QuestConstructor {
             }
 
 
-            questValues = Formulas.getQuestValues(difficultyRatio);
+            Formulas.calculateQuestValues(quest, difficultyRatio);
 
         } else if ( quest.getQuestLevel() >= 4 && quest.getQuestLevel() <=6) {
             System.out.println("Уровень " + quest.getQuestLevel() + " попадает в раздел средних квестов");
