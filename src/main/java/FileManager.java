@@ -4,7 +4,6 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class FileManager {
@@ -29,7 +28,7 @@ public class FileManager {
         }
         System.out.println("Код первого символа в : " + reader.read());
 
-        if (reader.read()!=-1) {
+        if (reader.read() != -1) {
 
             writer.write("\n");
         }
@@ -70,7 +69,7 @@ public class FileManager {
         tempFile.renameTo(file); // переименовываем временный файл в исходное имя файла
         System.out.println("Путь актуального файла: " + file.getPath() + " а название: " + file.getName());
 
-        if (deleteEmptyFile == false){
+        if (deleteEmptyFile == false) {
             System.out.println("Файл не нужно удалять, даже если он пустой");
             return;
         }
@@ -81,7 +80,7 @@ public class FileManager {
 
         System.out.println(lines);
 
-        if (lines.isEmpty()){
+        if (lines.isEmpty()) {
             file.delete();
             System.out.println("Пустой файл " + file.getName() + " удалён");
         }
@@ -93,8 +92,7 @@ public class FileManager {
         try {
             Files.createDirectory(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
             Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
-        }
-        catch (FileAlreadyExistsException e) {
+        } catch (FileAlreadyExistsException e) {
             System.out.println("Создаваемый файл или папка уже существуют");
             e.printStackTrace();
         }
@@ -138,21 +136,37 @@ public class FileManager {
 
 
     }
+    public static void fillPojoToJsonFile(QuestConstructor quest) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ свободного квеста
+
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt"),
+                "{\"level\":" + quest.getQuestLevel() + "," +
+                        "\"questName\":\"" + quest.getQuestName() +  "\"," +
+                        "\"questTask\":\"" + quest.getQuestTask() +  "\"," +
+                        "\"isQuestOpenSpace\":\"" + quest.isQuestOpenSpace() +  "\"," +
+                        "\"questDifficulty\":\"" + quest.getQuestDifficulty() +  "\"," +
+                        "\"difficultyRatio\":" + quest.getDifficultyRatio() +  "," +
+                        "\"stagesInQuest\":" + quest.getStagesInQuest() +  "," +
+                        "\"questCreationDateTime\":\"" + quest.getQuestGenerationDateTime() +  "\"," +
+                        "\"deposit\":" + quest.getDeposit() +  "," +
+                        "\"royalty\":" + quest.getRoyalty() + "}");
+    }
 
     public static int getQuestID() throws IOException { // Возвращает свободный ID квеста и обновляет счётчик квестов
 
-        if (!Checks.isFileExist("Квесты", "Пул", questCounterFile.getName())){
+        if (!Checks.isFileExist("Квесты", "Пул", questCounterFile.getName())) {
             System.out.println("Не найдет файл счётчика квестов!");
             return -1;
         }
 
         questCounter = Integer.parseInt(Files.readString(Path.of(questCounterFile.getPath())));
+        System.out.println("Идентификатор текущего квеста: " + questCounter);
         //eraseLineFromFile(questCounterFile, 1, false);
         Files.writeString(Path.of(questCounterFile.getPath()), String.valueOf(questCounter + 1));
 
         return questCounter;
-
     }
+
+
 
 
 }
