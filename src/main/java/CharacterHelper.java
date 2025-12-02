@@ -10,7 +10,7 @@ import java.util.List;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterHelper extends Unit {
-
+    //todo внести переменные энергитический лимит и текущей энергии
     String userLogin; // логин игрока
     String head; // Голова. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     String body; // Туловище. Указывается "Плоть", если родное или восстановленное ИЛИ модель протеза
