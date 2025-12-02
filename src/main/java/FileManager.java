@@ -15,7 +15,6 @@ public class FileManager {
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
         actionsQueueFile.createNewFile();
         System.out.println("Создан файл с очередью действий " + actionsQueueFile.getName());
-
     }
 
     public static void fillActionsQueueFile(File actionsQueueFile, String command) throws IOException {

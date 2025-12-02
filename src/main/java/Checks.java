@@ -28,7 +28,6 @@ public class Checks {
             if (actionsQueueFile.exists()) {
                 System.out.println("Файл обновлений найден!");
 
-
                 return true;
 
             } else {

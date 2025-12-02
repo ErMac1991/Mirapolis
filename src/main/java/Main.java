@@ -14,7 +14,8 @@ public class Main {
 
         //Процессы создания персонажа и взятия им квеста через консоль
         Starter starter = new Starter();
-        starter.updateGameData(CommandHelper.commandShaperFromArgsToString(args));
+        starter.constructActionsQueue(starter.actionsQueueFile, CommandHelper.commandShaperFromArgsToString(args));
+        starter.updateGameData();
     }
 
 }

@@ -13,19 +13,7 @@ public class Starter {
     String typeOfSubjectFromArgs;
     String userLoginFromArgs;
 
-    public void updateGameData(String command) throws IOException {
-        //todo переписать метод без аргументов на входе
-
-
-        if (!Checks.isFileExist(actionsQueueFile.getName())) {
-            System.out.println("Файл с очередью действий не найден");
-            FileManager.createActionsQueueFile(actionsQueueFile);
-            FileManager.fillActionsQueueFile(actionsQueueFile, command);
-            System.out.println("Файл с очередью действий " + actionsQueueFile.getName() + " создан и заполнен");
-        }
-        else{
-            System.out.println("Файл с очередью действий найден");
-        }
+    public void updateGameData() throws IOException {
 
         if (!Checks.isSystemUpdated(actionsQueueFile)) {
             System.out.println("Обновления игровых файлов не найдены");
@@ -93,9 +81,21 @@ public class Starter {
         FileManager.eraseLineFromFile(actionsQueueFile, 1,true);// Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
         System.out.println("Из очереди удалено выполненное действие");
         if (Checks.isSystemUpdated(actionsQueueFile)){
-            updateGameData(command);
+            updateGameData();
         }
 
+    }
+
+    public void constructActionsQueue(File actionsQueueFile, String command) throws IOException {
+        if (!Checks.isFileExist(actionsQueueFile.getName())) {
+            System.out.println("Файл с очередью действий не найден");
+            FileManager.createActionsQueueFile(actionsQueueFile);
+            FileManager.fillActionsQueueFile(actionsQueueFile, command);
+            System.out.println("Файл с очередью действий " + actionsQueueFile.getName() + " создан и заполнен");
+        }
+        else{
+            System.out.println("Файл с очередью действий найден");
+        }
     }
 
 }
