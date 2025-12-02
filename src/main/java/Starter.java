@@ -13,18 +13,18 @@ public class Starter {
     String typeOfSubjectFromArgs;
     String userLoginFromArgs;
 
-    public void updateGameData(String[] args) throws IOException {
+    public void updateGameData(String command) throws IOException {
+        //todo переписать метод без аргументов на входе
 
-        if (args == null) {
-            System.out.println("На вход стартера не получены аргументы");
-            return;
-        }
 
         if (!Checks.isFileExist(actionsQueueFile.getName())) {
             System.out.println("Файл с очередью действий не найден");
             FileManager.createActionsQueueFile(actionsQueueFile);
-            FileManager.fillActionsQueueFile(actionsQueueFile, CommandHelper.commandShaperFromArgsToString(args));
+            FileManager.fillActionsQueueFile(actionsQueueFile, command);
             System.out.println("Файл с очередью действий " + actionsQueueFile.getName() + " создан и заполнен");
+        }
+        else{
+            System.out.println("Файл с очередью действий найден");
         }
 
         if (!Checks.isSystemUpdated(actionsQueueFile)) {
@@ -38,13 +38,14 @@ public class Starter {
 
             case "newCharacter":
                 System.out.println("Тип субъекта - Новый персонаж");
-                updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
+                //updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
                 userLoginFromArgs = updateData.split("\"")[7];
                 System.out.println("updateData = " + updateData);
                 CharacterHelper.createCharacter(userLoginFromArgs);
-                FileManager.eraseLineFromFile(actionsQueueFile, 1,true);// метод удаления верхней строки из файла очереди действий
-                System.out.println("Из очереди удалено действие создания нового персонажа");
-                Checks.isSystemUpdated(actionsQueueFile);
+
+                // Очистка переменных
+                updateData = null;
+                break;
 
 
             case "character":
@@ -67,23 +68,33 @@ public class Starter {
                 character = CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
                 System.out.println("Квест персонажа " + character.getUserLogin() + " после изменений: " + character.getQuest());
                 FileManager.fillPojoToJsonFile(character);// Перенос данных из Pojo персонажа в Json файл персонажа
-                FileManager.eraseLineFromFile(actionsQueueFile, 1, true);// Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
-                System.out.println("Удалено действие создания нового персонажа");
 
-                // Очищение переменных
+                // Очистка переменных
                 charactersChanges = null;
                 character = null;
                 updateData = null;
-                Checks.isSystemUpdated(actionsQueueFile);
+                break;
+
+            case "newVacantQuest":
+                System.out.println("Тип субъекта - Новый Квест");
+                QuestConstructor.generateVacantQuest(quest);
+                System.out.println("Новый вакантный квест создан");
+                break;
 
             default:
                 try {System.out.println("Тип изменяемого субъекта: " + updateData.split("\"")[1] + " не распознан!");}
                 catch (NullPointerException e){
                     System.out.println("Произошла попытка получить часть несуществующей команды: " + e.getMessage());
                 }
+                break;
 
         }
 
+        FileManager.eraseLineFromFile(actionsQueueFile, 1,true);// Метод, стирающий верхнюю строку изменений и удаляющий файл изменений в случае их отутствия
+        System.out.println("Из очереди удалено выполненное действие");
+        if (Checks.isSystemUpdated(actionsQueueFile)){
+            updateGameData(command);
+        }
 
     }
 

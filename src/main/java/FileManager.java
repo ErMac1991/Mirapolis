@@ -10,6 +10,7 @@ public class FileManager {
 
     static int questCounter;
     static final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\QuestsCounter.txt");
+    static String textToReplace;
 
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
         actionsQueueFile.createNewFile();
@@ -28,7 +29,7 @@ public class FileManager {
         }
         System.out.println("Код первого символа в : " + reader.read());
 
-        if (reader.read() != -1) {
+        if (reader.read() != -1) { // Если первая строка пуста (?)
 
             writer.write("\n");
         }
@@ -36,7 +37,7 @@ public class FileManager {
         writer.write(command);
         writer.close();
         reader.close();
-        System.out.println("Заполнен файл с очередью действий " + actionsQueueFile.getName());
+        System.out.println("Заполнен файл с очередью действий " + actionsQueueFile.getName() + " командой: " + command);
 
 
     }
@@ -50,40 +51,53 @@ public class FileManager {
     public static void eraseLineFromFile(File file, int lineNumber, boolean deleteEmptyFile) throws IOException { // удалить строку из файла
 
         List<String> lines = Files.readAllLines(Path.of(file.getPath()));
+        textToReplace = "";
         File tempFile = File.createTempFile("TempFile", ".txt", new File("F:\\Проекты\\Стримы\\Mirapolis\\"));
+
+        System.out.println("Всё, что считано с файла: " + lines);
+        System.out.println("Длина массива равна: " + lines.size());
 
         // Заполняем временный файл строками из исходного, за исключением удаляемой строки
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
+        //todo переписать реализацию удаления 1й строки в файле
         for (int i = 0; i < lines.size(); i++) {
             if (i != lineNumber - 1) {
-                writer.write(lines.get(i));
+                textToReplace += lines.get(i);
+                if (i != lines.size() - 1) {
+                    textToReplace += "\n";
+                }
             } else {
-                System.out.println("Строка " + lineNumber + " найдена и не включена во временный файл");
+                System.out.println("Строка " + lineNumber + " найдена и не включена в строковую переменную для записи во временный файл");
             }
         }
-        System.out.println("Временный файл заполнен");
+            writer.write(textToReplace);
 
-        writer.close();
-        file.delete(); // удалить исходный файл
-        tempFile.renameTo(file); // переименовываем временный файл в исходное имя файла
-        System.out.println("Путь актуального файла: " + file.getPath() + " а название: " + file.getName());
+            System.out.println("Временный файл заполнен значением: " + textToReplace );
 
-        if (deleteEmptyFile == false) {
-            System.out.println("Файл не нужно удалять, даже если он пустой");
-            return;
-        }
+            writer.close();
+            file.delete(); // удалить исходный файл
+            tempFile.renameTo(file); // переименовываем временный файл в исходное имя файла
+            System.out.println("Путь актуального файла: " + file.getPath() + " а название: " + file.getName());
 
-        System.out.println("Удалить пустой файл " + file.getName());
+            if (deleteEmptyFile == false) {
+                System.out.println("Файл не нужно удалять, даже если он пустой");
+                return;
+            }
 
-        lines = Files.readAllLines(Path.of(file.getPath()));
+            System.out.println("Если файл " + file.getName() + " пустой - удалить его");
 
-        System.out.println(lines);
+            lines = Files.readAllLines(Path.of(file.getPath()));
 
-        if (lines.isEmpty()) {
-            file.delete();
-            System.out.println("Пустой файл " + file.getName() + " удалён");
-        }
+            System.out.println(lines);
+
+            if (lines.isEmpty()) {
+                file.delete();
+                System.out.println("Пустой файл " + file.getName() + " удалён");
+                return;
+            }
+
+            System.out.println("Файл " + file.getName() + " не пустой и содержит: " + lines);
+
 
     }
 
@@ -143,6 +157,7 @@ public class FileManager {
                         "\"questName\":\"" + quest.getQuestName() +  "\"," +
                         "\"questTask\":\"" + quest.getQuestTask() +  "\"," +
                         "\"isQuestOpenSpace\":\"" + quest.isQuestOpenSpace() +  "\"," +
+                        "\"isQuestMultiPlayer\":\"" + quest.isQuestMultiPlayer() +  "\"," +
                         "\"questDifficulty\":\"" + quest.getQuestDifficulty() +  "\"," +
                         "\"difficultyRatio\":" + quest.getDifficultyRatio() +  "," +
                         "\"stagesInQuest\":" + quest.getStagesInQuest() +  "," +

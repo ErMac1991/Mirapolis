@@ -10,7 +10,11 @@ public class CommandHelper {
     public static String commandShaperFromArgsToString(String[] args){
         String command = ""; // команда полученная через аргументы
         // Проверяем, что есть хотя бы один аргумент и формируем общую команду
-        if (args.length > 0) {
+        if (!(args.length > 0)) {
+            System.out.println("Передана пустая команда (не найдены агрументы)");
+            return null;
+        }
+
             for (int i = 0; i < args.length; i++) {
                 System.out.println("Армумент " + i + " = " + args[i]);
 
@@ -21,15 +25,9 @@ public class CommandHelper {
                     command += args[i] + "\n";
                 }
             }
-
             System.out.println("Сформированная команда: " + command);
             return command;
 
-        }
-        else {
-            System.out.println("Передана пустая команда (не найдены агрументы)");
-            return null;
-        }
     }
 
     public static String getLineOfChangesFromFile(File actionsQueueFile) throws IOException {
@@ -50,8 +48,8 @@ public class CommandHelper {
             return e.getMessage();
         };
 
-            System.out.println("Считываем 1ю строку из файла: " + lineOfChanges);
-            System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + lineOfChanges);
+            System.out.println("Считываем 1ю строку из файла" + actionsQueueFile.getName() + ": " + lineOfChanges);
+
             reader.close();
             return lineOfChanges;
 

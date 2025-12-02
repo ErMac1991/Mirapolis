@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 public class QuestConstructor {
     String questTask; // Описание квестовой задачи
@@ -10,12 +9,11 @@ public class QuestConstructor {
     String questDifficulty; // обозначение сложности
     int stagesInQuest; // количество этапов в квесте
     boolean isQuestOpenSpace; // этап под открытым небом или в помещении
+    boolean isQuestMultiPlayer; // этап под открытым небом или в помещении
     int difficultyRatio; // коэффициент сложности квеста
     int royalty; // Награда за выполнение задания
     int deposit; // Взнос за взятие квеста
     LocalDateTime questGenerationDateTime; //
-
-    Random randomNumber = new Random();
 
     public String getQuestTask() {
         return questTask;
@@ -83,14 +81,20 @@ public class QuestConstructor {
     public void setQuestOpenSpace(boolean isQuestOpenSpace) {
         this.isQuestOpenSpace = isQuestOpenSpace;
     }
+    public boolean isQuestMultiPlayer() {
+        return isQuestMultiPlayer;
+    }
+    public void setQuestMultiPlayer(boolean questMultiPlayer) {
+        isQuestMultiPlayer = questMultiPlayer;
+    }
 
-    public void generateVacantQuest(QuestConstructor quest) throws IOException {
-        //todo Создать файл с перечнем наименований квестов, описаний заданий в квесте, условий их генерации
-        quest = null;
+    public static void generateVacantQuest(QuestConstructor quest) throws IOException {
 
-        quest.setQuestLevel(randomNumber.nextInt(29) + 1); // Получаем уровень квеста
+        //quest = null;
+
+        quest.setQuestLevel(Formulas.randomNumber.nextInt(30) + 1); // Получаем уровень квеста
         System.out.println("Уровень квеста: " + quest.getQuestLevel());
-        setQuestID(FileManager.getQuestID());
+        quest.setQuestID(FileManager.getQuestID());
 
         Formulas.calculateQuestValues(quest);
         quest.setQuestGenerationDateTime(LocalDateTime.now()); // время генерации квеста

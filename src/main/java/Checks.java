@@ -28,6 +28,7 @@ public class Checks {
             if (actionsQueueFile.exists()) {
                 System.out.println("Файл обновлений найден!");
 
+
                 return true;
 
             } else {
@@ -42,6 +43,12 @@ public class Checks {
                 break;
             }
         }
+        return false;
+    }
+
+    public static boolean isRightPercent(int percent){
+        if (percent >= 0 && percent <=100){return true;}
+        System.out.println("Ошибка во введённом значении процента: " + percent);
         return false;
     }
 
