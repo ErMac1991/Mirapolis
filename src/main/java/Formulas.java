@@ -10,6 +10,12 @@ public abstract class Formulas {
 
     public static void calculateQuestValues(QuestConstructor quest) {
 
+        //Оптимизация метода
+        QuestValuesVariants.getQuestValues(quest);
+        questPricesCalculate(quest);
+
+
+        /*
         if (quest.getQuestLevel() >= 1 && quest.getQuestLevel() <= 3) {
             quest.setQuestDifficulty("Для новичков"); // Относим квест к категории сложности
             System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
@@ -82,7 +88,7 @@ public abstract class Formulas {
             questPricesCalculate(quest);
         } else {
             System.out.println("В уровне квеста записано что то непонятное: " + quest.getQuestLevel());
-        }
+        }*/
 
         QuestTypes.chooseQuestType(quest);
 
@@ -116,3 +122,5 @@ public abstract class Formulas {
 
 
 }
+
+

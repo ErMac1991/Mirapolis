@@ -20,6 +20,7 @@ public class QuestConstructor {
     LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
     LocalDateTime questTakeDateTime; // Дата и время взятия квеста игроком
 
+    // ГЕТТЕРЫ И СЕТТЕРЫ
     public String getQuestTask() {
         return questTask;
     }
@@ -129,7 +130,7 @@ public class QuestConstructor {
         FileManager.fillPojoToJsonFile(quest);
     }
 
-    public void generateReceivedQuest(QuestConstructor quest, CharacterHelper character){ // Создаём содержание взятого квеста
+    public void generateReceivedQuest(QuestConstructor quest, CharacterHelper character) throws IOException { // Создаём содержание взятого квеста
 
 
 
@@ -139,6 +140,8 @@ public class QuestConstructor {
         }
 
         quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
+
+        FileManager.fillPojoToJsonFile(quest, character);
 
     }
 
