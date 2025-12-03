@@ -45,7 +45,7 @@ public class Starter {
                 character = CharacterHelper.chooseCharacter(userLoginFromArgs, objectMapper, character);// Переключение на изменяемого персонажа
 
                 charactersChanges = character;
-                charactersChanges = FileManager.parseCharacterStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
+                charactersChanges = FileManager.parseStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
                 if (!userLoginFromArgs.equals(charactersChanges.getUserLogin())) {
                     System.out.println("Логин игрока из файла: " + userLoginFromArgs + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                     return;

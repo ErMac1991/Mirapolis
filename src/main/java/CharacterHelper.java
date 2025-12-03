@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -365,7 +364,7 @@ public class CharacterHelper extends Unit {
         System.out.println("При выборе персонажа файл персонажа " + userLogin + " найден");
         System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt")));
-        character = FileManager.parseCharacterStringJsonToPojo(Files.readString(Paths.get(
+        character = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt")), objectMapper, character);
         System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
 

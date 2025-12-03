@@ -42,9 +42,14 @@ public class FileManager {
     }
 
 
-    public static CharacterHelper parseCharacterStringJsonToPojo(String stringToJson, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
-        character = objectMapper.readValue(stringToJson.getBytes(), CharacterHelper.class);
+    public static CharacterHelper parseStringJsonToPojo(String pathToJsonFile, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+        character = objectMapper.readValue(pathToJsonFile.getBytes(), CharacterHelper.class);
         return character;
+    }
+
+    public static QuestConstructor parseStringJsonToPojo(String pathToJsonFile, ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
+        quest = objectMapper.readValue(pathToJsonFile.getBytes(), QuestConstructor.class);
+        return quest;
     }
 
     public static void eraseLineFromFile(File file, int lineNumber, boolean deleteEmptyFile) throws IOException { // удалить строку из файла
@@ -152,7 +157,8 @@ public class FileManager {
     public static void fillPojoToJsonFile(QuestConstructor quest) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ свободного квеста
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt"),
-                "{\"level\":" + quest.getQuestLevel() + "," +
+                "{\"questID\":" + quest.getQuestID() +  "," +
+                        "\"level\":" + quest.getQuestLevel() + "," +
                         "\"questName\":\"" + quest.getQuestName() +  "\"," +
                         "\"questTask\":\"" + quest.getQuestTask() +  "\"," +
                         "\"isQuestOpenSpace\":\"" + quest.isQuestOpenSpace() +  "\"," +
@@ -162,6 +168,26 @@ public class FileManager {
                         "\"stagesInQuest\":" + quest.getStagesInQuest() +  "," +
                         "\"questCreationDateTime\":\"" + quest.getQuestGenerationDateTime() +  "\"," +
                         "\"deposit\":" + quest.getDeposit() +  "," +
+                        "\"royalty\":" + quest.getRoyalty() + "}");
+
+
+    }
+
+    public static void fillPojoToJsonFile(QuestConstructor quest, CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ взятого квеста
+
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\QuestData.txt"),
+                "{\"userLogin\":\"" + character.getUserLogin() + "\"," +
+                        "\"questID\":" + quest.getQuestID() +  "," +
+                        "\"questName\":\"" + quest.getQuestName() + "\"," +
+                        "\"questTask\":\"" + quest.getQuestTask() + "\"," +
+                        "\"isQuestOpenSpace\":\"" + quest.isQuestOpenSpace() + "\"," +
+                        "\"isQuestMultiPlayer\":\"" + quest.isQuestMultiPlayer() + "\"," +
+                        "\"questDifficulty\":\"" + quest.getQuestDifficulty() + "\"," +
+                        "\"difficultyRatio\":" + quest.getDifficultyRatio() + "," +
+                        "\"stagesInQuest\":" + quest.getStagesInQuest() + "," +
+                        "\"questCreationDateTime\":\"" + quest.getQuestGenerationDateTime() + "\"," +
+                        "\"questTakeDateTime\":\"" + quest.getQuestTakeDateTime() + "\"," +
+                        "\"deposit\":" + quest.getDeposit() + "," +
                         "\"royalty\":" + quest.getRoyalty() + "}");
     }
 
