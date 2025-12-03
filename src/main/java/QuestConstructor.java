@@ -102,7 +102,8 @@ public class QuestConstructor {
         FileManager.fillPojoToJsonFile(quest);
     }
 
-    public void generateReceivedQuest(QuestConstructor VacantQuest){ // Создаём содержание взятого квеста
+    public void generateReceivedQuest(QuestConstructor VacantQuest, CharacterHelper character){ // Создаём содержание взятого квеста
+
         for(int i = 1; i <= VacantQuest.getStagesInQuest(); i++){ // цикл по созданию этапов
             StageConstructor.generateStageOfQuest(VacantQuest);
             System.out.println("Этап " + i + " сгенерирован");
