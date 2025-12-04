@@ -29,11 +29,12 @@ public class CharacterHelper extends Unit {
     List<String> storageList = new ArrayList<>();
     String storage;
     String quest;
-    String key;
+
 
     public CharacterHelper() {
     }
 
+    // Констируктор для зоздания стартового персонажа
     public CharacterHelper(String userLogin) {
 
         this.userLogin = userLogin;
@@ -378,13 +379,7 @@ public class CharacterHelper extends Unit {
         return character;
     }
 
-    public void isStringValueMatched(String userLogin, ObjectMapper objectMapper, String key, String expectedResult) throws IOException {
-        String stringToJson = Files.readString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
 
-        this.key = key;
-        //parsedCharacterJson.getKey(); // как поставить на вход необходимый ключ для получения значения?
-        // Создать расширение класса ObjectMapper или посмотреть методы JSONtoPOJO()
-    }
 
 }
 

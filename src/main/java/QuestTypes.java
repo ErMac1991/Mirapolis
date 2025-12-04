@@ -10,13 +10,15 @@ public enum QuestTypes { // список видов квестов
             5,
             30,
             false,
+            true,
             true),
     CLEARAREA("Зачистка",
             "Очистить объект от охраны и отключить охранные системы",
             1,
             10,
             true,
-            true)
+            true,
+            false)
     /*CHASE("Погоня",
             "Уйти от преследования",
             8,
@@ -39,6 +41,7 @@ public enum QuestTypes { // список видов квестов
     int questMaxLevel; // Максимальный уровень квеста для взятия
     boolean canBeOpenSpace; // Возможно ли прохождение всего задания под открытым небом
     boolean canBeMultiPlayer; // Возможно ли совместное прохождение
+    boolean isKeyObject; // Генерируется ли ключевой объект
     static List<QuestTypes> filteredQuestTypes;
     static int index; // индекс случайного элемента листа
 
@@ -61,14 +64,18 @@ public enum QuestTypes { // список видов квестов
     public boolean isCanBeMultiPlayer() {
         return canBeMultiPlayer;
     }
+    public boolean isKeyObject() {
+        return isKeyObject;
+    }
 
-    QuestTypes(String questName, String questTask, int questMinLevel, int questMaxLevel, boolean canBeOpenSpace, boolean canBeMultiPlayer) {
+    QuestTypes(String questName, String questTask, int questMinLevel, int questMaxLevel, boolean canBeOpenSpace, boolean canBeMultiPlayer, boolean isKeyObject) {
         this.questName = questName;
         this.questTask = questTask;
         this.questMinLevel = questMinLevel;
         this.questMaxLevel = questMaxLevel;
         this.canBeOpenSpace = canBeOpenSpace;
         this.canBeMultiPlayer = canBeMultiPlayer;
+        this.isKeyObject = isKeyObject;
     }
 
     public static void chooseQuestType(QuestConstructor quest){ // выбирает подходящий тип для сгенерированного квеста

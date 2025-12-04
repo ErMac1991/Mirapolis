@@ -8,8 +8,8 @@ import java.util.List;
 
 public class FileManager {
 
-    static int questCounter;
-    static final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\QuestsCounter.txt");
+    static int idCounter;
+    static final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\QuestsCounter.txt");
     static String textToReplace;
 
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
@@ -191,19 +191,18 @@ public class FileManager {
                         "\"royalty\":" + quest.getRoyalty() + "}");
     }
 
-    public static int getQuestID() throws IOException { // Возвращает свободный ID квеста и обновляет счётчик квестов
+    public static int getID(File counterIDFile) throws IOException { // Возвращает свободный ID квеста и обновляет счётчик квестов
 
-        if (!Checks.isFileExist("Квесты", "Пул", questCounterFile.getName())) {
-            System.out.println("Не найдет файл счётчика квестов!");
+        if (!Checks.isFileExist("Системный файлы",  counterIDFile.getName())) {
+            System.out.println("Не найдет файл счётчика " + counterIDFile.getName());
             return -1;
         }
 
-        questCounter = Integer.parseInt(Files.readString(Path.of(questCounterFile.getPath())));
-        System.out.println("Идентификатор текущего квеста: " + questCounter);
-        //eraseLineFromFile(questCounterFile, 1, false);
-        Files.writeString(Path.of(questCounterFile.getPath()), String.valueOf(questCounter + 1));
+        idCounter = Integer.parseInt(Files.readString(Path.of(counterIDFile.getPath())));
+        System.out.println("Идентификатор " + counterIDFile.getName() + ": " + idCounter);
+        Files.writeString(Path.of(counterIDFile.getPath()), String.valueOf(idCounter + 1));
 
-        return questCounter;
+        return idCounter;
     }
 
 

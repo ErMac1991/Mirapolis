@@ -13,4 +13,5 @@ public abstract class Unit {
     String secondBagPlace; // Первое место в сумке
     String thirdBagPlace; // Первое место в сумке
     String fourthBagPlace; // Первое место в сумке
+
 }

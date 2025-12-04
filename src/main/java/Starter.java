@@ -8,6 +8,8 @@ public class Starter {
     CharacterHelper character = new CharacterHelper();
     CharacterHelper charactersChanges = new CharacterHelper();
     QuestConstructor quest = new QuestConstructor();
+    EnemyHumanCreator enemyHumanCreator = new EnemyHumanCreator();
+    EnemyMachine enemyMachine = new EnemyMachine();
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubjectFromArgs;

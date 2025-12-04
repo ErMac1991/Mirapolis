@@ -34,7 +34,7 @@ public enum QuestValuesVariants {
     public static void getQuestValues(QuestConstructor quest) { // выбирает подходящий тип для сгенерированного квеста
         QuestValuesVariants[] questValuesVariants= QuestValuesVariants.values();
         quest.setDifficultyRatio(quest.getQuestLevel()/3); // коэффициент сложности
-
+        System.out.println("Для квеста уровнем: " + quest.getQuestLevel() + " коэффициент сложности: " + quest.getDifficultyRatio());
         quest.setQuestDifficulty(questValuesVariants[quest.getDifficultyRatio()].getQuestDifficulty());// наименование сложности
         System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
         quest.setStagesInQuest(Formulas.randomNumber.nextInt( // количество этапов в квесте,

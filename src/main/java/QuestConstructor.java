@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,6 +20,7 @@ public class QuestConstructor {
     int deposit; // Взнос за взятие квеста
     LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
     LocalDateTime questTakeDateTime; // Дата и время взятия квеста игроком
+    final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\QuestsCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
     public String getQuestTask() {
@@ -100,6 +102,10 @@ public class QuestConstructor {
         this.questTakeDateTime = questTakeDateTime;
     }
 
+    public File getQuestCounterFile() {
+        return questCounterFile;
+    }
+
     public static QuestConstructor chooseCharacter(int questID, ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
         System.out.println(questID);
         if (!Checks.isFileExist("Квесты","Пул", questID + ".txt")) {
@@ -122,7 +128,7 @@ public class QuestConstructor {
 
         quest.setQuestLevel(Formulas.randomNumber.nextInt(30) + 1); // Получаем уровень квеста
         System.out.println("Уровень квеста: " + quest.getQuestLevel());
-        quest.setQuestID(FileManager.getQuestID());
+        quest.setQuestID(FileManager.getID(quest.getQuestCounterFile()));
 
         Formulas.calculateQuestValues(quest);
         quest.setQuestGenerationDateTime(LocalDateTime.now()); // время генерации квеста
@@ -132,16 +138,13 @@ public class QuestConstructor {
 
     public void generateReceivedQuest(QuestConstructor quest, CharacterHelper character) throws IOException { // Создаём содержание взятого квеста
 
-
+        quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
+        FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
 
         for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
             StageConstructor.generateStageOfQuest(quest);
             System.out.println("Этап " + i + " сгенерирован");
         }
-
-        quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
-
-        FileManager.fillPojoToJsonFile(quest, character);
 
     }
 

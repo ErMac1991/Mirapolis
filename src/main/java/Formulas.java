@@ -120,6 +120,11 @@ public abstract class Formulas {
         return false;
     }
 
+    public static void countLevelFromStats(){
+        //todo ридумать формулу получения уровня из статов
+
+    }
+
 
 }
 
