@@ -15,7 +15,9 @@ public class QuestConstructor {
     int stagesInQuest; // количество этапов в квесте
     boolean isQuestOpenSpace; // этап под открытым небом или в помещении
     boolean isQuestMultiPlayer; // этап под открытым небом или в помещении
+    boolean isKeyObject; // имеется ли ключевой объект
     int difficultyRatio; // коэффициент сложности квеста
+    int enemyPoints; // очки противников на квест
     int royalty; // Награда за выполнение задания
     int deposit; // Взнос за взятие квеста
     LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
@@ -101,9 +103,20 @@ public class QuestConstructor {
     public void setQuestTakeDateTime(LocalDateTime questTakeDateTime) {
         this.questTakeDateTime = questTakeDateTime;
     }
-
     public File getQuestCounterFile() {
         return questCounterFile;
+    }
+    public int getEnemyPoints() {
+        return enemyPoints;
+    }
+    public void setEnemyPoints(int enemyPoints) {
+        this.enemyPoints = enemyPoints;
+    }
+    public boolean isKeyObject() {
+        return isKeyObject;
+    }
+    public void setKeyObject(boolean keyObject) {
+        isKeyObject = keyObject;
     }
 
     public static QuestConstructor chooseCharacter(int questID, ObjectMapper objectMapper, QuestConstructor quest) throws IOException {

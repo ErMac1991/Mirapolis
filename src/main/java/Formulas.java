@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 public abstract class Formulas {
 
     static Random randomNumber = new Random();
+    static int enemyPoints;
 
     public static void calculateQuestValues(QuestConstructor quest) {
 
@@ -126,12 +127,25 @@ public abstract class Formulas {
                             character.getEndurance()+character.getEnduranceMod() +
                             character.getStrength()+character.getStrengthMod() +
                             character.getReaction()+character.getReactionMod()) / 4);
+    }
 
 
+    public static void countNumberOfEnemies(QuestConstructor quest){ // вычисляем количество очков противников для квеста
+
+        quest.setEnemyPoints(quest.getQuestLevel()*150 +
+                quest.getDifficultyRatio()*(100 + randomNumber.nextInt(51)) +
+                quest.getStagesInQuest()*50);
 
     }
-        //todo придумать формулу получения числа соперников из уровня квеста
 
+    //todo придумать формулу получения числа соперников на этапе
+    public static void countNumberOfEnemies(QuestConstructor quest, StageConstructor stage){ // вычисляем количество очков противников для квеста
+
+        // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и уссловия является ли этап ключевым
+        stage.setEnemyPoints(0);
+
+    }
+    //todo придумать формулу вычисляющую ключевой этап квеста
 }
 
 

@@ -5,7 +5,9 @@ public class StageConstructor {
     int stageSize; // размер этапа
     String stageType; // тип этапа: спокойный, экшн, засада и т.д.
     int stageNumber; // порядковый номер текущего этапа
-    boolean stageIsOpenSpace; // этап под открытым небом или в помещении
+    boolean isStageOpenSpace; // этап под открытым небом или в помещении
+    boolean isKeyStage; // содержит ли этап ключевой интерактивный объект
+    int enemyPoints; // очки противников на этапе
     List<String> objectsOnStage; // объекты на этапе
     int stageObjectsPoints;
     List<String> enemiesOnStage; // противники на этапе
@@ -37,11 +39,11 @@ public class StageConstructor {
     public void setStageNumber(int stageNumber) {
         this.stageNumber = stageNumber;
     }
-    public boolean isStageIsOpenSpace() {
-        return stageIsOpenSpace;
+    public boolean isStageOpenSpace() {
+        return isStageOpenSpace;
     }
-    public void setStageIsOpenSpace(boolean stageIsOpenSpace) {
-        this.stageIsOpenSpace = stageIsOpenSpace;
+    public void setStageOpenSpace(boolean stageOpenSpace) {
+        this.isStageOpenSpace = stageOpenSpace;
     }
     public List<String> getObjectsOnStage() {
         return objectsOnStage;
@@ -78,6 +80,18 @@ public class StageConstructor {
     }
     public void setStageSystemsPoints(int stageSystemsPoints) {
         this.stageSystemsPoints = stageSystemsPoints;
+    }
+    public int getEnemyPoints() {
+        return enemyPoints;
+    }
+    public void setEnemyPoints(int enemyPoints) {
+        this.enemyPoints = enemyPoints;
+    }
+    public boolean isKeyStage() {
+        return isKeyStage;
+    }
+    public void setKeyStage(boolean keyStage) {
+        isKeyStage = keyStage;
     }
 
     public static void generateStageOfQuest(QuestConstructor quest){
