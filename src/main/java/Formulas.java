@@ -120,11 +120,17 @@ public abstract class Formulas {
         return false;
     }
 
-    public static void countLevelFromStats(){
-        //todo ридумать формулу получения уровня из статов
+    public static void countLevelFromStats(CharacterHelper character){
+        //todo адаптировать формулу получения уровня из статов под класс персонажа
+        character.setLevel((character.getAttentiveness()+character.getAttentivenessMod() +
+                            character.getEndurance()+character.getEnduranceMod() +
+                            character.getStrength()+character.getStrengthMod() +
+                            character.getReaction()+character.getReactionMod()) / 4);
+
+
 
     }
-
+        //todo придумать формулу получения числа соперников из уровня квеста
 
 }
 

@@ -379,6 +379,7 @@ public class CharacterHelper extends Unit {
         return character;
     }
 
+    //todo метод присвоения класса персонажу в зависимости от отношения лидирующего стата (или пары статов) к остальным статам
 
 
 }
