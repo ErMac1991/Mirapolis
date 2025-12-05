@@ -1,15 +1,12 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public abstract class Formulas {
 
     static Random randomNumber = new Random();
-    static int enemyPoints;
 
-    public static void calculateQuestValues(QuestConstructor quest) {
+
+
+    public static void calculateQuestParameters(QuestConstructor quest) {
 
         //Оптимизация метода
         QuestValuesVariants.getQuestValues(quest);
@@ -139,12 +136,25 @@ public abstract class Formulas {
     }
 
     //todo придумать формулу получения числа соперников на этапе
-    public static void countNumberOfEnemies(QuestConstructor quest, StageConstructor stage){ // вычисляем количество очков противников для квеста
+    public static void countStageEnemiesPoints (QuestConstructor quest, StageConstructor stage){ // вычисляем количество очков противников для квеста
 
-        // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и уссловия является ли этап ключевым
-        stage.setEnemyPoints(0);
+        // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и условия является ли этап ключевым
+        stage.setStageEnemiesPoints(0);
 
     }
+
+    public static void distributeEnemiesPoints (QuestConstructor quest){ // вычисляем количество очков противников для квеста
+// Сначала создать файлы всех этапов квеста, содержащие размер этапа, порядковый номера этапа, и условие является ли этап ключевым
+        int[] enemiesPoints = new int[quest.getStagesInQuest()];
+
+        
+
+
+
+
+    }
+
+
     //todo придумать формулу вычисляющую ключевой этап квеста
 }
 

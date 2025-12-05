@@ -119,7 +119,8 @@ public class FileManager {
     }
 
     public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
-        //todo перегрузить метод под входящий объект quest
+
+
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
                 "{\"userLogin\":\"" + character.getUserLogin() + "\"," +
                         "\"level\":" + character.getLevel() + "," +
@@ -154,6 +155,7 @@ public class FileManager {
 
 
     }
+
     public static void fillPojoToJsonFile(QuestConstructor quest) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ свободного квеста
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt"),
@@ -191,9 +193,21 @@ public class FileManager {
                         "\"royalty\":" + quest.getRoyalty() + "}");
     }
 
+    public static void fillPojoToJsonFile(QuestConstructor quest, CharacterHelper character, StageConstructor stage) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ взятого квеста
+
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + ".txt"),
+                "{\"stageName\":\"" + stage.getStageName() + "\"," +
+                        "\"stageSize\":" + stage.getStageSize() +  "," +
+                        "\"stageNumber\":" + stage.getStageNumber() +  "," +
+                        "\"stageType\":\"" + stage.getStageType() + "\"," +
+                        "\"isStageOpenSpace\":" + stage.isStageOpenSpace() + "," +
+                        "\"isKeyStage\":" + stage.isKeyStage() + "}");
+
+    }
+
     public static int getID(File counterIDFile) throws IOException { // Возвращает свободный ID квеста и обновляет счётчик квестов
 
-        if (!Checks.isFileExist("Системный файлы",  counterIDFile.getName())) {
+        if (!Checks.isFileExist("Системный файлы\\" +  counterIDFile.getName())) {
             System.out.println("Не найдет файл счётчика " + counterIDFile.getName());
             return -1;
         }
