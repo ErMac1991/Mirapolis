@@ -7,6 +7,7 @@ public class StageConstructor {
     int stageNumber; // порядковый номер текущего этапа
     boolean isStageOpenSpace; // этап под открытым небом или в помещении
     boolean isKeyStage; // содержит ли этап ключевой интерактивный объект
+    int keyStageNumber; // Порядковый номер этапа с ключевым объектом
     int enemyPoints; // очки противников на этапе
     List<String> objectsOnStage; // объекты на этапе
     int stageObjectsPoints;
@@ -92,6 +93,12 @@ public class StageConstructor {
     }
     public void setKeyStage(boolean keyStage) {
         isKeyStage = keyStage;
+    }
+    public int getKeyStageNumber() {
+        return keyStageNumber;
+    }
+    public void setKeyStageNumber(int keyStageNumber) {
+        this.keyStageNumber = keyStageNumber;
     }
 
     public static void generateStageOfQuest(QuestConstructor quest){

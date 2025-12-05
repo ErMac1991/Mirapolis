@@ -12,7 +12,7 @@ public abstract class Formulas {
     public static void calculateQuestValues(QuestConstructor quest) {
 
         //Оптимизация метода
-        QuestValuesVariants.getQuestValues(quest);
+        Formulas.getQuestValues(quest);
         questPricesCalculate(quest);
 
 
@@ -145,7 +145,27 @@ public abstract class Formulas {
         stage.setEnemyPoints(0);
 
     }
-    //todo придумать формулу вычисляющую ключевой этап квеста
+
+    public static void getNumberOfKeyStage(QuestConstructor quest, StageConstructor stage){
+
+        stage.setKeyStageNumber(randomNumber.nextInt(quest.getStagesInQuest() - quest.getQuestVariant().getKeyStageNumber() + 1) + quest.getQuestVariant().getKeyStageNumber());
+
+
+    }
+    public static void getQuestValues(QuestConstructor quest) { // выбирает подходящий тип для сгенерированного квеста
+        QuestValuesVariants[] questValuesVariants= QuestValuesVariants.values();
+        quest.setDifficultyRatio(quest.getQuestLevel()/3); // коэффициент сложности
+        quest.setQuestVariant(questValuesVariants[quest.getDifficultyRatio()]);
+        System.out.println("Для квеста шаблона: " + quest.getQuestVariant() + " уровнем: " + quest.getQuestLevel() + " коэффициент сложности: " + quest.getDifficultyRatio());
+        quest.setQuestDifficulty(quest.getQuestVariant().getQuestDifficulty());// наименование сложности
+        System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
+        quest.setStagesInQuest(Formulas.randomNumber.nextInt( // количество этапов в квесте,
+                quest.getQuestVariant().getRandomValue()) +
+                quest.getQuestVariant().getConstantValue());
+        System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
+    }
+
+
 }
 
 
