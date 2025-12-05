@@ -11,7 +11,6 @@ public class QuestConstructor {
     String questName; // название задания
     int questID; // идентификатор квеста
     int questLevel; // уровень квеста
-    QuestValuesVariants questVariant; // Шаблон квеста из списка enum
     String questDifficulty; // обозначение сложности
     int stagesInQuest; // количество этапов в квесте
     boolean isQuestOpenSpace; // этап под открытым небом или в помещении
@@ -118,12 +117,6 @@ public class QuestConstructor {
     }
     public void setKeyObject(boolean keyObject) {
         isKeyObject = keyObject;
-    }
-    public QuestValuesVariants getQuestVariant() {
-        return questVariant;
-    }
-    public void setQuestVariant(QuestValuesVariants questVariant) {
-        this.questVariant = questVariant;
     }
 
 
