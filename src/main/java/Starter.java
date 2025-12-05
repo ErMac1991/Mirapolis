@@ -42,9 +42,9 @@ public class Starter {
                 System.out.println("Тип субъекта - Существующий персонаж");
                 updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
                 System.out.println("updateData = " + updateData);
-                userLoginFromArgs = updateData.split("\"")[7];
-                System.out.println("userNameFromArgs = " + userLoginFromArgs);
-                character = CharacterHelper.chooseCharacter(userLoginFromArgs, objectMapper, character);// Переключение на изменяемого персонажа
+                character.setUserLogin(updateData.split("\"")[7]);
+                System.out.println("userNameFromArgs = " + character.getUserLogin());
+                character = CharacterHelper.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
 
                 charactersChanges = character;
                 charactersChanges = FileManager.parseStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений

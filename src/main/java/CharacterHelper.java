@@ -343,7 +343,7 @@ public class CharacterHelper extends Unit {
 
         CharacterHelper newCharacter = new CharacterHelper(userLogin);
 
-        if (Checks.isFileExist("Персонажи", newCharacter.userLogin, "Персонаж.txt")) {
+        if (Checks.isFileExist("Персонажи\\" + newCharacter.userLogin + "\\Персонаж.txt")) {
             System.out.println("Персонаж с логином " + newCharacter.userLogin + " уже существует.");
             return;
         }
@@ -356,18 +356,18 @@ public class CharacterHelper extends Unit {
 
 
 
-    public static CharacterHelper chooseCharacter(String userLogin, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
-        System.out.println(userLogin);
-        if (!Checks.isFileExist("Персонажи", userLogin, "Персонаж.txt")) {
-            System.out.println("При выборе персонажа файл персонажа " + userLogin + " не найден");
+    public static CharacterHelper chooseCharacter(ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+        System.out.println(character.getUserLogin());
+        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")) {
+            System.out.println("При выборе персонажа файл персонажа " + character.getUserLogin() + " не найден");
             return null;
         }
-        System.out.println("При выборе персонажа файл персонажа " + userLogin + " найден");
+        System.out.println("При выборе персонажа файл персонажа " + character.getUserLogin() + " найден");
         System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt")));
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")));
         character = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt")), objectMapper, character);
-        System.out.println("Выбран персонаж " + character.userLogin + ". Его квест:  " + character.quest);
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")), objectMapper, character);
+        System.out.println("Выбран персонаж " + character.getUserLogin() + ". Его квест:  " + character.quest);
 
         return character;
     }
