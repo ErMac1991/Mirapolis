@@ -16,6 +16,7 @@ public class QuestConstructor {
     boolean isQuestOpenSpace; // этап под открытым небом или в помещении
     boolean isQuestMultiPlayer; // этап под открытым небом или в помещении
     boolean isKeyObject; // имеется ли ключевой объект
+    int keyStageNumber; // Порядковый номер ключевого этапа
     int difficultyRatio; // коэффициент сложности квеста
     int enemyPoints; // очки противников на квест
     int royalty; // Награда за выполнение задания
@@ -109,8 +110,7 @@ public class QuestConstructor {
     public int getEnemyPoints() {
         return enemyPoints;
     }
-    public void setEnemyPoints(int enemyPoints) {
-        this.enemyPoints = enemyPoints;
+    public void setEnemyPoints(int enemyPoints) {        this.enemyPoints = enemyPoints;
     }
     public boolean isKeyObject() {
         return isKeyObject;
@@ -118,11 +118,16 @@ public class QuestConstructor {
     public void setKeyObject(boolean keyObject) {
         isKeyObject = keyObject;
     }
-
+    public int getKeyStageNumber() {
+        return keyStageNumber;
+    }
+    public void setKeyStageNumber(int keyStageNumber) {
+        this.keyStageNumber = keyStageNumber;
+    }
 
     public static QuestConstructor chooseQuest(ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
         System.out.println(quest.getQuestID());
-        if (!Checks.isFileExist("Квесты","Пул", quest.getQuestID() + ".txt")) {
+        if (!Checks.isFileExist("Квесты\\Пул\\" + quest.getQuestID() + ".txt")) {
             System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
             return null;
         }
@@ -138,7 +143,7 @@ public class QuestConstructor {
 
     public static QuestConstructor chooseQuest(ObjectMapper objectMapper, CharacterHelper character, QuestConstructor quest) throws IOException {
         System.out.println(quest.getQuestID());
-        if (!Checks.isFileExist("Персонажи", character.getUserLogin(), "Квесты", quest.getQuestID() + "QuestData.txt")) {
+        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\QuestData.txt")) {
             System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
             return null;
         }

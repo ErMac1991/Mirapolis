@@ -13,7 +13,7 @@ public class StageConstructor {
     int stageNumber; // порядковый номер текущего этапа
     boolean isStageOpenSpace; // этап под открытым небом или в помещении
     boolean isKeyStage; // содержит ли этап ключевой интерактивный объект
-    int enemyPoints; // очки противников на этапе
+
     List<String> objectsOnStage; // объекты на этапе
     int stageObjectsPoints;
     List<String> enemiesOnStage; // противники на этапе
@@ -95,38 +95,24 @@ public class StageConstructor {
         isKeyStage = keyStage;
     }
 
-    public static StageConstructor chooseStage( ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
-        System.out.println(questID);
-        if (!Checks.isFileExist("Квесты","Пул", questID + ".txt")) {
-            System.out.println("При выборе вакантного квеста файл квеста " + questID + ".txt не найден");
-            return null;
+    public static void chooseStage(ObjectMapper objectMapper, CharacterHelper character, QuestConstructor quest, StageConstructor stage) throws IOException {
+        System.out.println(quest.getQuestID());
+        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")) {
+            System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
+            return;
         }
-        System.out.println("При выборе вакантного квеста файл квеста " + questID + ".txt найден");
+        System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста:  StageData.txt найден");
         System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + questID + ".txt")));
-        quest = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + questID + ".txt")), objectMapper, quest);
-        System.out.println("Выбран вакантный квест " + quest.questID);
-
-        return quest;
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")));
+        stage = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")),
+                objectMapper, stage);
+        System.out.println("Выбран этап " + stage.getStageNumber() + " квеста " + quest.getQuestID());
     }
 
     public static void generateStageOfQuest(QuestConstructor quest, CharacterHelper character, StageConstructor stage, int i) throws IOException {
 
         // todo создать enum этапов
-
-        String stageName; // название территории этапа
-        int stageSize; // размер этапа
-        String stageType; // тип этапа: спокойный, экшн, засада и т.д.
-        int stageNumber; // порядковый номер текущего этапа
-        boolean isStageOpenSpace; // этап под открытым небом или в помещении
-        boolean isKeyStage; // содержит ли этап ключевой интерактивный объект
-        List<String> objectsOnStage; // объекты на этапе
-        int stageObjectsPoints;
-        List<String> enemiesOnStage; // противники на этапе
-        int stageEnemiesPoints;
-        List<String> systemsOnStage; // системы охраны на этапе
-        int stageSystemsPoints;
 
         // удалить после написания метода расчёта параметров этапа
         stage.setStageName("TestStageName");

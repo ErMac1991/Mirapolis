@@ -8,89 +8,26 @@ public abstract class Formulas {
 
     public static void calculateQuestParameters(QuestConstructor quest) {
 
-        //Оптимизация метода
-        QuestValuesVariants.getQuestValues(quest);
+        Formulas.getQuestValues(quest);
         questPricesCalculate(quest);
-
-
-        /*
-        if (quest.getQuestLevel() >= 1 && quest.getQuestLevel() <= 3) {
-            quest.setQuestDifficulty("Для новичков"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(0); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(2) + 2);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 4 && quest.getQuestLevel() <= 6) {
-            quest.setQuestDifficulty("Лёгкий"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(1); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(3) + 2);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 7 && quest.getQuestLevel() <= 9) {
-            quest.setQuestDifficulty("Лёгкий"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(2); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(4) + 2);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 10 && quest.getQuestLevel() <= 12) {
-            quest.setQuestDifficulty("Умеренный"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(3); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(4) + 3);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 13 && quest.getQuestLevel() <= 15) {
-            quest.setQuestDifficulty("Умеренный"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(4); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(5) + 3);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 16 && quest.getQuestLevel() <= 18) {
-            quest.setQuestDifficulty("Сложный"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(5); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(4) + 4);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 19 && quest.getQuestLevel() <= 21) {
-            quest.setQuestDifficulty("Сложный"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(6); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(4) + 4);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 22 && quest.getQuestLevel() <= 24) {
-            quest.setQuestDifficulty("Тяжёлый"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(7); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(3) + 5);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 25 && quest.getQuestLevel() <= 27) {
-            quest.setQuestDifficulty("Тяжёлый"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(8); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(3) + 6);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else if (quest.getQuestLevel() >= 28 && quest.getQuestLevel() <= 30) {
-            quest.setQuestDifficulty("Хардкорный"); // Относим квест к категории сложности
-            System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
-            quest.setDifficultyRatio(9); // коэффициент сложности
-            quest.setStagesInQuest(randomNumber.nextInt(2) + 7);  // количество этапов в квесте,
-            System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-            questPricesCalculate(quest);
-        } else {
-            System.out.println("В уровне квеста записано что то непонятное: " + quest.getQuestLevel());
-        }*/
 
         QuestTypes.chooseQuestType(quest);
 
 
+    }
+    public static void getQuestValues(QuestConstructor quest) { // выбирает подходящий тип для сгенерированного квеста
+        QuestValuesVariants[] questValuesVariants= QuestValuesVariants.values();
+        quest.setDifficultyRatio(quest.getQuestLevel()/3); // коэффициент сложности
+        System.out.println("Для квеста уровнем: " + quest.getQuestLevel() + " коэффициент сложности: " + quest.getDifficultyRatio());
+        quest.setQuestDifficulty(questValuesVariants[quest.getDifficultyRatio()].getQuestDifficulty());// наименование сложности
+        System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
+        quest.setStagesInQuest(Formulas.randomNumber.nextInt( // количество этапов в квесте,
+                questValuesVariants[quest.getDifficultyRatio()].getRandomValue()) +
+                questValuesVariants[quest.getDifficultyRatio()].getConstantValue());
+        System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
+        quest.setKeyStageNumber(Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
+                quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
+                questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage());
     }
 
     public static void questPricesCalculate(QuestConstructor quest) {
@@ -146,16 +83,14 @@ public abstract class Formulas {
     public static void distributeEnemiesPoints (QuestConstructor quest){ // вычисляем количество очков противников для квеста
 // Сначала создать файлы всех этапов квеста, содержащие размер этапа, порядковый номера этапа, и условие является ли этап ключевым
         int[] enemiesPoints = new int[quest.getStagesInQuest()];
-
-        
-
-
-
-
     }
 
 
     //todo придумать формулу вычисляющую ключевой этап квеста
+    public void countKeyStage(QuestConstructor quest){
+
+
+    }
 }
 
 

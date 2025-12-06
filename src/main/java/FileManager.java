@@ -52,6 +52,11 @@ public class FileManager {
         return quest;
     }
 
+    public static StageConstructor parseStringJsonToPojo(String pathToJsonFile, ObjectMapper objectMapper, StageConstructor stage) throws IOException {
+        stage = objectMapper.readValue(pathToJsonFile.getBytes(), StageConstructor.class);
+        return stage;
+    }
+
     public static void eraseLineFromFile(File file, int lineNumber, boolean deleteEmptyFile) throws IOException { // удалить строку из файла
 
         List<String> lines = Files.readAllLines(Path.of(file.getPath()));
@@ -178,8 +183,7 @@ public class FileManager {
     public static void fillPojoToJsonFile(QuestConstructor quest, CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ взятого квеста
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\QuestData.txt"),
-                "{\"userLogin\":\"" + character.getUserLogin() + "\"," +
-                        "\"questID\":" + quest.getQuestID() +  "," +
+                "{\"questID\":" + quest.getQuestID() +  "," +
                         "\"questName\":\"" + quest.getQuestName() + "\"," +
                         "\"questTask\":\"" + quest.getQuestTask() + "\"," +
                         "\"isQuestOpenSpace\":\"" + quest.isQuestOpenSpace() + "\"," +
@@ -187,10 +191,12 @@ public class FileManager {
                         "\"questDifficulty\":\"" + quest.getQuestDifficulty() + "\"," +
                         "\"difficultyRatio\":" + quest.getDifficultyRatio() + "," +
                         "\"stagesInQuest\":" + quest.getStagesInQuest() + "," +
+                        "\"keyStageNumber\":" + quest.getKeyStageNumber() + "," +
                         "\"questCreationDateTime\":\"" + quest.getQuestGenerationDateTime() + "\"," +
                         "\"questTakeDateTime\":\"" + quest.getQuestTakeDateTime() + "\"," +
                         "\"deposit\":" + quest.getDeposit() + "," +
                         "\"royalty\":" + quest.getRoyalty() + "}");
+
     }
 
     public static void fillPojoToJsonFile(QuestConstructor quest, CharacterHelper character, StageConstructor stage) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ взятого квеста
