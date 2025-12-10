@@ -42,7 +42,7 @@ public enum QuestTypes { // список видов квестов
     boolean canBeOpenSpace; // Возможно ли прохождение всего задания под открытым небом
     boolean canBeMultiPlayer; // Возможно ли совместное прохождение
     boolean isKeyObject; // Генерируется ли ключевой объект
-    static List<QuestTypes> filteredQuestTypes;
+
     static int index; // индекс случайного элемента листа
 
 
@@ -80,7 +80,7 @@ public enum QuestTypes { // список видов квестов
 
     public static void chooseQuestType(QuestConstructor quest){ // выбирает подходящий тип для сгенерированного квеста
 
-        filteredQuestTypes = Arrays.stream(QuestTypes.values())
+        List<QuestTypes> filteredQuestTypes = Arrays.stream(QuestTypes.values())
                 .filter(QuestTypes -> QuestTypes.getQuestMinLevel() <= quest.getQuestLevel()) // фильтрует типы квеста, подходящие по уровню
                 .filter(QuestTypes -> QuestTypes.getQuestMaxLevel() >= quest.getQuestLevel())
                 .collect(Collectors.toList()); // Собираем в список

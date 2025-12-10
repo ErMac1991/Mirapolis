@@ -169,7 +169,7 @@ public class QuestConstructor {
         FileManager.fillPojoToJsonFile(quest);
     }
 
-    public void generateReceivedQuest(QuestConstructor quest, CharacterHelper character, StageConstructor stage) throws IOException { // Создаём содержание взятого квеста
+    public static void generateReceivedQuest(QuestConstructor quest, CharacterHelper character, StageConstructor stage) throws IOException { // Создаём содержание взятого квеста
 
         quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста

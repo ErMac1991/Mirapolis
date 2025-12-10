@@ -8,7 +8,8 @@ public class Starter {
     CharacterHelper character = new CharacterHelper();
     CharacterHelper charactersChanges = new CharacterHelper();
     QuestConstructor quest = new QuestConstructor();
-    EnemyHumanCreator enemyHumanCreator = new EnemyHumanCreator();
+    StageConstructor stage = new StageConstructor();
+    EnemyHumanCreator enemyHuman = new EnemyHumanCreator();
     EnemyMachine enemyMachine = new EnemyMachine();
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
@@ -68,6 +69,12 @@ public class Starter {
             case "newVacantQuest":
                 System.out.println("Тип субъекта - Новый Квест");
                 QuestConstructor.generateVacantQuest(quest);
+                System.out.println("Новый вакантный квест создан");
+                break;
+
+            case "newReceivedQuest":
+                System.out.println("Тип субъекта - Новый Полученный Квест");
+                QuestConstructor.generateReceivedQuest(quest, character, stage);
                 System.out.println("Новый вакантный квест создан");
                 break;
 

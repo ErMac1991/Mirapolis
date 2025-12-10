@@ -4,8 +4,6 @@ public abstract class Formulas {
 
     static Random randomNumber = new Random();
 
-
-
     public static void calculateQuestParameters(QuestConstructor quest) {
 
         Formulas.getQuestValues(quest);
@@ -15,6 +13,7 @@ public abstract class Formulas {
 
 
     }
+
     public static void getQuestValues(QuestConstructor quest) { // выбирает подходящий тип для сгенерированного квеста
         QuestValuesVariants[] questValuesVariants= QuestValuesVariants.values();
         quest.setDifficultyRatio(quest.getQuestLevel()/3); // коэффициент сложности
@@ -61,6 +60,10 @@ public abstract class Formulas {
                             character.getEndurance()+character.getEnduranceMod() +
                             character.getStrength()+character.getStrengthMod() +
                             character.getReaction()+character.getReactionMod()) / 4);
+    }
+
+    public static void calculateStageParameters(QuestConstructor quest, StageConstructor stage){
+
     }
 
 

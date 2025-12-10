@@ -87,7 +87,6 @@ public class StageConstructor {
     public void setStageSystemsPoints(int stageSystemsPoints) {
         this.stageSystemsPoints = stageSystemsPoints;
     }
-
     public boolean isKeyStage() {
         return isKeyStage;
     }
@@ -117,12 +116,12 @@ public class StageConstructor {
         // удалить после написания метода расчёта параметров этапа
         stage.setStageName("TestStageName");
         stage.setStageSize(4);
-        stage.setStageNumber(i);
-        stage.setStageType("TestStageType");
-        stage.setStageOpenSpace(false);
-        System.out.println("Уровень квеста: " + quest.getQuestLevel());
+        stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
+        stage.setStageOpenSpace(false); // вычислять из процентового рандома, с опорой на параметры квеста
+
 
         // не удалять
+        stage.setStageNumber(i);
         stage.setKeyStage(false);
         stage.setObjectsOnStage(null);
         stage.setStageObjectsPoints(0);
@@ -132,7 +131,7 @@ public class StageConstructor {
         stage.setStageSystemsPoints(0);
 
         // todo создать метод расчёта параметров этапа
-        //Formulas.calculateStageParameters(quest);
+        Formulas.calculateStageParameters(quest, stage);
         FileManager.fillPojoToJsonFile(quest, character, stage);
 
 
