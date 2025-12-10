@@ -34,6 +34,7 @@ public class CharacterCreator extends Unit {
     int mentalHealthMod; // модификатор ментального здоровья
     String[] bag = new String[4]; // Массив сумки на 4 места
     List<String> storageList = new ArrayList<>();
+    int jawsBalance; // кошелёк с балансом в джос
     String storage;
     String quest;
 
@@ -335,6 +336,14 @@ public class CharacterCreator extends Unit {
 
     public void setStorage(String storage) {
         this.storage = storage;
+    }
+
+    public int getJawsBalance() {
+        return jawsBalance;
+    }
+
+    public void setJawsBalance(int jawsBalance) {
+        this.jawsBalance = jawsBalance;
     }
 
     public String getQuest() {
