@@ -1,3 +1,5 @@
+package enums;
+
 public enum QuestValuesVariants {
     ROOKIE("Для новичков", 2, 2,2,0),
     LIGHTLOW("Лёгкий", 3, 2,3,1),

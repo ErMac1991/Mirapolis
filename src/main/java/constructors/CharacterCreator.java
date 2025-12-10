@@ -1,14 +1,21 @@
+package constructors;
+
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import operations.*;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 //@JsonIgnoreProperties(ignoreUnknown = true)
-public class CharacterHelper extends Unit {
+public class CharacterCreator extends Unit {
     //todo внести переменные энергитический лимит и текущей энергии
     String userLogin; // логин игрока
     String head; // Голова. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
@@ -31,11 +38,11 @@ public class CharacterHelper extends Unit {
     String quest;
 
 
-    public CharacterHelper() {
+    public CharacterCreator() {
     }
 
     // Констируктор для зоздания стартового персонажа
-    public CharacterHelper(String userLogin) {
+    public CharacterCreator(String userLogin) {
 
         this.userLogin = userLogin;
         this.level = 1;
@@ -341,7 +348,7 @@ public class CharacterHelper extends Unit {
 
     public static void createCharacter(String userLogin) throws IOException {
 
-        CharacterHelper newCharacter = new CharacterHelper(userLogin);
+        CharacterCreator newCharacter = new CharacterCreator(userLogin);
 
         if (Checks.isFileExist("Персонажи\\" + newCharacter.userLogin + "\\Персонаж.txt")) {
             System.out.println("Персонаж с логином " + newCharacter.userLogin + " уже существует.");
@@ -356,7 +363,7 @@ public class CharacterHelper extends Unit {
 
 
 
-    public static CharacterHelper chooseCharacter(ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+    public static CharacterCreator chooseCharacter(ObjectMapper objectMapper, CharacterCreator character) throws IOException {
         System.out.println(character.getUserLogin());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")) {
             System.out.println("При выборе персонажа файл персонажа " + character.getUserLogin() + " не найден");
@@ -372,7 +379,7 @@ public class CharacterHelper extends Unit {
         return character;
     }
 
-    public static CharacterHelper updateCharacterPojo(CharacterHelper character, CharacterHelper charactersChanges) throws IOException {
+    public static CharacterCreator updateCharacterPojo(CharacterCreator character, CharacterCreator charactersChanges) throws IOException {
 
         character = charactersChanges;
         System.out.println(character.getQuest());

@@ -1,4 +1,8 @@
+package constructors;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import operations.*;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +22,10 @@ public class QuestConstructor {
     boolean isKeyObject; // имеется ли ключевой объект
     int keyStageNumber; // Порядковый номер ключевого этапа
     int difficultyRatio; // коэффициент сложности квеста
-    int enemyPoints; // очки противников на квест
+    int QuestEnemyPoints; // очки противников на квест
+    int QuestObjectsPoints; // очки интерактивных объектов на квест
+    int QuestSystemsPoints; // очки охранных систем на квест
+    int QuestItemsPoints; // очки предметов лута на квест
     int royalty; // Награда за выполнение задания
     int deposit; // Взнос за взятие квеста
     LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
@@ -107,10 +114,28 @@ public class QuestConstructor {
     public File getQuestCounterFile() {
         return questCounterFile;
     }
-    public int getEnemyPoints() {
-        return enemyPoints;
+    public int getQuestEnemyPoints() {
+        return QuestEnemyPoints;
     }
-    public void setEnemyPoints(int enemyPoints) {        this.enemyPoints = enemyPoints;
+    public void setQuestEnemyPoints(int questEnemyPoints) {        this.QuestEnemyPoints = questEnemyPoints;
+    }
+    public int getQuestObjectsPoints() {
+        return QuestObjectsPoints;
+    }
+    public void setQuestObjectsPoints(int questObjectsPoints) {
+        QuestObjectsPoints = questObjectsPoints;
+    }
+    public int getQuestSystemsPoints() {
+        return QuestSystemsPoints;
+    }
+    public void setQuestSystemsPoints(int questSystemsPoints) {
+        QuestSystemsPoints = questSystemsPoints;
+    }
+    public int getQuestItemsPoints() {
+        return QuestItemsPoints;
+    }
+    public void setQuestItemsPoints(int questItemsPoints) {
+        QuestItemsPoints = questItemsPoints;
     }
     public boolean isKeyObject() {
         return isKeyObject;
@@ -141,7 +166,7 @@ public class QuestConstructor {
         return quest;
     }
 
-    public static QuestConstructor chooseQuest(ObjectMapper objectMapper, CharacterHelper character, QuestConstructor quest) throws IOException {
+    public static QuestConstructor chooseQuest(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest) throws IOException {
         System.out.println(quest.getQuestID());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\QuestData.txt")) {
             System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
@@ -169,7 +194,7 @@ public class QuestConstructor {
         FileManager.fillPojoToJsonFile(quest);
     }
 
-    public static void generateReceivedQuest(QuestConstructor quest, CharacterHelper character, StageConstructor stage) throws IOException { // Создаём содержание взятого квеста
+    public static void generateReceivedQuest(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException { // Создаём содержание взятого квеста
 
         quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста

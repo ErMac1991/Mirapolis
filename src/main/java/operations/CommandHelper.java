@@ -1,4 +1,11 @@
-import java.io.*;
+package operations;
+
+import constructors.CharacterCreator;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,13 +64,13 @@ public class CommandHelper {
     }
 
 
-    public void commandsSwitcher(CharacterHelper character,String command) throws IOException {
+    public void commandsSwitcher(CharacterCreator character, String command) throws IOException {
         switch (command) {
             case "ТЕСТ":
                 System.out.println("Команда из бота принята и обработана");
             case "Создать персонажа":
-                if (Checks.isFileExist("Персонажи", character.userLogin,"Персонаж.txt") == false){
-                    CharacterHelper.createCharacter(character.userLogin);
+                if (Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt") == false){
+                    CharacterCreator.createCharacter(character.getUserLogin());
                 }
 
 

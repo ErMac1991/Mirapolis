@@ -1,10 +1,14 @@
+package operations;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constructors.CharacterCreator;
+import constructors.QuestConstructor;
+import constructors.StageConstructor;
 
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class FileManager {
@@ -42,8 +46,8 @@ public class FileManager {
 
     }
 
-    public static CharacterHelper parseStringJsonToPojo(String pathToJsonFile, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
-        character = objectMapper.readValue(pathToJsonFile.getBytes(), CharacterHelper.class);
+    public static CharacterCreator parseStringJsonToPojo(String pathToJsonFile, ObjectMapper objectMapper, CharacterCreator character) throws IOException {
+        character = objectMapper.readValue(pathToJsonFile.getBytes(), CharacterCreator.class);
         return character;
     }
 
@@ -123,7 +127,7 @@ public class FileManager {
 
     }
 
-    public static void fillPojoToJsonFile(CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
+    public static void fillPojoToJsonFile(CharacterCreator character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
 
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt"),
@@ -181,7 +185,7 @@ public class FileManager {
 
     }
 
-    public static void fillPojoToJsonFile(QuestConstructor quest, CharacterHelper character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ взятого квеста
+    public static void fillPojoToJsonFile(QuestConstructor quest, CharacterCreator character) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ взятого квеста
 
         String jsonText = "{\"questID\":" + quest.getQuestID() +  "," +
                 "\"questName\":\"" + quest.getQuestName() + "\"," +
@@ -192,9 +196,9 @@ public class FileManager {
                 "\"questDifficulty\":\"" + quest.getQuestDifficulty() + "\"," +
                 "\"difficultyRatio\":" + quest.getDifficultyRatio() + "," +
                 "\"stagesInQuest\":" + quest.getStagesInQuest() + "," +
-                "\"enemyPoints\":" + quest.getEnemyPoints() + ",";
+                "\"enemyPoints\":" + quest.getQuestEnemyPoints() + ",";
 
-        if(quest.isKeyObject){jsonText += "\"keyStageNumber\":" + quest.getKeyStageNumber() + ",";}
+        if(quest.isKeyObject()){jsonText += "\"keyStageNumber\":" + quest.getKeyStageNumber() + ",";}
         jsonText += "\"questGenerationDateTime\":\"" + quest.getQuestGenerationDateTime() + "\"," +
                 "\"questTakeDateTime\":\"" + quest.getQuestTakeDateTime() + "\"," +
                 "\"deposit\":" + quest.getDeposit() + "," +
@@ -204,7 +208,7 @@ public class FileManager {
                 jsonText);
     }
 
-    public static void fillPojoToJsonFile(QuestConstructor quest, CharacterHelper character, StageConstructor stage) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ этапа взятого квеста
+    public static void fillPojoToJsonFile(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ этапа взятого квеста
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + ".txt"),
                 "{\"stageName\":\"" + stage.getStageName() + "\"," +

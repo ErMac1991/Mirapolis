@@ -1,3 +1,6 @@
+package operations;
+
+import constructors.CharacterCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
@@ -22,7 +25,7 @@ public class ActionExecutor {
 
 
 
-    public static void executeActions(File actionsQueueFile, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+    public static void executeActions(File actionsQueueFile, ObjectMapper objectMapper, CharacterCreator character) throws IOException {
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
 
@@ -34,7 +37,7 @@ public class ActionExecutor {
     }
 
 
-    public static void executeActions(String lineOfChanges, ObjectMapper objectMapper, CharacterHelper character) throws IOException {
+    public static void executeActions(String lineOfChanges, ObjectMapper objectMapper, CharacterCreator character) throws IOException {
 
 
 

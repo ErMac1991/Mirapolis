@@ -1,9 +1,13 @@
+package constructors;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import operations.Checks;
+import operations.FileManager;
+import operations.Formulas;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class StageConstructor {
@@ -20,6 +24,8 @@ public class StageConstructor {
     int stageEnemiesPoints;
     List<String> systemsOnStage; // системы охраны на этапе
     int stageSystemsPoints;
+    List<String> itemsOnStage; // системы охраны на этапе
+    int stageItemsPoints;
 
     public String getStageName() {
         return stageName;
@@ -87,6 +93,18 @@ public class StageConstructor {
     public void setStageSystemsPoints(int stageSystemsPoints) {
         this.stageSystemsPoints = stageSystemsPoints;
     }
+    public List<String> getItemsOnStage() {
+        return itemsOnStage;
+    }
+    public void setItemsOnStage(List<String> itemsOnStage) {
+        this.itemsOnStage = itemsOnStage;
+    }
+    public int getStageItemsPoints() {
+        return stageItemsPoints;
+    }
+    public void setStageItemsPoints(int stageItemsPoints) {
+        this.stageItemsPoints = stageItemsPoints;
+    }
     public boolean isKeyStage() {
         return isKeyStage;
     }
@@ -94,7 +112,7 @@ public class StageConstructor {
         isKeyStage = keyStage;
     }
 
-    public static void chooseStage(ObjectMapper objectMapper, CharacterHelper character, QuestConstructor quest, StageConstructor stage) throws IOException {
+    public static void chooseStage(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest, StageConstructor stage) throws IOException {
         System.out.println(quest.getQuestID());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")) {
             System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
@@ -109,7 +127,7 @@ public class StageConstructor {
         System.out.println("Выбран этап " + stage.getStageNumber() + " квеста " + quest.getQuestID());
     }
 
-    public static void generateStageOfQuest(QuestConstructor quest, CharacterHelper character, StageConstructor stage, int i) throws IOException {
+    public static void generateStageOfQuest(QuestConstructor quest, CharacterCreator character, StageConstructor stage, int i) throws IOException {
 
         // todo создать enum этапов
 

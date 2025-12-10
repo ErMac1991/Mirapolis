@@ -1,4 +1,8 @@
-import java.util.ArrayList;
+package enums;
+
+import constructors.QuestConstructor;
+import operations.Formulas;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

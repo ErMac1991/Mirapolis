@@ -1,20 +1,27 @@
+package operations;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constructors.*;
 
 import java.io.File;
 import java.io.IOException;
 
 public class Starter {
     ObjectMapper objectMapper = new ObjectMapper();
-    CharacterHelper character = new CharacterHelper();
-    CharacterHelper charactersChanges = new CharacterHelper();
+    CharacterCreator character = new CharacterCreator();
+    CharacterCreator charactersChanges = new CharacterCreator();
     QuestConstructor quest = new QuestConstructor();
     StageConstructor stage = new StageConstructor();
     EnemyHumanCreator enemyHuman = new EnemyHumanCreator();
-    EnemyMachine enemyMachine = new EnemyMachine();
+    EnemyMachineCreator enemyMachineCreator = new EnemyMachineCreator();
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubjectFromArgs;
     String userLoginFromArgs;
+
+    public File getActionsQueueFile() {
+        return actionsQueueFile;
+    }
 
     public void updateGameData() throws IOException {
 
@@ -32,7 +39,7 @@ public class Starter {
                 //updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
                 userLoginFromArgs = updateData.split("\"")[7];
                 System.out.println("updateData = " + updateData);
-                CharacterHelper.createCharacter(userLoginFromArgs);
+                CharacterCreator.createCharacter(userLoginFromArgs);
 
                 // Очистка переменных
                 updateData = null;
@@ -45,7 +52,7 @@ public class Starter {
                 System.out.println("updateData = " + updateData);
                 character.setUserLogin(updateData.split("\"")[7]);
                 System.out.println("userNameFromArgs = " + character.getUserLogin());
-                character = CharacterHelper.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
+                character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
 
                 charactersChanges = character;
                 charactersChanges = FileManager.parseStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
@@ -56,7 +63,7 @@ public class Starter {
                 System.out.println("Логин игрока из файла: " + userLoginFromArgs + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
                 System.out.println("Квест персонажа " + character.getUserLogin() + " до изменений: " + character.getQuest());
                 System.out.println("Квест в изменениях: " + charactersChanges.getQuest());
-                character = CharacterHelper.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
+                character = CharacterCreator.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
                 System.out.println("Квест персонажа " + character.getUserLogin() + " после изменений: " + character.getQuest());
                 FileManager.fillPojoToJsonFile(character);// Перенос данных из Pojo персонажа в Json файл персонажа
 

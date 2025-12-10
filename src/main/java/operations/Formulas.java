@@ -1,8 +1,16 @@
+package operations;
+
+import constructors.CharacterCreator;
+import constructors.QuestConstructor;
+import constructors.StageConstructor;
+import enums.QuestTypes;
+import enums.QuestValuesVariants;
+
 import java.util.Random;
 
 public abstract class Formulas {
 
-    static Random randomNumber = new Random();
+    public static Random randomNumber = new Random();
 
     public static void calculateQuestParameters(QuestConstructor quest) {
 
@@ -54,7 +62,7 @@ public abstract class Formulas {
         return false;
     }
 
-    public static void countLevelFromStats(CharacterHelper character){
+    public static void countLevelFromStats(CharacterCreator character){
         //todo адаптировать формулу получения уровня из статов под класс персонажа
         character.setLevel((character.getAttentiveness()+character.getAttentivenessMod() +
                             character.getEndurance()+character.getEnduranceMod() +
@@ -68,9 +76,9 @@ public abstract class Formulas {
     }
 
 
-    public static void countNumberOfEnemies(QuestConstructor quest){ // вычисляем количество очков противников для квеста
+    public static void countEnemiesPoints(QuestConstructor quest){ // вычисляем количество очков противников для квеста
 
-        quest.setEnemyPoints(quest.getQuestLevel()*150 +
+        quest.setQuestEnemyPoints(quest.getQuestLevel()*150 +
                 quest.getDifficultyRatio()*(100 + randomNumber.nextInt(51)) +
                 quest.getStagesInQuest()*50);
 

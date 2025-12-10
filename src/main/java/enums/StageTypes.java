@@ -1,3 +1,9 @@
+package enums;
+
+import constructors.QuestConstructor;
+import constructors.StageConstructor;
+import operations.Formulas;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,12 +74,12 @@ public enum StageTypes {
                 .collect(Collectors.toList()); // Собираем в список
         System.out.println("Список подходящих типов этапов: " + filteredStageTypes);
 
-        if (filteredQuestTypes.size() == 0) {
+        if (filteredStageTypes.size() == 0) {
             System.out.println("Ни один из типов квестов не подходит для уровня: " + quest.getQuestLevel());
             return;
         }
 
-        index = Formulas.randomNumber.nextInt(filteredQuestTypes.size());
+        index = Formulas.randomNumber.nextInt(filteredStageTypes.size());
 
 
         quest.setQuestName(filteredQuestTypes.get(index).getQuestName()); // передаём название квеста

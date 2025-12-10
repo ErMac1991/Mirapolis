@@ -1,7 +1,11 @@
+package constructors;
+
+import operations.FileManager;
+
 import java.io.File;
 import java.io.IOException;
 
-public class EnemyHumanCreator extends Unit{
+public class EnemyHumanCreator extends Unit {
     int enemyHumanID;
     final File EnemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesCounter.txt");
 

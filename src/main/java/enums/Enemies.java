@@ -1,3 +1,5 @@
+package enums;
+
 public enum Enemies {
     DUMMY("Манекен",
             1,

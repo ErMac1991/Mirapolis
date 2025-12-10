@@ -1,3 +1,5 @@
+package constructors;
+
 public abstract class Unit {
     int level; // уровень игрока. Высчитывается исходя из статов
     String subject; // субъект применения действия
