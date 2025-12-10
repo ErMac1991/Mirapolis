@@ -64,6 +64,7 @@ public abstract class Formulas {
 
     public static void calculateStageParameters(QuestConstructor quest, StageConstructor stage){
 
+
     }
 
 

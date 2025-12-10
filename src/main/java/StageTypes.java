@@ -8,50 +8,54 @@ public enum StageTypes {
             "Комната",
             2,
             8,
+            false,
             false
+    ),
+    ABSTRACTHALL(
+            "Холл",
+            4,
+            8,
+            false,
+            true
     ),
     ABSTRACTSTREET(
             "Улица",
             1,
             6,
+            true,
             true
     )
+
     ;
     String stageName;
     int minStageSize;
     int maxStageSize;
     boolean isOpenSpace;
+    boolean isCanBeIntro; // может быть входнолй локацией
+
 
     public String getStageName() {
         return stageName;
     }
-    public void setStageName(String stageName) {
-        this.stageName = stageName;
-    }
     public int getMinStageSize() {
         return minStageSize;
-    }
-    public void setMinStageSize(int minStageSize) {
-        this.minStageSize = minStageSize;
     }
     public int getMaxStageSize() {
         return maxStageSize;
     }
-    public void setMaxStageSize(int maxStageSize) {
-        this.maxStageSize = maxStageSize;
-    }
     public boolean isOpenSpace() {
         return isOpenSpace;
     }
-    public void setOpenSpace(boolean openSpace) {
-        isOpenSpace = openSpace;
+    public boolean isCanBeIntro() {
+        return isCanBeIntro;
     }
 
-    StageTypes(String stageName, int minStageSize, int maxStageSize, boolean isOpenSpace) {
+    StageTypes(String stageName, int minStageSize, int maxStageSize, boolean isOpenSpace, boolean isCanBeIntro) {
         this.stageName = stageName;
         this.minStageSize = minStageSize;
         this.maxStageSize = maxStageSize;
         this.isOpenSpace = isOpenSpace;
+        this.isCanBeIntro = isCanBeIntro;
     }
 
     public static void chooseStageType(QuestConstructor quest, StageConstructor stage){ // выбирает подходящий тип для сгенерированного квеста
