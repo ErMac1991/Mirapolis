@@ -114,7 +114,7 @@ public class StageConstructor {
 
     public static void chooseStage(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest, StageConstructor stage) throws IOException {
         System.out.println(quest.getQuestID());
-        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")) {
+        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\Q" + quest.getQuestID() + "\\S" + stage.getStageNumber() + "\\StageData.txt")) {
             System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
             return;
         }

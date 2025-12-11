@@ -2,6 +2,7 @@ package operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constructors.CharacterCreator;
+import constructors.EnemyHumanCreator;
 import constructors.QuestConstructor;
 import constructors.StageConstructor;
 
@@ -161,6 +162,30 @@ public class FileManager {
                         "\"fourthBagPlace\":\"" + character.getFourthBagPlace() + "\"," +
                         "\"storage\":\"" + character.getStorage() + "\"," + // Проверить как записывается
                         "\"quest\":\"" + character.getQuest() + "\"}");
+
+
+    }
+    public static void fillPojoToJsonFile(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
+
+
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" +
+                        character.getUserLogin() + "\\Q" + quest.getQuestID() + "\\S" + stage.getStageNumber() + "\\E" + enemyHuman.getEnemyHumanID() + ".txt"),
+                "{\"enemyName\":\"" + character.getUserLogin() + "\"," +
+                        "\"level\":" + character.getLevel() + "," +
+                        "\"endurance\":" + character.getEndurance() + "," +
+                        "\"attentiveness\":" + character.getAttentiveness() + "," +
+                        "\"reaction\":" + character.getReaction() + "," +
+                        "\"strength\":" + character.getStrength() + "," +
+                        "\"inventiveness\":" + character.getInventiveness() + "," +
+                        "\"enduranceMod\":" + character.getEnduranceMod() + "," +
+                        "\"attentivenessMod\":" + character.getAttentivenessMod() + "," +
+                        "\"reactionMod\":" + character.getReactionMod() + "," +
+                        "\"strengthMod\":" + character.getStrengthMod() + "," +
+                        "\"inventivenessMod\":" + character.getInventivenessMod() + "," +
+                        "\"firstBagPlace\":\"" + character.getFirstBagPlace() + "\"," +
+                        "\"secondBagPlace\":\"" + character.getSecondBagPlace() + "\"," +
+                        "\"thirdBagPlace\":\"" + character.getThirdBagPlace() + "\"," +
+                        "\"fourthBagPlace\":\"" + character.getFourthBagPlace() + "\"}");
 
 
     }

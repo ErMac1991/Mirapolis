@@ -7,6 +7,8 @@ import java.io.IOException;
 
 public class EnemyHumanCreator extends Unit {
     int enemyHumanID;
+    String enemyHumanName; // наименование противника
+    int enemyHumanPoints; // количество очков противника
     final File EnemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
@@ -17,11 +19,23 @@ public class EnemyHumanCreator extends Unit {
     public void setEnemyHumanID(int enemyHumanID) {
         this.enemyHumanID = enemyHumanID;
     }
+    public String getEnemyHumanName() {
+        return enemyHumanName;
+    }
+    public void setEnemyHumanName(String enemyHumanName) {
+        this.enemyHumanName = enemyHumanName;
+    }
     public int getLevel() {
         return level;
     }
     public void setLevel(int level) {
         this.level = level;
+    }
+    public int getEnemyHumanPoints() {
+        return enemyHumanPoints;
+    }
+    public void setEnemyHumanPoints(int enemyHumanPoints) {
+        this.enemyHumanPoints = enemyHumanPoints;
     }
     public String getSubject() {
         return subject;
@@ -105,8 +119,10 @@ public class EnemyHumanCreator extends Unit {
         return EnemyIDCounterFile;
     }
 
-    public void createNewEnemyHuman(QuestConstructor quest, EnemyHumanCreator enemyHuman) throws IOException {
+    public void createNewEnemyHuman(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException {
         enemyHuman.setEnemyHumanID(FileManager.getID(enemyHuman.getEnemyIDCounterFile()));
+
+        FileManager.fillPojoToJsonFile(character, quest, stage, enemyHuman);
 
     }
 
