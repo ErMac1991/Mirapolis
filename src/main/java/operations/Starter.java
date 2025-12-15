@@ -79,10 +79,13 @@ public class Starter {
                 System.out.println("Новый вакантный квест создан");
                 break;
 
-            case "newReceivedQuest":
+            case "newReceivedQuest": // в команде передавать логин игрока, берущего квест, ID вакантного квеста
                 System.out.println("Тип субъекта - Новый Полученный Квест");
+                // Проверка на возможность взять квест по уровню (?)
+                // Выбрать вакантный квест
                 QuestConstructor.generateReceivedQuest(quest, character, stage);
                 System.out.println("Новый вакантный квест создан");
+                // Удаление вакантного квеста после взятия
                 break;
 
             default:

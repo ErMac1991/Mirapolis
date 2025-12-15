@@ -98,6 +98,7 @@ public abstract class Formulas {
     }
 
 
+
     //todo придумать формулу вычисляющую ключевой этап квеста
     public void countKeyStage(QuestConstructor quest){
 
