@@ -194,15 +194,10 @@ public class QuestConstructor {
         FileManager.fillPojoToJsonFile(quest);
     }
 
-    public static void generateReceivedQuest(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException { // Создаём содержание взятого квеста
+    public static void generateReceivedQuest(QuestConstructor quest, CharacterCreator character) throws IOException { // Создаём содержание взятого квеста
 
         quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
-
-        for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов ВЫНЕСТИ В ОТДЕЛЬНЫЙ МЕТОД
-            StageConstructor.generateStageOfQuest(quest, character, stage, i);
-            System.out.println("Этап " + i + " сгенерирован");
-        }
 
     }
 

@@ -9,6 +9,12 @@ public class EnemyHumanCreator extends Unit {
     int enemyHumanID;
     String enemyHumanName; // наименование противника
     int enemyHumanPoints; // количество очков противника
+    String head; // Голова. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String body; // Туловище. Указывается "Плоть", если родное или восстановленное ИЛИ модель протеза
+    String leftHand; // Левая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String rightHand; // Правая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String leftLeg; // Левая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    String rightLeg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     final File EnemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
@@ -42,6 +48,42 @@ public class EnemyHumanCreator extends Unit {
     }
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+    public String getHead() {
+        return head;
+    }
+    public void setHead(String head) {
+        this.head = head;
+    }
+    public String getBody() {
+        return body;
+    }
+    public void setBody(String body) {
+        this.body = body;
+    }
+    public String getLeftHand() {
+        return leftHand;
+    }
+    public void setLeftHand(String leftHand) {
+        this.leftHand = leftHand;
+    }
+    public String getRightHand() {
+        return rightHand;
+    }
+    public void setRightHand(String rightHand) {
+        this.rightHand = rightHand;
+    }
+    public String getLeftLeg() {
+        return leftLeg;
+    }
+    public void setLeftLeg(String leftLeg) {
+        this.leftLeg = leftLeg;
+    }
+    public String getRightLeg() {
+        return rightLeg;
+    }
+    public void setRightLeg(String rightLeg) {
+        this.rightLeg = rightLeg;
     }
     public int getEndurance() {
         return endurance;

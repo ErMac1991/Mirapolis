@@ -82,9 +82,13 @@ public class Starter {
             case "newReceivedQuest": // в команде передавать логин игрока, берущего квест, ID вакантного квеста
                 System.out.println("Тип субъекта - Новый Полученный Квест");
                 // Проверка на возможность взять квест по уровню (?)
-                // Выбрать вакантный квест
-                QuestConstructor.generateReceivedQuest(quest, character, stage);
-                System.out.println("Новый вакантный квест создан");
+                quest = QuestConstructor.chooseQuest(objectMapper, quest);
+                System.out.println("Выбран вакантный квест " + quest.getQuestID());
+                QuestConstructor.generateReceivedQuest(quest, character);
+                System.out.println("Создан файл принятого квеста");
+                StageConstructor.generateAllStages(quest,character,stage);
+
+                System.out.println("Квест принят");
                 // Удаление вакантного квеста после взятия
                 break;
 

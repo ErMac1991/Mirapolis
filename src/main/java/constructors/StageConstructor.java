@@ -127,6 +127,13 @@ public class StageConstructor {
         System.out.println("Выбран этап " + stage.getStageNumber() + " квеста " + quest.getQuestID());
     }
 
+    public  static void generateAllStages(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException {
+        for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
+            StageConstructor.generateStageOfQuest(quest, character, stage, i);
+            System.out.println("Этап " + i + " сгенерирован");
+        }
+    }
+
     public static void generateStageOfQuest(QuestConstructor quest, CharacterCreator character, StageConstructor stage, int i) throws IOException {
 
         // todo создать enum этапов

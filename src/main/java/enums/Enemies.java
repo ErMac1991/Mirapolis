@@ -4,6 +4,7 @@ import constructors.*;
 import operations.Formulas;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ public enum Enemies {
             1,
             25,
             100),
-    HEAVYDUMMY("Робот",
+    HEAVYDUMMY("Машина",
             "Тяжёлый манекен",
             5,
             30,
@@ -28,19 +29,15 @@ public enum Enemies {
     public String getEnemyName() {
         return enemyName;
     }
-
     public int getEnemyMinLevel() {
         return enemyMinLevel;
     }
-
     public int getEnemyMaxLevel() {
         return enemyMaxLevel;
     }
-
     public int getEnemyPoints() {
         return enemyPoints;
     }
-
     public String getEnemyType() {
         return enemyType;
     }
@@ -68,19 +65,69 @@ public enum Enemies {
         return filteredEnemies;
     }
 
-    public static void chooseEnemyHuman(QuestConstructor quest, EnemyHumanCreator enemy) { // выбираем противника человека из выборки
+    public static void spendEnemyPoints(QuestConstructor quest, EnemyHumanCreator enemyHuman, EnemyMachineCreator enemyMachine){
 
+        int index;
         List<Enemies> filteredEnemies = filterEnemies(quest);
+        int enemyPointsRemains = quest.getQuestEnemyPoints();
+        System.out.println("Количество очков противника для распределения: " + enemyPointsRemains);
+        int minEnemyPoints = Arrays.stream(Enemies.values())
+                .min(Comparator.comparingInt(Enemies::getEnemyPoints))
+                .get()
+                .getEnemyPoints();
+        System.out.println("Минимальная стоимость противника из выборки: " + minEnemyPoints + " очков");
+
+        while (enemyPointsRemains >= minEnemyPoints){
+
+            index = Formulas.randomNumber.nextInt(filteredEnemies.size());
+            System.out.println("Выбран индекс листа " + index + ". Противник под этим индексом: " + filteredEnemies.get(index).getEnemyName());
+
+            if (enemyPointsRemains >= filteredEnemies.get(index).getEnemyPoints()){
+                enemyPointsRemains -= filteredEnemies.get(index).getEnemyPoints();
+                System.out.println("Стоимость противника " + filteredEnemies.get(index).getEnemyName() +
+                        " списана в размере: " + filteredEnemies.get(index).getEnemyPoints() +
+                        " очков. Остаток: " + enemyPointsRemains + " очков");
+
+                switch (filteredEnemies.get(index).getEnemyType()){
+                    case "Человек":
+                        setEnemyHumanParameters(quest, enemyHuman, filteredEnemies.get(index));
+                        enemyHuman.setLeftHand("Плоть");
+                        enemyHuman.setRightHand("Плоть");
+                        enemyHuman.setLeftLeg("Плоть");
+                        enemyHuman.setRightLeg("Плоть");
+                        enemyHuman.setHead("Плоть");
+                        enemyHuman.setBody("Плоть");
+
+                    case "Машина":
+                        setEnemyMachineParameters(quest, enemyMachine, filteredEnemies.get(index));
+                    default:
+                        System.out.println("Выбрано неведомое нечто");
+                }
+
+            }
+            else{
+                System.out.println("На противника " + filteredEnemies.get(index).getEnemyName() + " очков не хватает.");
+                filteredEnemies.remove(index);
+                System.out.println("Удалили его из списка");
+            }
+        }
+        System.out.println("Все очки противников растрачены. Остаток: " + enemyPointsRemains);
+
+    }
+
+    public static void setEnemyHumanParameters(QuestConstructor quest, EnemyHumanCreator enemyHuman, Enemies enemyUnit) { // Заполняем Pojo противника человека
 
 
-        int index = Formulas.randomNumber.nextInt(filteredEnemies.size());
+//todo Заполнить параметры противника человека И/ИЛИ киборга
+        enemyHuman.setEnemyHumanName(enemyUnit.getEnemyName()); // передаём наименование противника
+        System.out.println("Наименование противника человека " + enemyHuman.getEnemyHumanName() + " передано");
+        enemyHuman.setEnemyHumanPoints(enemyUnit.getEnemyPoints()); // передаём стоимость противника в ОП
+        System.out.println("Количество очков противника человека " + enemyHuman.getEnemyHumanPoints() + " передано");
 
-//todo придумать формулу подбора противников исходя из общих очков противников в квесте
-        enemy.setEnemyHumanName(filteredEnemies.get(index).getEnemyName()); // передаём название квеста
-        System.out.println("Наименование противника человека " + enemy.getEnemyHumanName() + " передано");
-        enemy.setEnemyHumanPoints(filteredEnemies.get(index).getEnemyPoints()); // передаём название квеста
-        System.out.println("Количество очков противника человека " + enemy.getEnemyHumanPoints() + " передано");
 
+    }
+    //todo Заполнить параметры противника машины
+    public static void setEnemyMachineParameters(QuestConstructor quest, EnemyMachineCreator enemyMachine, Enemies enemyUnit) {    // Заполняем Pojo противника Машины
 
     }
 

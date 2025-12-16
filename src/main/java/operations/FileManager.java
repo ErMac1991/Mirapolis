@@ -165,27 +165,25 @@ public class FileManager {
 
 
     }
-    public static void fillPojoToJsonFile(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПЕРСОНАЖА
+    public static void fillPojoToJsonFile(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ ПРОТИВНИКА
 
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" +
                         character.getUserLogin() + "\\Q" + quest.getQuestID() + "\\S" + stage.getStageNumber() + "\\E" + enemyHuman.getEnemyHumanID() + ".txt"),
-                "{\"enemyName\":\"" + character.getUserLogin() + "\"," +
-                        "\"level\":" + character.getLevel() + "," +
-                        "\"endurance\":" + character.getEndurance() + "," +
-                        "\"attentiveness\":" + character.getAttentiveness() + "," +
-                        "\"reaction\":" + character.getReaction() + "," +
-                        "\"strength\":" + character.getStrength() + "," +
-                        "\"inventiveness\":" + character.getInventiveness() + "," +
-                        "\"enduranceMod\":" + character.getEnduranceMod() + "," +
-                        "\"attentivenessMod\":" + character.getAttentivenessMod() + "," +
-                        "\"reactionMod\":" + character.getReactionMod() + "," +
-                        "\"strengthMod\":" + character.getStrengthMod() + "," +
-                        "\"inventivenessMod\":" + character.getInventivenessMod() + "," +
-                        "\"firstBagPlace\":\"" + character.getFirstBagPlace() + "\"," +
-                        "\"secondBagPlace\":\"" + character.getSecondBagPlace() + "\"," +
-                        "\"thirdBagPlace\":\"" + character.getThirdBagPlace() + "\"," +
-                        "\"fourthBagPlace\":\"" + character.getFourthBagPlace() + "\"}");
+                "{\"enemyName\":\"" + enemyHuman.getEnemyHumanName() + "\"," +
+                        "\"level\":" + enemyHuman.getLevel() + "," +
+                        "\"endurance\":" + enemyHuman.getEndurance() + "," +
+                        "\"attentiveness\":" + enemyHuman.getAttentiveness() + "," +
+                        "\"reaction\":" + enemyHuman.getReaction() + "," +
+                        "\"strength\":" + enemyHuman.getStrength() + "," +
+                        "\"enduranceMod\":" + enemyHuman.getEnduranceMod() + "," +
+                        "\"attentivenessMod\":" + enemyHuman.getAttentivenessMod() + "," +
+                        "\"reactionMod\":" + enemyHuman.getReactionMod() + "," +
+                        "\"strengthMod\":" + enemyHuman.getStrengthMod() + "," +
+                        "\"firstBagPlace\":\"" + enemyHuman.getFirstBagPlace() + "\"," +
+                        "\"secondBagPlace\":\"" + enemyHuman.getSecondBagPlace() + "\"," +
+                        "\"thirdBagPlace\":\"" + enemyHuman.getThirdBagPlace() + "\"," +
+                        "\"fourthBagPlace\":\"" + enemyHuman.getFourthBagPlace() + "\"}");
 
 
     }
