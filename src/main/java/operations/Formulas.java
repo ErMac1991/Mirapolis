@@ -1,11 +1,15 @@
 package operations;
 
 import constructors.CharacterCreator;
+import constructors.EnemyHumanCreator;
 import constructors.QuestConstructor;
 import constructors.StageConstructor;
+import enums.Items;
 import enums.QuestTypes;
 import enums.QuestValuesVariants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class Formulas {
@@ -62,7 +66,7 @@ public abstract class Formulas {
         return false;
     }
 
-    public static void countLevelFromStats(CharacterCreator character){
+    public static void calculateLevelFromStats(CharacterCreator character){
         //todo адаптировать формулу получения уровня из статов под класс персонажа
         character.setLevel((character.getAttentiveness()+character.getAttentivenessMod() +
                             character.getEndurance()+character.getEnduranceMod() +
@@ -70,11 +74,35 @@ public abstract class Formulas {
                             character.getReaction()+character.getReactionMod()) / 4);
     }
 
-    public static void calculateStageParameters(QuestConstructor quest, StageConstructor stage){
+    public static List<Integer> countStatsFromLevel(EnemyHumanCreator enemyHuman){
 
+       int statsPointsLeft = enemyHuman.getLevel()*4;
+       List<Integer> statsMassive = new ArrayList<>();
+       System.out.println("Доступно очков статов: " + statsPointsLeft);
+        int minStatsPoints = statsPointsLeft/10;
+        for (int i = 0; i < 4; i++){ // раскидываем минимальные значения
+            statsMassive.add(minStatsPoints);
+            statsPointsLeft -= minStatsPoints;
+            System.out.println("Добавлено минимальное значение " + statsMassive.get(i) + " в позицию листа " + i + ". Остаток очков: " + statsPointsLeft);
+        }
 
+            while (statsPointsLeft !=0){
+                int number = Formulas.randomNumber.nextInt(4);
+                statsMassive.set(number, statsMassive.get(number)+1);
+                statsPointsLeft--;
+            }
+        return statsMassive;
     }
 
+    public static int calculateEnemyLevel(QuestConstructor quest, EnemyHumanCreator enemy){
+        int level = quest.getQuestLevel() +
+                Formulas.randomNumber.nextInt(quest.getDifficultyRatio()*3/2+3)
+                -quest.getDifficultyRatio()-1;
+        if (level < 1) level = 1;
+        if (level > 30) level = 30;
+        enemy.getStrength();
+        return level;
+    }
 
     public static void countEnemiesPoints(QuestConstructor quest){ // вычисляем количество очков противников для квеста
 
@@ -83,6 +111,26 @@ public abstract class Formulas {
                 quest.getStagesInQuest()*50);
 
     }
+
+    public static void calculateEnemyItems(QuestConstructor quest, EnemyHumanCreator enemyHuman){
+
+        List<Items> filteredItems = Items.filterItems(quest, enemyHuman);
+        List<String> itemNames = new ArrayList<>();
+        for (int i = 0; i < filteredItems.size(); i++){
+            itemNames.set(0,filteredItems.get(i).getItemName());
+        }
+        enemyHuman.setFirstBagPlace();
+
+
+    }
+
+    public static void calculateStageParameters(QuestConstructor quest, StageConstructor stage){
+
+
+    }
+
+
+
 
     //todo придумать формулу получения числа соперников на этапе
     public static void countStageEnemiesPoints (QuestConstructor quest, StageConstructor stage){ // вычисляем количество очков противников для квеста
@@ -104,6 +152,8 @@ public abstract class Formulas {
 
 
     }
+
+
 }
 
 
