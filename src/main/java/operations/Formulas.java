@@ -9,6 +9,7 @@ import enums.QuestTypes;
 import enums.QuestValuesVariants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -114,14 +115,49 @@ public abstract class Formulas {
 
     public static void calculateEnemyItems(QuestConstructor quest, EnemyHumanCreator enemyHuman){
 
+    // todo додумать распределение предметов
         List<Items> filteredItems = Items.filterItems(quest, enemyHuman);
-        List<String> itemNames = new ArrayList<>();
-        for (int i = 0; i < filteredItems.size(); i++){
-            itemNames.set(0,filteredItems.get(i).getItemName());
+        int itemsCount = calculateNumberOfItems(enemyHuman);
+        List<String> itemsToTake = new ArrayList<>(itemsCount);
+        int jawsLimit = 40 + enemyHuman.getLevel()*35;
+        int jaws = 0;
+
+        for (int i = 0; i < itemsCount; ){
+            int k = Formulas.randomNumber.nextInt(filteredItems.size());
+            if (filteredItems.get(k).getItemName().equals("Джос")){
+                jaws += calculateJaws(enemyHuman);
+                if (jaws > jawsLimit) {
+                    jaws = jawsLimit;
+                    filteredItems.remove(k);
+                }
+            }
+            else {
+                itemsToTake.set(i, "");
+                if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
+                    itemsToTake.set(i, filteredItems.get(k).getItemName());
+
+                }
+                // реализовать объединение предметов в стеки
+
+                if (filteredItems.get(k).isUnique()) {
+                    filteredItems.remove(k);
+                }
+                i++;
+            }
         }
-        enemyHuman.setFirstBagPlace();
+        enemyHuman.setJaws(jaws);
+        itemsToTake.removeAll(Arrays.asList(""));
+    }
 
+    public static int calculateJaws(EnemyHumanCreator enemyHuman){
+        return (20 + enemyHuman.getLevel()*15 - Formulas.randomNumber.nextInt(enemyHuman.getLevel()*2 + 11));
 
+    }
+
+    public static int calculateNumberOfItems(EnemyHumanCreator enemyHuman){
+        int itemsCount = Formulas.randomNumber.nextInt(enemyHuman.getLevel()/5 + 1);
+        itemsCount += Formulas.randomNumber.nextInt(3)-1;
+        return  itemsCount;
     }
 
     public static void calculateStageParameters(QuestConstructor quest, StageConstructor stage){

@@ -1,5 +1,8 @@
 package operations;
 
+import constructors.CharacterCreator;
+import constructors.EnemyHumanCreator;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,6 +43,28 @@ public class Checks {
         if (percent >= 0 && percent <=100){return true;}
         System.out.println("Ошибка во введённом значении процента: " + percent);
         return false;
+    }
+
+    public static boolean isEmptyPlace(EnemyHumanCreator enemy){
+        boolean isEmptyPlace = false;
+        if(enemy.getFirstBagPlace().equals("Пусто") ||
+                enemy.getSecondBagPlace().equals("Пусто") ||
+                enemy.getThirdBagPlace().equals("Пусто") ||
+                enemy.getFourthBagPlace().equals("Пусто")){
+            isEmptyPlace = true;
+        }
+        return isEmptyPlace;
+    }
+
+    public static boolean isEmptyPlace(CharacterCreator character) {
+        boolean isEmptyPlace = false;
+        if (character.getFirstBagPlace().equals("Пусто") ||
+                character.getSecondBagPlace().equals("Пусто") ||
+                character.getThirdBagPlace().equals("Пусто") ||
+                character.getFourthBagPlace().equals("Пусто")) {
+            isEmptyPlace = true;
+        }
+        return isEmptyPlace;
     }
 
 

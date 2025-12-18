@@ -23,6 +23,7 @@ public class EnemyHumanCreator extends Unit {
     String rightHand; // Правая рука. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     String leftLeg; // Левая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     String rightLeg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
+    int jaws; // количество джос
     final File EnemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
@@ -167,6 +168,12 @@ public class EnemyHumanCreator extends Unit {
     }
     public File getEnemyIDCounterFile() {
         return EnemyIDCounterFile;
+    }
+    public int getJaws() {
+        return jaws;
+    }
+    public void setJaws(int jaws) {
+        this.jaws = jaws;
     }
 
     public void createNewEnemyHuman(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException {
