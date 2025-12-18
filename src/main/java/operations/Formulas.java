@@ -101,7 +101,6 @@ public abstract class Formulas {
                 -quest.getDifficultyRatio()-1;
         if (level < 1) level = 1;
         if (level > 30) level = 30;
-        enemy.getStrength();
         return level;
     }
 
@@ -113,7 +112,7 @@ public abstract class Formulas {
 
     }
 
-    public static void calculateEnemyItems(QuestConstructor quest, EnemyHumanCreator enemyHuman){
+    public static List<String> calculateEnemyItems(QuestConstructor quest, EnemyHumanCreator enemyHuman){
 
     // todo додумать распределение предметов
         List<Items> filteredItems = Items.filterItems(quest, enemyHuman);
@@ -132,12 +131,13 @@ public abstract class Formulas {
                 }
             }
             else {
+
                 itemsToTake.set(i, "");
                 if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
                     itemsToTake.set(i, filteredItems.get(k).getItemName());
 
                 }
-                // реализовать объединение предметов в стеки
+
 
                 if (filteredItems.get(k).isUnique()) {
                     filteredItems.remove(k);
@@ -147,6 +147,34 @@ public abstract class Formulas {
         }
         enemyHuman.setJaws(jaws);
         itemsToTake.removeAll(Arrays.asList(""));
+        itemsToTake = formItemStacks(itemsToTake);
+
+        return itemsToTake;
+    }
+
+    // реализовать объединение предметов в стеки
+    public static List<String> formItemStacks(List<String> itemsToTake){
+        List<String> itemsStacked = new ArrayList<>();
+        List<String> addedItems = new ArrayList<>();
+        int changedItemIndex = -1;
+
+        for (int i = 0; i < itemsToTake.size(); i++){
+            if (addedItems.contains(itemsToTake.get(i))){
+                int itemCounter;
+
+                String changedElement;
+
+                for (int k = 0; k < itemsStacked.size(); k++) {
+                    if (itemsStacked.get(k).contains(itemsToTake.get(i))) { // Проверяем, содержит ли элемент подстроку
+                        changedItemIndex = i;
+                        break;
+                    }
+                }
+                changedElement = itemsStacked.get(changedItemIndex);
+                //todo разбить changedElement на коэффициент и имя предмета
+            }
+        }
+        return itemsStacked;
     }
 
     public static int calculateJaws(EnemyHumanCreator enemyHuman){

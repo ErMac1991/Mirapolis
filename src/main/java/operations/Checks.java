@@ -46,14 +46,14 @@ public class Checks {
     }
 
     public static boolean isEmptyPlace(EnemyHumanCreator enemy){
-        boolean isEmptyPlace = false;
+
         if(enemy.getFirstBagPlace().equals("Пусто") ||
                 enemy.getSecondBagPlace().equals("Пусто") ||
                 enemy.getThirdBagPlace().equals("Пусто") ||
                 enemy.getFourthBagPlace().equals("Пусто")){
-            isEmptyPlace = true;
+            return true;
         }
-        return isEmptyPlace;
+        return false;
     }
 
     public static boolean isEmptyPlace(CharacterCreator character) {

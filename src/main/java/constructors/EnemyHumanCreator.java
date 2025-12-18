@@ -267,9 +267,32 @@ public class EnemyHumanCreator extends Unit {
             statsToDistribute.remove(counter);
         System.out.println("Сила противника человека " + enemyHuman.getAttentiveness() + " передано");
 
+    }
 
+    public static void setEnemyHumanItems(EnemyHumanCreator enemy, List<String> itemsToTake){
+        String[] enemyItems = {"Пусто", "Пусто", "Пусто", "Пусто"};
 
+        if (itemsToTake.size() == 0){
+            System.out.println("Нет предметов для распределения");
+            return;
+        }
 
+            for (int i = 0; i < enemyItems.length; i++){
+                int itemToTakeNumber = Formulas.randomNumber.nextInt(itemsToTake.size());
+                enemyItems[i] = itemsToTake.get(itemToTakeNumber);
+                itemsToTake.remove(itemToTakeNumber);
+
+                if (itemsToTake.size() == 0){
+                    System.out.println("Предметы для распределения закончились");
+                    return;
+                }
+
+            }
+
+        enemy.setFirstBagPlace(enemyItems[0]);
+        enemy.setSecondBagPlace(enemyItems[1]);
+        enemy.setThirdBagPlace(enemyItems[2]);
+        enemy.setFourthBagPlace(enemyItems[3]);
 
     }
 
