@@ -6,12 +6,15 @@ import operations.Formulas;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import static constructors.EnemyMachineCreator.setEnemyMachineParameters;
 import static enums.Enemies.filterEnemies;
+import static operations.Formulas.calculateEnemyItems;
+import static operations.Formulas.formItemStacks;
 
 public class EnemyHumanCreator extends Unit {
     int enemyHumanID;
@@ -267,32 +270,45 @@ public class EnemyHumanCreator extends Unit {
             statsToDistribute.remove(counter);
         System.out.println("Сила противника человека " + enemyHuman.getAttentiveness() + " передано");
 
+        setEnemyHumanItems(enemyHuman, calculateEnemyItems(quest, enemyHuman));
+
     }
 
     public static void setEnemyHumanItems(EnemyHumanCreator enemy, List<String> itemsToTake){
-        String[] enemyItems = {"Пусто", "Пусто", "Пусто", "Пусто"};
+        List<String> enemyItems = List.of("Пусто", "Пусто", "Пусто", "Пусто");
 
         if (itemsToTake.size() == 0){
             System.out.println("Нет предметов для распределения");
             return;
         }
 
-            for (int i = 0; i < enemyItems.length; i++){
-                int itemToTakeNumber = Formulas.randomNumber.nextInt(itemsToTake.size());
-                enemyItems[i] = itemsToTake.get(itemToTakeNumber);
+        for (int i = 0; i < enemyItems.size(); ){
+            int itemToTakeNumber = Formulas.randomNumber.nextInt(itemsToTake.size());
+            System.out.println("Порядковый номер предмета из выборки: " + itemToTakeNumber + ". Соответствующий предмет: " + itemsToTake.get(itemToTakeNumber));
+            if (enemyItems.contains(itemsToTake.get(itemToTakeNumber))){
+                System.out.println("В Массиве уже имеется предмет " + itemsToTake.get(itemToTakeNumber) + ". Закидываем его в стек. Массив: " + enemyItems);
+                enemyItems = formItemStacks(itemsToTake, itemsToTake.get(itemToTakeNumber));
+                System.out.println("Массив после внесения предмета в стек: " + enemyItems);
                 itemsToTake.remove(itemToTakeNumber);
-
-                if (itemsToTake.size() == 0){
-                    System.out.println("Предметы для распределения закончились");
-                    return;
-                }
-
+            }
+            else {
+                enemyItems.set(i, itemsToTake.get(itemToTakeNumber));
+                System.out.println("Массив после добавления нового предмета: " + enemyItems);
+                itemsToTake.remove(itemToTakeNumber);
+                i++;
             }
 
-        enemy.setFirstBagPlace(enemyItems[0]);
-        enemy.setSecondBagPlace(enemyItems[1]);
-        enemy.setThirdBagPlace(enemyItems[2]);
-        enemy.setFourthBagPlace(enemyItems[3]);
+            if (itemsToTake.size() == 0){
+                System.out.println("Предметы для распределения закончились");
+                return;
+            }
+
+        }
+
+        enemy.setFirstBagPlace(enemyItems.get(0));
+        enemy.setSecondBagPlace(enemyItems.get(1));
+        enemy.setThirdBagPlace(enemyItems.get(2));
+        enemy.setFourthBagPlace(enemyItems.get(3));
 
     }
 

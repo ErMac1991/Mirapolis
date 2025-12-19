@@ -114,7 +114,6 @@ public abstract class Formulas {
 
     public static List<String> calculateEnemyItems(QuestConstructor quest, EnemyHumanCreator enemyHuman){
 
-    // todo додумать распределение предметов
         List<Items> filteredItems = Items.filterItems(quest, enemyHuman);
         int itemsCount = calculateNumberOfItems(enemyHuman);
         List<String> itemsToTake = new ArrayList<>(itemsCount);
@@ -123,58 +122,75 @@ public abstract class Formulas {
 
         for (int i = 0; i < itemsCount; ){
             int k = Formulas.randomNumber.nextInt(filteredItems.size());
-            if (filteredItems.get(k).getItemName().equals("Джос")){
+            System.out.println("Индекс выбранного предмета в отфильрованном листе " + k + ". Соответствующий предмет: " + filteredItems.get(k) + " " + filteredItems.get(k).getItemName());
+            if (filteredItems.get(k).equals(Items.JAWS)){
+                System.out.println("Зачисляем джос");
                 jaws += calculateJaws(enemyHuman);
+                System.out.println("Всего джос: " + jaws + ". Лимит для этого противника: " + jawsLimit);
                 if (jaws > jawsLimit) {
                     jaws = jawsLimit;
-                    filteredItems.remove(k);
+                    System.out.println("Всего джос: " + jaws);
+                    //filteredItems.remove(k);
                 }
             }
             else {
 
                 itemsToTake.set(i, "");
+                System.out.println("Создана ячейка под предмет. Проверяем вероятность появления предмета в выборке");
                 if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
                     itemsToTake.set(i, filteredItems.get(k).getItemName());
+                    System.out.println("Вероятность " + filteredItems.get(k).getGenerationChance() + " сыграла. В выборку попал предмет: " + filteredItems.get(k));
 
                 }
 
-
                 if (filteredItems.get(k).isUnique()) {
+                    System.out.println("Предмет " + filteredItems.get(k) + " является уникальным");
                     filteredItems.remove(k);
+                    System.out.println("Предмет удалён из списка отфильтрованных предметов");
+
                 }
                 i++;
             }
         }
         enemyHuman.setJaws(jaws);
+        System.out.println("Лист выборки предметов до чистки пустых элементов: " + itemsToTake);
         itemsToTake.removeAll(Arrays.asList(""));
-        itemsToTake = formItemStacks(itemsToTake);
+        System.out.println("Лист выборки предметов после чистки пустых элементов" + itemsToTake);
 
         return itemsToTake;
     }
 
     // реализовать объединение предметов в стеки
-    public static List<String> formItemStacks(List<String> itemsToTake){
+    public static List<String> formItemStacks(List<String> itemsToTake, String newItem){
+
+        //todo создать ограничение стека по лимитам из enum Items
+
         List<String> itemsStacked = new ArrayList<>();
-        List<String> addedItems = new ArrayList<>();
         int changedItemIndex = -1;
 
-        for (int i = 0; i < itemsToTake.size(); i++){
-            if (addedItems.contains(itemsToTake.get(i))){
-                int itemCounter;
-
-                String changedElement;
-
-                for (int k = 0; k < itemsStacked.size(); k++) {
-                    if (itemsStacked.get(k).contains(itemsToTake.get(i))) { // Проверяем, содержит ли элемент подстроку
-                        changedItemIndex = i;
+                for (int k = 0; k < itemsToTake.size(); k++) {
+                    if (itemsToTake.get(k).contains(newItem)) {
+                        changedItemIndex = k;
                         break;
                     }
                 }
-                changedElement = itemsStacked.get(changedItemIndex);
-                //todo разбить changedElement на коэффициент и имя предмета
-            }
-        }
+                itemsStacked.set(changedItemIndex, addItemToStack(itemsStacked.get(changedItemIndex)));
+
         return itemsStacked;
+    }
+
+    public static String addItemToStack(String itemStack){
+
+
+        if(!Character.isDigit(itemStack.charAt(0))){
+            return ("2 " + itemStack);
+        }
+
+        int firstSpaceIndex = itemStack.indexOf(' ');
+        int counter = Integer.parseInt((itemStack.substring(0, firstSpaceIndex))) + 1;
+        String itemName = itemStack.substring(firstSpaceIndex+1);
+
+        return (counter + " " + itemName);
     }
 
     public static int calculateJaws(EnemyHumanCreator enemyHuman){

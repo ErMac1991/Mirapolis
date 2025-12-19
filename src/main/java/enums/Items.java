@@ -79,20 +79,7 @@ public enum Items {
         this.isUnique = isUnique;
     }
 
-    /*public static List<Items> filterItems(QuestConstructor quest) { // получаем выборку подходящих предметов
-        List<Items> filteredItems = Arrays.stream(Items.values())
-                .filter(Items -> Items.itemMinLevel <= quest.getQuestLevel()) // фильтрует предметы, подходящие по уровню квеста
-                .filter(Items -> Items.itemMaxLevel >= quest.getQuestLevel())
-                .collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих квесту предметов: " + filteredItems);
 
-        if (filteredItems.size() == 0) {
-            System.out.println("Ни один из предметов не подходит для уровня квеста: " + quest.getQuestLevel());
-            return null;
-        }
-
-        return filteredItems;
-    }*/
 
     public static List<Items> filterItems(QuestConstructor quest, EnemyHumanCreator enemyHuman) { // получаем выборку подходящих предметов
         List<Items> filteredItems = Arrays.stream(Items.values())
