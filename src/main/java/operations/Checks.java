@@ -2,6 +2,7 @@ package operations;
 
 import constructors.CharacterCreator;
 import constructors.EnemyHumanCreator;
+import enums.Items;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,5 +68,18 @@ public class Checks {
         return isEmptyPlace;
     }
 
+    public static boolean isItemFullStack(String itemStack){
+        if(!Character.isDigit(itemStack.charAt(0))){
+            return false;
+        }
 
+        int firstSpaceIndex = itemStack.indexOf(' ');
+        int counter = Integer.parseInt((itemStack.substring(0, firstSpaceIndex))) + 1;
+        String itemName = itemStack.substring(firstSpaceIndex+1);
+
+        if (counter == Items.valueOf(itemName).getStackLimit()){
+            return true;
+        }
+        return false;
+    }
 }
