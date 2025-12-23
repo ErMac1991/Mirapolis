@@ -220,11 +220,17 @@ public abstract class Formulas {
 
 
     //todo придумать формулу получения числа соперников на этапе
-    public static void countStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для квеста
+    public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для квеста
 
         // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и условия является ли этап ключевым
         stage.setStageEnemiesPoints(0);
 
+    }
+
+    public static void calculateItemsPoints(EnemyHumanCreator enemyHuman){
+        int itemsPoints = Formulas.randomNumber.nextInt(enemyHuman.getLevel() / 2 ) * 10 + 10;
+        itemsPoints += Formulas.randomNumber.nextInt(21) - 10;
+        enemyHuman.setItemsPoints(itemsPoints);
     }
 
     public static void distributeEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста

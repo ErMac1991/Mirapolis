@@ -6,7 +6,6 @@ import operations.Formulas;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -27,6 +26,7 @@ public class EnemyHumanCreator extends Unit {
     String leftLeg; // Левая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     String rightLeg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     int jaws; // количество джос
+    int itemsPoints; //количество очков предметов
     final File EnemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
@@ -178,6 +178,12 @@ public class EnemyHumanCreator extends Unit {
     public void setJaws(int jaws) {
         this.jaws = jaws;
     }
+    public int getItemsPoints() {
+        return itemsPoints;
+    }
+    public void setItemsPoints(int itemsPoints) {
+        this.itemsPoints = itemsPoints;
+    }
 
     public void createNewEnemyHuman(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException {
         enemyHuman.setEnemyHumanID(FileManager.getID(enemyHuman.getEnemyIDCounterFile()));
@@ -269,6 +275,8 @@ public class EnemyHumanCreator extends Unit {
             enemyHuman.setStrength(statsToDistribute.get(counter));
             statsToDistribute.remove(counter);
         System.out.println("Сила противника человека " + enemyHuman.getAttentiveness() + " передано");
+
+        Formulas.calculateItemsPoints(enemyHuman); // начисляет очки предметов
 
         setEnemyHumanItems(enemyHuman, calculateEnemyItems(quest, enemyHuman));
 
