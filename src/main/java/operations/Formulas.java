@@ -129,8 +129,8 @@ public abstract class Formulas {
                 System.out.println("Всего джос: " + jaws + ". Лимит для этого противника: " + jawsLimit);
                 if (jaws > jawsLimit) {
                     jaws = jawsLimit;
-                    System.out.println("Всего джос: " + jaws);
-                    //filteredItems.remove(k);
+                    System.out.println("Всего джос: " + jaws + " достигло максимума");
+                    filteredItems.remove(k);
                 }
             } else {
 
@@ -139,6 +139,7 @@ public abstract class Formulas {
                 if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
                     itemsToTake.set(i, filteredItems.get(k).getItemName());
                     System.out.println("Вероятность " + filteredItems.get(k).getGenerationChance() + " сыграла. В выборку попал предмет: " + filteredItems.get(k));
+                    i++;
 
                 }
 
@@ -148,7 +149,7 @@ public abstract class Formulas {
                     System.out.println("Предмет удалён из списка отфильтрованных предметов");
 
                 }
-                i++;
+
             }
         }
         enemyHuman.setJaws(jaws);
