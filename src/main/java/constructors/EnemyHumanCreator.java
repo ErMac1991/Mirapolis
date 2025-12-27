@@ -284,6 +284,7 @@ public class EnemyHumanCreator extends Unit {
 
     public static void setEnemyHumanItems(EnemyHumanCreator enemy, List<String> itemsToTake){
         List<String> enemyItems = List.of("Пусто", "Пусто", "Пусто", "Пусто");
+        int itemsPointsLeft = enemy.itemsPoints;
 
         if (itemsToTake.size() == 0){
             System.out.println("Нет предметов для распределения");
