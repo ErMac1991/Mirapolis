@@ -284,13 +284,13 @@ public class EnemyHumanCreator extends Unit {
 
     public static void setEnemyHumanItems(EnemyHumanCreator enemy, List<String> itemsToTake){
         List<String> enemyItems = List.of("Пусто", "Пусто", "Пусто", "Пусто");
-        int itemsPointsLeft = enemy.itemsPoints;
+
 
         if (itemsToTake.size() == 0){
             System.out.println("Нет предметов для распределения");
             return;
         }
-
+//todo Убедиться, что в методе назначения предметов противнику просматриваются все предметы из выборки itemsToTake
         for (int i = 0; i < enemyItems.size(); ){
             int itemToTakeNumber = Formulas.randomNumber.nextInt(itemsToTake.size());
             System.out.println("Порядковый номер предмета из выборки: " + itemToTakeNumber + ". Соответствующий предмет: " + itemsToTake.get(itemToTakeNumber));

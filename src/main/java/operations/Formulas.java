@@ -116,46 +116,72 @@ public abstract class Formulas {
 
         List<Items> filteredItems = Items.filterItems(quest, enemyHuman);
         int itemsCount = calculateNumberOfItems(enemyHuman);
-        List<String> itemsToTake = new ArrayList<>(itemsCount);
+        List<String> itemsToTake = new ArrayList<>();
         int jawsLimit = 40 + enemyHuman.getLevel() * 35;
-        int jaws = 0;
+        int jawsToAdd = 0;
+        int jawsToAccount = 0;
+        int itemsPointsLeft = enemyHuman.getItemsPoints();
+        int i = 0;
 
-        for (int i = 0; i < itemsCount; ) {
+        while (i < itemsCount && filteredItems.size()>0) {
             int k = Formulas.randomNumber.nextInt(filteredItems.size());
             System.out.println("Индекс выбранного предмета в отфильрованном листе " + k + ". Соответствующий предмет: " + filteredItems.get(k) + " " + filteredItems.get(k).getItemName());
             if (filteredItems.get(k).equals(Items.JAWS)) {
                 System.out.println("Зачисляем джос");
-                jaws += calculateJaws(enemyHuman);
-                System.out.println("Всего джос: " + jaws + ". Лимит для этого противника: " + jawsLimit);
-                if (jaws > jawsLimit) {
-                    jaws = jawsLimit;
-                    System.out.println("Всего джос: " + jaws + " достигло максимума");
-                    filteredItems.remove(k);
-                }
-            } else {
+                if (Formulas.getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
+                    System.out.println("Зачисление джос прошло проверку вариации " + filteredItems.get(k).getGenerationChance() + "%");
+                    jawsToAdd = calculateJaws(enemyHuman);
 
-                itemsToTake.set(i, "");
-                System.out.println("Создана ячейка под предмет. Проверяем вероятность появления предмета в выборке");
-                if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
-                    itemsToTake.set(i, filteredItems.get(k).getItemName());
-                    System.out.println("Вероятность " + filteredItems.get(k).getGenerationChance() + " сыграла. В выборку попал предмет: " + filteredItems.get(k));
-                    i++;
-
+                    if (jawsToAdd * filteredItems.get(k).getItemPoints()> itemsPointsLeft) {
+                        jawsToAdd = itemsPointsLeft / filteredItems.get(k).getItemPoints();
+                    }
+                    itemsPointsLeft -= jawsToAdd * filteredItems.get(k).getItemPoints();
+                    jawsToAccount += jawsToAdd;
+                    System.out.println("Всего джос: " + jawsToAccount + ". Лимит для этого противника: " + jawsLimit);
                 }
 
-                if (filteredItems.get(k).isUnique()) {
-                    System.out.println("Предмет " + filteredItems.get(k) + " является уникальным");
+                if (jawsToAccount > jawsLimit) {
+                    itemsPointsLeft += (jawsToAccount - jawsLimit) * filteredItems.get(k).getItemPoints();
+                    jawsToAccount = jawsLimit;
+                    System.out.println("Всего джос: " + jawsToAccount + " достигло максимума");
                     filteredItems.remove(k);
-                    System.out.println("Предмет удалён из списка отфильтрованных предметов");
+                }
+            }
+            else {
+
+                if (filteredItems.get(k).getItemPoints()> itemsPointsLeft) {
+                    System.out.println("Количество нераспределённых очков предметов: " + itemsPointsLeft +
+                            ". Предмет " + filteredItems.get(k).getItemName() + " стоимостью " + filteredItems.get(k).getItemPoints() + " не по карману");
+                    filteredItems.remove(k);
+                }
+                else {
+
+                    if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
+                        itemsPointsLeft -= filteredItems.get(k).getItemPoints();
+                        itemsToTake.set(i, filteredItems.get(k).getItemName());
+                        System.out.println("Вероятность " + filteredItems.get(k).getGenerationChance() + " сыграла. " +
+                                "В выборку попал предмет: " + filteredItems.get(k) +
+                                ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
+                        i++;
+
+                        if (filteredItems.get(k).isUnique()) {
+                            System.out.println("Предмет " + filteredItems.get(k) + " является уникальным");
+                            filteredItems.remove(k);
+                            System.out.println("Предмет удалён из списка отфильтрованных предметов");
+
+                        }
+                    }
+
 
                 }
 
             }
         }
-        enemyHuman.setJaws(jaws);
-        System.out.println("Лист выборки предметов до чистки пустых элементов: " + itemsToTake);
-        itemsToTake.removeAll(Arrays.asList(""));
-        System.out.println("Лист выборки предметов после чистки пустых элементов" + itemsToTake);
+        enemyHuman.setJaws(jawsToAccount);
+
+        System.out.println("Джос перечислено: " + enemyHuman.getJaws() +
+                ". Лист выборки предметов: " + itemsToTake +
+                ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
 
         return itemsToTake;
     }
@@ -203,14 +229,18 @@ public abstract class Formulas {
         return (counter + " " + itemName);
     }
 
-    public static int calculateJaws(EnemyHumanCreator enemyHuman) {
+    public static int calculateJaws(EnemyHumanCreator enemyHuman) { // рассчитываем количество джос из выпавшего предмета
         return (20 + enemyHuman.getLevel() * 15 - Formulas.randomNumber.nextInt(enemyHuman.getLevel() * 2 + 11));
 
     }
 
     public static int calculateNumberOfItems(EnemyHumanCreator enemyHuman) {
-        int itemsCount = Formulas.randomNumber.nextInt(enemyHuman.getLevel() / 5 + 1);
+        int itemsCount = Formulas.randomNumber.nextInt(enemyHuman.getLevel()/5 + 1) + enemyHuman.getLevel() / 8;
         itemsCount += Formulas.randomNumber.nextInt(3) - 1;
+
+        if (itemsCount < 0) {
+            itemsCount = 0;
+        }
         return itemsCount;
     }
 
