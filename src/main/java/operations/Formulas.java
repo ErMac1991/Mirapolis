@@ -116,57 +116,75 @@ public abstract class Formulas {
 
         List<Items> filteredItems = Items.filterItems(quest, enemyHuman);
         int itemsCount = calculateNumberOfItems(enemyHuman);
-        List<String> itemsToTake = new ArrayList<>();
+        List<String> enemyItems = new ArrayList<>();
         int jawsLimit = 40 + enemyHuman.getLevel() * 35;
         int jawsToAdd = 0;
         int jawsToAccount = 0;
         int itemsPointsLeft = enemyHuman.getItemsPoints();
         int i = 0;
+        int bagPlaceID = 0;
 
         while (i < itemsCount && filteredItems.size()>0) {
-            int k = Formulas.randomNumber.nextInt(filteredItems.size());
-            System.out.println("Индекс выбранного предмета в отфильрованном листе " + k + ". Соответствующий предмет: " + filteredItems.get(k) + " " + filteredItems.get(k).getItemName());
-            if (filteredItems.get(k).equals(Items.JAWS)) {
+            int filteredItemNumber = Formulas.randomNumber.nextInt(filteredItems.size());
+            System.out.println("Индекс выбранного предмета в отфильрованном листе " + filteredItemNumber + ". Соответствующий предмет: " + filteredItems.get(filteredItemNumber) + " " + filteredItems.get(filteredItemNumber).getItemName());
+            if (filteredItems.get(filteredItemNumber).equals(Items.JAWS)) {
                 System.out.println("Зачисляем джос");
-                if (Formulas.getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
-                    System.out.println("Зачисление джос прошло проверку вариации " + filteredItems.get(k).getGenerationChance() + "%");
+                if (Formulas.getProbableBoolean(filteredItems.get(filteredItemNumber).getGenerationChance())) {
+                    System.out.println("Зачисление джос прошло проверку вариации " + filteredItems.get(filteredItemNumber).getGenerationChance() + "%");
                     jawsToAdd = calculateJaws(enemyHuman);
 
-                    if (jawsToAdd * filteredItems.get(k).getItemPoints()> itemsPointsLeft) {
-                        jawsToAdd = itemsPointsLeft / filteredItems.get(k).getItemPoints();
+                    if (jawsToAdd * filteredItems.get(filteredItemNumber).getItemPoints()> itemsPointsLeft) {
+                        jawsToAdd = itemsPointsLeft / filteredItems.get(filteredItemNumber).getItemPoints();
                     }
-                    itemsPointsLeft -= jawsToAdd * filteredItems.get(k).getItemPoints();
+                    itemsPointsLeft -= jawsToAdd * filteredItems.get(filteredItemNumber).getItemPoints();
                     jawsToAccount += jawsToAdd;
                     System.out.println("Всего джос: " + jawsToAccount + ". Лимит для этого противника: " + jawsLimit);
                 }
 
                 if (jawsToAccount > jawsLimit) {
-                    itemsPointsLeft += (jawsToAccount - jawsLimit) * filteredItems.get(k).getItemPoints();
+                    itemsPointsLeft += (jawsToAccount - jawsLimit) * filteredItems.get(filteredItemNumber).getItemPoints();
                     jawsToAccount = jawsLimit;
                     System.out.println("Всего джос: " + jawsToAccount + " достигло максимума");
-                    filteredItems.remove(k);
+                    filteredItems.remove(filteredItemNumber);
                 }
             }
             else {
 
-                if (filteredItems.get(k).getItemPoints()> itemsPointsLeft) {
+                if (filteredItems.get(filteredItemNumber).getItemPoints() > itemsPointsLeft) { // проверка на то что очков хватает
                     System.out.println("Количество нераспределённых очков предметов: " + itemsPointsLeft +
-                            ". Предмет " + filteredItems.get(k).getItemName() + " стоимостью " + filteredItems.get(k).getItemPoints() + " не по карману");
-                    filteredItems.remove(k);
+                            ". Предмет " + filteredItems.get(filteredItemNumber).getItemName() + " стоимостью " +
+                            filteredItems.get(filteredItemNumber).getItemPoints() + " не по карману");
+                    filteredItems.remove(filteredItemNumber);
                 }
                 else {
 
-                    if (getProbableBoolean(filteredItems.get(k).getGenerationChance())) {
-                        itemsPointsLeft -= filteredItems.get(k).getItemPoints();
-                        itemsToTake.set(i, filteredItems.get(k).getItemName());
-                        System.out.println("Вероятность " + filteredItems.get(k).getGenerationChance() + " сыграла. " +
-                                "В выборку попал предмет: " + filteredItems.get(k) +
+                    if (getProbableBoolean(filteredItems.get(filteredItemNumber).getGenerationChance())) {
+                        itemsPointsLeft -= filteredItems.get(filteredItemNumber).getItemPoints();
+                        System.out.println("Вероятность " + filteredItems.get(filteredItemNumber).getGenerationChance() + " сыграла. " +
+                                "В выборку попал предмет: " + filteredItems.get(filteredItemNumber) +
                                 ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
-                        i++;
+                        //todo перенести проверку содержания предмета в листе в отдельный метод в Checks
+                        if (enemyItems.contains(filteredItems.get(filteredItemNumber).getItemName())){ // проверка на добавление в стек
+                            System.out.println("В листе уже имеется предмет " + filteredItems.get(filteredItemNumber).getItemName() +
+                                    ". Закидываем его в стек. Массив: " + enemyItems);
 
-                        if (filteredItems.get(k).isUnique()) {
-                            System.out.println("Предмет " + filteredItems.get(k) + " является уникальным");
-                            filteredItems.remove(k);
+                            List<String> changedEnemyItems = formItemStacks(enemyItems, filteredItems.get(filteredItemNumber).getItemName());
+
+                            if(enemyItems.equals(changedEnemyItems)){
+                                System.out.println("Массивы равны, значит enemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
+                                filteredItems.remove(filteredItemNumber);
+                            }
+                            System.out.println("Массив после внесения предмета в стек: " + enemyItems);
+                        }
+                        else if (enemyItems.size() < 4){
+                        enemyItems.set(bagPlaceID, filteredItems.get(filteredItemNumber).getItemName());
+                        i++;
+                        bagPlaceID++;
+                        }
+
+                        if (filteredItems.get(filteredItemNumber).isUnique()) {
+                            System.out.println("Предмет " + filteredItems.get(filteredItemNumber) + " является уникальным");
+                            filteredItems.remove(filteredItemNumber);
                             System.out.println("Предмет удалён из списка отфильтрованных предметов");
 
                         }
@@ -180,40 +198,40 @@ public abstract class Formulas {
         enemyHuman.setJaws(jawsToAccount);
 
         System.out.println("Джос перечислено: " + enemyHuman.getJaws() +
-                ". Лист выборки предметов: " + itemsToTake +
+                ". Лист выборки предметов: " + enemyItems +
                 ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
 
-        return itemsToTake;
+        return enemyItems;
     }
 
     // реализовать объединение предметов в стеки
-    public static List<String> formItemStacks(List<String> itemsToTake, String newItem) {
+    public static List<String> formItemStacks(List<String> items, String newItem) {
 
-        List<String> itemsStacked = new ArrayList<>();
         int changedItemIndex = -1;
 
-        for (int k = 0; k < itemsToTake.size(); k++) {
-
-            if (itemsToTake.get(k).contains(newItem)) { // нахождение первого стека предмета в массиве
-                changedItemIndex = k;
-                break;
-            }
-        }
-
-        for (int k = 0; k < itemsToTake.size(); k++) { // нахождение последнего стека предмета в массиве
-            if (itemsToTake.get(k).contains(newItem) && Checks.isItemFullStack(itemsToTake.get(changedItemIndex))) {
+        for (int k = 0; k < items.size(); k++) { // нахождение последнего стека предмета в массиве
+            if (items.get(k).contains(newItem)) {
                 changedItemIndex = k;
             }
         }
 
-        if (Checks.isItemFullStack(itemsToTake.get(changedItemIndex))) {
-            itemsStacked.set(itemsStacked.size(), newItem);
-            changedItemIndex = itemsStacked.size() - 1;
+        if (Checks.isItemFullStack(items.get(changedItemIndex))) {
+            if (items.size() == 4){
+                System.out.println("Последний стек предмета полон, мест под новый стек нет");
+                return items;
+            }
+
+            items.set(items.size(), newItem);
+            System.out.println("Создан новый стек предмета. Массив предметов: " + items);
+
+            return items;
         }
 
-        itemsStacked.set(changedItemIndex, addItemToStack(itemsStacked.get(changedItemIndex)));
+        System.out.println("Найден неполный стек предмета, пополняем его на предмет. Массив предметов до добавления: " + items);
+        items.set(changedItemIndex, addItemToStack(items.get(changedItemIndex)));
+        System.out.println("Стек предмета пополнен. Массив предметов после добавления: " + items);
 
-        return itemsStacked;
+        return items;
     }
 
     public static String addItemToStack(String itemStack) {

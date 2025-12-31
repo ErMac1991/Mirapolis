@@ -294,7 +294,7 @@ public class EnemyHumanCreator extends Unit {
         for (int i = 0; i < enemyItems.size(); ){
             int itemToTakeNumber = Formulas.randomNumber.nextInt(itemsToTake.size());
             System.out.println("Порядковый номер предмета из выборки: " + itemToTakeNumber + ". Соответствующий предмет: " + itemsToTake.get(itemToTakeNumber));
-            if (enemyItems.contains(itemsToTake.get(itemToTakeNumber))){
+            if (enemyItems.contains(itemsToTake.get(itemToTakeNumber))){ // проверка на добавление в стек
                 System.out.println("В Массиве уже имеется предмет " + itemsToTake.get(itemToTakeNumber) + ". Закидываем его в стек. Массив: " + enemyItems);
                 enemyItems = formItemStacks(itemsToTake, itemsToTake.get(itemToTakeNumber));
                 System.out.println("Массив после внесения предмета в стек: " + enemyItems);
