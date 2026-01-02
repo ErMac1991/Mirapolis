@@ -126,7 +126,8 @@ public abstract class Formulas {
 
         while (i < itemsCount && filteredItems.size()>0) {
             int filteredItemNumber = Formulas.randomNumber.nextInt(filteredItems.size());
-            System.out.println("Индекс выбранного предмета в отфильрованном листе " + filteredItemNumber + ". Соответствующий предмет: " + filteredItems.get(filteredItemNumber) + " " + filteredItems.get(filteredItemNumber).getItemName());
+            System.out.println("Индекс выбранного предмета в отфильрованном листе " + filteredItemNumber +
+                    ". Соответствующий предмет: " + filteredItems.get(filteredItemNumber) + " " + filteredItems.get(filteredItemNumber).getItemName());
             if (filteredItems.get(filteredItemNumber).equals(Items.JAWS)) {
                 System.out.println("Зачисляем джос");
                 if (Formulas.getProbableBoolean(filteredItems.get(filteredItemNumber).getGenerationChance())) {
@@ -159,7 +160,6 @@ public abstract class Formulas {
                 else {
 
                     if (getProbableBoolean(filteredItems.get(filteredItemNumber).getGenerationChance())) {
-                        itemsPointsLeft -= filteredItems.get(filteredItemNumber).getItemPoints();
                         System.out.println("Вероятность " + filteredItems.get(filteredItemNumber).getGenerationChance() + " сыграла. " +
                                 "В выборку попал предмет: " + filteredItems.get(filteredItemNumber) +
                                 ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
@@ -174,20 +174,31 @@ public abstract class Formulas {
                                 System.out.println("Массивы равны, значит enemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
                                 filteredItems.remove(filteredItemNumber);
                             }
-                            System.out.println("Массив после внесения предмета в стек: " + enemyItems);
+                            else{
+                                itemsPointsLeft -= filteredItems.get(filteredItemNumber).getItemPoints();
+                                i++;
+                            }
+                            System.out.println("Массив после внесения предмета в стек: " + enemyItems +
+                                    ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
                         }
                         else if (enemyItems.size() < 4){
                         enemyItems.set(bagPlaceID, filteredItems.get(filteredItemNumber).getItemName());
                         i++;
                         bagPlaceID++;
-                        }
 
-                        if (filteredItems.get(filteredItemNumber).isUnique()) {
-                            System.out.println("Предмет " + filteredItems.get(filteredItemNumber) + " является уникальным");
+                            if (filteredItems.get(filteredItemNumber).isUnique()) {
+                                System.out.println("Предмет " + filteredItems.get(filteredItemNumber) + " является уникальным");
+                                filteredItems.remove(filteredItemNumber);
+                                System.out.println("Предмет удалён из списка отфильтрованных предметов");
+
+                            }
+                        }
+                        else{
+                            System.out.println("EnemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
                             filteredItems.remove(filteredItemNumber);
-                            System.out.println("Предмет удалён из списка отфильтрованных предметов");
-
                         }
+
+
                     }
 
 
@@ -276,10 +287,11 @@ public abstract class Formulas {
 
     }
 
-    public static void calculateItemsPoints(EnemyHumanCreator enemyHuman){
+    public static int calculateItemsPoints(EnemyHumanCreator enemyHuman){
         int itemsPoints = Formulas.randomNumber.nextInt(enemyHuman.getLevel() / 2 ) * 10 + 10;
         itemsPoints += Formulas.randomNumber.nextInt(21) - 10;
-        enemyHuman.setItemsPoints(itemsPoints);
+
+        return itemsPoints;
     }
 
     public static void distributeEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста

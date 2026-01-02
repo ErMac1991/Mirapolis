@@ -276,7 +276,7 @@ public class EnemyHumanCreator extends Unit {
             statsToDistribute.remove(counter);
         System.out.println("Сила противника человека " + enemyHuman.getAttentiveness() + " передано");
 
-        Formulas.calculateItemsPoints(enemyHuman); // начисляет очки предметов
+        enemyHuman.setItemsPoints(Formulas.calculateItemsPoints(enemyHuman)); // начисляет очки предметов
 
         setEnemyHumanItems(enemyHuman, calculateEnemyItems(quest, enemyHuman));
 
@@ -290,27 +290,11 @@ public class EnemyHumanCreator extends Unit {
             System.out.println("Нет предметов для распределения");
             return;
         }
-//todo Убедиться, что в методе назначения предметов противнику просматриваются все предметы из выборки itemsToTake
-        for (int i = 0; i < enemyItems.size(); ){
-            int itemToTakeNumber = Formulas.randomNumber.nextInt(itemsToTake.size());
-            System.out.println("Порядковый номер предмета из выборки: " + itemToTakeNumber + ". Соответствующий предмет: " + itemsToTake.get(itemToTakeNumber));
-            if (enemyItems.contains(itemsToTake.get(itemToTakeNumber))){ // проверка на добавление в стек
-                System.out.println("В Массиве уже имеется предмет " + itemsToTake.get(itemToTakeNumber) + ". Закидываем его в стек. Массив: " + enemyItems);
-                enemyItems = formItemStacks(itemsToTake, itemsToTake.get(itemToTakeNumber));
-                System.out.println("Массив после внесения предмета в стек: " + enemyItems);
-                itemsToTake.remove(itemToTakeNumber);
-            }
-            else {
-                enemyItems.set(i, itemsToTake.get(itemToTakeNumber));
-                System.out.println("Массив после добавления нового предмета: " + enemyItems);
-                itemsToTake.remove(itemToTakeNumber);
-                i++;
-            }
 
-            if (itemsToTake.size() == 0){
-                System.out.println("Предметы для распределения закончились");
-                return;
-            }
+        for (int i = 0; i < itemsToTake.size(); i++){
+
+                enemyItems.set(i, itemsToTake.get(i));
+                System.out.println("Массив после добавления нового предмета: " + enemyItems);
 
         }
 
