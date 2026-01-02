@@ -22,10 +22,10 @@ public class QuestConstructor {
     boolean isKeyObject; // имеется ли ключевой объект
     int keyStageNumber; // Порядковый номер ключевого этапа
     int difficultyRatio; // коэффициент сложности квеста
-    int QuestEnemyPoints; // очки противников на квест
-    int QuestObjectsPoints; // очки интерактивных объектов на квест
-    int QuestSystemsPoints; // очки охранных систем на квест
-    int QuestItemsPoints; // очки предметов лута на квест
+    int questEnemyPoints; // очки противников на квест
+    int questObjectsPoints; // очки интерактивных объектов на квест
+    int questSystemsPoints; // очки охранных систем на квест
+    int questItemsPoints; // очки предметов лута на квест
     int royalty; // Награда за выполнение задания
     int deposit; // Взнос за взятие квеста
     LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
@@ -115,27 +115,27 @@ public class QuestConstructor {
         return questCounterFile;
     }
     public int getQuestEnemyPoints() {
-        return QuestEnemyPoints;
+        return questEnemyPoints;
     }
-    public void setQuestEnemyPoints(int questEnemyPoints) {        this.QuestEnemyPoints = questEnemyPoints;
+    public void setQuestEnemyPoints(int questEnemyPoints) {        this.questEnemyPoints = questEnemyPoints;
     }
     public int getQuestObjectsPoints() {
-        return QuestObjectsPoints;
+        return questObjectsPoints;
     }
     public void setQuestObjectsPoints(int questObjectsPoints) {
-        QuestObjectsPoints = questObjectsPoints;
+        this.questObjectsPoints = questObjectsPoints;
     }
     public int getQuestSystemsPoints() {
-        return QuestSystemsPoints;
+        return questSystemsPoints;
     }
     public void setQuestSystemsPoints(int questSystemsPoints) {
-        QuestSystemsPoints = questSystemsPoints;
+        this.questSystemsPoints = questSystemsPoints;
     }
     public int getQuestItemsPoints() {
-        return QuestItemsPoints;
+        return questItemsPoints;
     }
     public void setQuestItemsPoints(int questItemsPoints) {
-        QuestItemsPoints = questItemsPoints;
+        this.questItemsPoints = questItemsPoints;
     }
     public boolean isKeyObject() {
         return isKeyObject;
@@ -197,6 +197,7 @@ public class QuestConstructor {
     public static void generateReceivedQuest(QuestConstructor quest, CharacterCreator character) throws IOException { // Создаём содержание взятого квеста
 
         quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
+        quest.setQuestEnemyPoints(Formulas.countEnemiesPoints(quest));
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
 
     }

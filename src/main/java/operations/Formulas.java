@@ -104,11 +104,12 @@ public abstract class Formulas {
         return level;
     }
 
-    public static void countEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
+    public static int countEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
 
-        quest.setQuestEnemyPoints(quest.getQuestLevel() * 150 +
+         int questEnemiesPoints = quest.getQuestLevel() * 150 +
                 quest.getDifficultyRatio() * (100 + randomNumber.nextInt(51)) +
-                quest.getStagesInQuest() * 50);
+                quest.getStagesInQuest() * 50;
+        return questEnemiesPoints;
 
     }
 
@@ -280,7 +281,7 @@ public abstract class Formulas {
 
 
     //todo придумать формулу получения числа соперников на этапе
-    public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для квеста
+    public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для этапа
 
         // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и условия является ли этап ключевым
         stage.setStageEnemiesPoints(0);

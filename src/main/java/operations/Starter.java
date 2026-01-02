@@ -88,6 +88,7 @@ public class Starter {
                 System.out.println("Создан файл принятого квеста");
                 StageConstructor.generateAllStages(quest,character,stage);
 
+//todo прописать очередь методов для генерации взятого квеста
                 System.out.println("Квест принят");
                 // Удаление вакантного квеста после взятия
                 break;

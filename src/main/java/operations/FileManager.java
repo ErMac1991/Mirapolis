@@ -219,7 +219,7 @@ public class FileManager {
                 "\"questDifficulty\":\"" + quest.getQuestDifficulty() + "\"," +
                 "\"difficultyRatio\":" + quest.getDifficultyRatio() + "," +
                 "\"stagesInQuest\":" + quest.getStagesInQuest() + "," +
-                "\"enemyPoints\":" + quest.getQuestEnemyPoints() + ",";
+                "\"questEnemyPoints\":" + quest.getQuestEnemyPoints() + ",";
 
         if(quest.isKeyObject()){jsonText += "\"keyStageNumber\":" + quest.getKeyStageNumber() + ",";}
         jsonText += "\"questGenerationDateTime\":\"" + quest.getQuestGenerationDateTime() + "\"," +
