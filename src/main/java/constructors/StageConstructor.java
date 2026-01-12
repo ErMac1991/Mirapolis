@@ -1,6 +1,7 @@
 package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import enums.QuestValuesVariants;
 import enums.StageTypes;
 import operations.Checks;
 import operations.FileManager;
@@ -129,6 +130,9 @@ public class StageConstructor {
     }
 
     public  static void generateAllStages(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException {
+        String[] stagesStructure = new String[quest.getStagesInQuest()];
+        stagesStructure = QuestValuesVariants.calculateQuestStructure(quest, stagesStructure);
+
         for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
             StageConstructor.generateStageOfQuest(quest, character, stage, i);
             System.out.println("Этап " + i + " сгенерирован");

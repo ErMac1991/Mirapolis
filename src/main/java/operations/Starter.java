@@ -84,9 +84,9 @@ public class Starter {
                 // Проверка на возможность взять квест по уровню (?)
                 quest = QuestConstructor.chooseQuest(objectMapper, quest);
                 System.out.println("Выбран вакантный квест " + quest.getQuestID());
-                QuestConstructor.generateReceivedQuest(quest, character);
+                QuestConstructor.generateReceivedQuest(quest, character); // создаём и заполняем файл принятого квеста
                 System.out.println("Создан файл принятого квеста");
-                StageConstructor.generateAllStages(quest,character,stage);
+                StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем все файлы этапов квеста
 
 //todo прописать очередь методов для генерации взятого квеста
                 System.out.println("Квест принят");

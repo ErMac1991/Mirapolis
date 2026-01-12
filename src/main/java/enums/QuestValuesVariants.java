@@ -1,5 +1,8 @@
 package enums;
 
+import constructors.QuestConstructor;
+import operations.Formulas;
+
 public enum QuestValuesVariants {
     ROOKIE("Для новичков", 2, 2,2,0),
     LIGHTLOW("Лёгкий", 3, 2,3,1),
@@ -17,7 +20,7 @@ public enum QuestValuesVariants {
     int constantValue;
     int minKeyStage; // минимальный возможный ключевой этап
     int maxIntroStage; // максимальный возможный входной этап
-    QuestValuesVariants[] questValuesVariants;
+
 
     public String getQuestDifficulty() {
         return questDifficulty;
@@ -43,5 +46,17 @@ public enum QuestValuesVariants {
         this.maxIntroStage = maxIntroStage;
     }
 
+    //todo завершить генерацию структуру квеста по этапам
+    public static String[] calculateQuestStructure(QuestConstructor quest, String[] stagesStructure){
+        int introStages;
+        int keyStage;
+
+        introStages = Formulas.randomNumber.nextInt(QuestValuesVariants.values()[quest.getDifficultyRatio()].getMaxIntroStage() + 1);
+        if (quest.isKeyObject()){
+            keyStage = quest.getKeyStageNumber();
+        }
+
+        return stagesStructure;
+    }
 
 }
