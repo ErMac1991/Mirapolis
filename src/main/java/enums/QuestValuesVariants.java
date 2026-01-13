@@ -49,11 +49,20 @@ public enum QuestValuesVariants {
     //todo завершить генерацию структуру квеста по этапам
     public static String[] calculateQuestStructure(QuestConstructor quest, String[] stagesStructure){
         int introStages;
-        int keyStage;
+
+        for(int i = 0; i < stagesStructure.length; i++){
+            stagesStructure[i] = "";
+        }
 
         introStages = Formulas.randomNumber.nextInt(QuestValuesVariants.values()[quest.getDifficultyRatio()].getMaxIntroStage() + 1);
+
+        for(int i = 0; i <= introStages; i++){
+            stagesStructure[i] = "Интро";
+        }
+
+
         if (quest.isKeyObject()){
-            keyStage = quest.getKeyStageNumber();
+            stagesStructure[quest.getKeyStageNumber()] = "Ключевой";
         }
 
         return stagesStructure;
