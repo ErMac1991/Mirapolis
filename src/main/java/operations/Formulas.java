@@ -302,10 +302,94 @@ public abstract class Formulas {
 
 
     //todo придумать формулу вычисляющую ключевой этап квеста
-    public void countKeyStage(QuestConstructor quest) {
+    public void defineKeyStage(QuestConstructor quest) {
 
 
     }
+
+    public static String[] calculateOpenSpace(QuestConstructor quest) {
+        int stagesInQuest = quest.getStagesInQuest();
+        String[] spaceStructure = new String[stagesInQuest];
+        int introOpenSpaces;
+        int stageCounter;
+
+        if (quest.isQuestOpenSpace()){
+            System.out.println("Квест под открытым небом");
+            for (int i = 0; i < stagesInQuest; i++){
+                spaceStructure[i] = "Улица";
+            }
+            return spaceStructure;
+        }
+
+        stageCounter = 0;
+        introOpenSpaces = Formulas.randomNumber.nextInt(stagesInQuest/3 + 1);
+        for (int i = 0; i < introOpenSpaces; i++){
+            spaceStructure[i] = "Улица";
+            stageCounter++;
+            System.out.println("Добавлена интро-улица");
+        }
+        System.out.println("Структура квеста " + spaceStructure);
+
+        if (stagesInQuest <= 6){
+            System.out.println("Размер квеста " + stagesInQuest + "<= 6");
+            for (int i = stageCounter; i < stagesInQuest; i++){
+                spaceStructure[i] = "Здание";
+            }
+            if (stagesInQuest >= 5 && Formulas.getProbableBoolean(5)){
+                spaceStructure[stagesInQuest-1] = "Задний двор";
+                System.out.println("Сгенерирован задний двор");
+            }
+            System.out.println("Структура квеста " + spaceStructure);
+            return spaceStructure;
+        }
+
+        for (int i = stageCounter; i < stageCounter + 3; i++){
+            spaceStructure[i] = "Здание";
+        }
+        stageCounter += 3;
+
+            for ( ; stageCounter < stagesInQuest - 3; stageCounter++){
+                if (Formulas.getProbableBoolean(10)) {
+                    spaceStructure[stageCounter] = "Внутренний двор";
+                    System.out.println("Сгенерирован внутренний двор");
+                    System.out.println("Структура квеста " + spaceStructure);
+
+                    for (int k = stageCounter +1 ; k < stagesInQuest; k++){
+                        spaceStructure[k] = "Здание";
+                        stageCounter++;
+                    }
+                    System.out.println("Структура квеста " + spaceStructure);
+
+                    if (stagesInQuest > stageCounter && Formulas.getProbableBoolean(5)){
+                        spaceStructure[stagesInQuest-1] = "Задний двор";
+                        System.out.println("Сгенерирован задний двор");
+                    }
+                    System.out.println("Структура квеста " + spaceStructure);
+                    return spaceStructure;
+
+                }
+                else{
+                spaceStructure[stageCounter] = "Здание";
+                    System.out.println("Структура квеста " + spaceStructure);
+                }
+
+
+        }
+
+        for ( ; stageCounter < stagesInQuest; stageCounter++){
+            spaceStructure[stageCounter] = "Здание";
+        }
+
+        if (Formulas.getProbableBoolean(5)){
+            spaceStructure[stagesInQuest-1] = "Задний двор";
+            System.out.println("Сгенерирован задний двор");
+        }
+
+        System.out.println("Структура квеста " + spaceStructure);
+        return spaceStructure;
+
+    }
+
 
 
 }
