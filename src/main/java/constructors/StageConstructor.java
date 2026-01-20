@@ -1,7 +1,7 @@
 package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import enums.StageTypes;
+import enums.StageLocations;
 import operations.Checks;
 import operations.FileManager;
 import operations.Formulas;
@@ -9,7 +9,6 @@ import operations.Formulas;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class StageConstructor {
     String stageName; // название территории этапа
@@ -19,13 +18,9 @@ public class StageConstructor {
     boolean isStageOpenSpace; // этап под открытым небом или в помещении
     boolean isKeyStage; // содержит ли этап ключевой интерактивный объект
 
-    List<String> objectsOnStage; // объекты на этапе
     int stageObjectsPoints;
-    List<String> enemiesOnStage; // противники на этапе
     int stageEnemiesPoints;
-    List<String> systemsOnStage; // системы охраны на этапе
     int stageSystemsPoints;
-    List<String> itemsOnStage; // системы охраны на этапе
     int stageItemsPoints;
 
     public String getStageName() {
@@ -58,24 +53,7 @@ public class StageConstructor {
     public void setStageOpenSpace(boolean stageOpenSpace) {
         this.isStageOpenSpace = stageOpenSpace;
     }
-    public List<String> getObjectsOnStage() {
-        return objectsOnStage;
-    }
-    public void setObjectsOnStage(List<String> objectsOnStage) {
-        this.objectsOnStage = objectsOnStage;
-    }
-    public List<String> getEnemiesOnStage() {
-        return enemiesOnStage;
-    }
-    public void setEnemiesOnStage(List<String> enemiesOnStage) {
-        this.enemiesOnStage = enemiesOnStage;
-    }
-    public List<String> getSystemsOnStage() {
-        return systemsOnStage;
-    }
-    public void setSystemsOnStage(List<String> systemsOnStage) {
-        this.systemsOnStage = systemsOnStage;
-    }
+
     public int getStageObjectsPoints() {
         return stageObjectsPoints;
     }
@@ -94,12 +72,7 @@ public class StageConstructor {
     public void setStageSystemsPoints(int stageSystemsPoints) {
         this.stageSystemsPoints = stageSystemsPoints;
     }
-    public List<String> getItemsOnStage() {
-        return itemsOnStage;
-    }
-    public void setItemsOnStage(List<String> itemsOnStage) {
-        this.itemsOnStage = itemsOnStage;
-    }
+
     public int getStageItemsPoints() {
         return stageItemsPoints;
     }
@@ -130,25 +103,22 @@ public class StageConstructor {
 
     public  static void generateAllStages(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException {
         String[][] stagesStructure = new String[2][quest.getStagesInQuest()];
-        stagesStructure = Formulas.calculateQuestStructure(quest, stagesStructure);
+        stagesStructure = Formulas.calculateStagesStructure(quest, stagesStructure);
 
         for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
 
             // не удалять
             stage.setStageNumber(i);
             stage.setKeyStage(false);
-            stage.setObjectsOnStage(null);
             stage.setStageObjectsPoints(0);
-            stage.setEnemiesOnStage(null);
             stage.setStageEnemiesPoints(0);
-            stage.setSystemsOnStage(null);
             stage.setStageSystemsPoints(0);
 
-            StageTypes.chooseLocation(quest, stage, stagesStructure[1][i], stagesStructure[2][i]);
-            stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
+            StageLocations.chooseLocation(quest, stage, stagesStructure[1][i], stagesStructure[2][i]);
 
             // todo создать метод расчёта параметров этапа
-            Formulas.calculateStageParameters(quest, stage);
+            Formulas.calculateStagesParameters(quest, stage);
+
             FileManager.fillPojoToJsonFile(quest, character, stage);
             System.out.println("Этап " + i + " сгенерирован");
         }

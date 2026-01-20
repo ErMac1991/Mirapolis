@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public enum StageTypes {
+public enum StageLocations {
 
     ABSTRACTROOM(
             "Комната",
@@ -64,7 +64,7 @@ public enum StageTypes {
         return minDifficultyRatio;
     }
 
-    StageTypes(String stageName, int minStageSize, int maxStageSize, boolean isOpenSpace, boolean isCanBeIntro, int minDifficultyRatio) {
+    StageLocations(String stageName, int minStageSize, int maxStageSize, boolean isOpenSpace, boolean isCanBeIntro, int minDifficultyRatio) {
         this.stageName = stageName;
         this.minStageSize = minStageSize;
         this.maxStageSize = maxStageSize;
@@ -76,15 +76,16 @@ public enum StageTypes {
     public static void chooseLocation(QuestConstructor quest, StageConstructor stage, String stageStatus, String spaceStatus){ // выбирает подходящий тип для сгенерированного квеста
         //todo придумать как рассчитывать и генерировать структуру квестов по этапам и как заполнять этапы помещениями
 
-        Stream<StageTypes> filteredStageTypes = Arrays.stream(StageTypes.values());
-        List<StageTypes> filteredStageTypesList;
+        Stream<StageLocations> filteredStageTypes = Arrays.stream(StageLocations.values());
+        List<StageLocations> filteredStageLocationsList;
 
-        StageTypes chosenLocation;
+        StageLocations chosenLocation;
 
+        filteredStageTypes.filter(StageLocations -> StageLocations.getMinDifficultyRatio() <= quest.getDifficultyRatio());
 
         switch (stageStatus){
             case "Интро":
-                filteredStageTypes.filter(StageTypes -> StageTypes.isCanBeIntro());
+                filteredStageTypes.filter(StageLocations -> StageLocations.isCanBeIntro());
                 break;
             case "Ключевой":
                 stage.setKeyStage(true);
@@ -97,10 +98,10 @@ public enum StageTypes {
 
         switch (spaceStatus){
             case "Улица":
-                filteredStageTypes.filter(StageTypes -> StageTypes.isOpenSpace());
+                filteredStageTypes.filter(StageLocations -> StageLocations.isOpenSpace());
                 break;
             case "Здание":
-                filteredStageTypes.filter(StageTypes -> !StageTypes.isOpenSpace());
+                filteredStageTypes.filter(StageLocations -> !StageLocations.isOpenSpace());
                 break;
 
             default:
@@ -108,16 +109,20 @@ public enum StageTypes {
                 break;
         }
 
-        filteredStageTypes.filter(StageTypes -> StageTypes.getMinDifficultyRatio() <= quest.getDifficultyRatio());
 
-        filteredStageTypesList = filteredStageTypes.collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих локаций: " + filteredStageTypesList);
 
-        chosenLocation = filteredStageTypesList.get(Formulas.randomNumber.nextInt(filteredStageTypesList.size()));
+        filteredStageLocationsList = filteredStageTypes.collect(Collectors.toList()); // Собираем в список
+        System.out.println("Список подходящих локаций: " + filteredStageLocationsList);
+
+        chosenLocation = filteredStageLocationsList.get(Formulas.randomNumber.nextInt(filteredStageLocationsList.size()));
         System.out.println("Выбранная локация: " + chosenLocation);
 
         stage.setStageName(chosenLocation.getStageName());
+       // stage.setStageSize(Formulas.calculateStageSize(chosenLocation));
         stage.setStageSize(Formulas.calculateStageSize(chosenLocation));
+        System.out.println("Назначена локация: " + stage.getStageName() +
+                " за номером: " + stage.getStageNumber() +
+                " и размером: " + stage.getStageSize());
 
     }
 

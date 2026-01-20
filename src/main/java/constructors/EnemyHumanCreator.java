@@ -13,7 +13,6 @@ import java.util.List;
 import static constructors.EnemyMachineCreator.setEnemyMachineParameters;
 import static enums.Enemies.filterEnemies;
 import static operations.Formulas.calculateEnemyItems;
-import static operations.Formulas.formItemStacks;
 
 public class EnemyHumanCreator extends Unit {
     int enemyHumanID;
@@ -245,7 +244,7 @@ public class EnemyHumanCreator extends Unit {
 
     public static void setEnemyHumanParameters(QuestConstructor quest, EnemyHumanCreator enemyHuman, Enemies enemyUnit) { // Заполняем Pojo противника человека
 
-        List<Integer> statsToDistribute = Formulas.countStatsFromLevel(enemyHuman);
+        List<Integer> statsToDistribute = Formulas.calculateStatsFromLevel(enemyHuman);
         int counter;
 
 //todo Заполнить параметры противника человека И/ИЛИ киборга

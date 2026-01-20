@@ -7,16 +7,42 @@ import constructors.StageConstructor;
 import enums.Items;
 import enums.QuestTypes;
 import enums.QuestValuesVariants;
-import enums.StageTypes;
+import enums.StageLocations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public abstract class Formulas {
 
     public static Random randomNumber = new Random();
+
+// УНИВЕРСАЛЬНЫЕ ВЫЧИСЛЕНИЯ
+
+    public static boolean getProbableBoolean(int probabilityPercent) {
+        if (!Checks.isRightPercent(probabilityPercent)) {
+            System.out.println("Ошибка проверки на правильное указание процента");
+            return false;
+        }
+
+        if ((randomNumber.nextInt(100) + 1) <= probabilityPercent) {
+            return true;
+        }
+
+        return false;
+    }
+
+// РАСЧЕТЫ ПЕРСОНАЖА
+
+    public static void calculateLevelFromStats(CharacterCreator character) {
+        //todo адаптировать формулу получения уровня из статов под класс персонажа
+        character.setLevel((character.getAttentiveness() + character.getAttentivenessMod() +
+                character.getEndurance() + character.getEnduranceMod() +
+                character.getStrength() + character.getStrengthMod() +
+                character.getReaction() + character.getReactionMod()) / 4);
+    }
+
+// РАСЧЕТЫ КВЕСТОВ
 
     public static void calculateQuestParameters(QuestConstructor quest) {
 
@@ -53,28 +79,153 @@ public abstract class Formulas {
 
     }
 
-    public static boolean getProbableBoolean(int probabilityPercent) {
-        if (!Checks.isRightPercent(probabilityPercent)) {
-            System.out.println("Ошибка проверки на правильное указание процента");
-            return false;
+    public static String[] calculateOpenSpace(QuestConstructor quest) {
+        int stagesInQuest = quest.getStagesInQuest();
+        String[] spaceStructure = new String[stagesInQuest];
+        int introOpenSpaces;
+        int stageCounter;
+
+        if (quest.isQuestOpenSpace()){
+            System.out.println("Квест под открытым небом");
+            for (int i = 0; i < stagesInQuest; i++){
+                spaceStructure[i] = "Улица";
+            }
+            return spaceStructure;
         }
 
-        if ((randomNumber.nextInt(100) + 1) <= probabilityPercent) {
-            return true;
+        stageCounter = 0;
+        introOpenSpaces = Formulas.randomNumber.nextInt(stagesInQuest/3 + 1);
+        for (int i = 0; i < introOpenSpaces; i++){
+            spaceStructure[i] = "Улица";
+            stageCounter++;
+            System.out.println("Добавлена интро-улица");
+        }
+        System.out.println("Структура квеста " + spaceStructure);
+
+        if (stagesInQuest <= 6){
+            System.out.println("Размер квеста " + stagesInQuest + "<= 6");
+            for (int i = stageCounter; i < stagesInQuest; i++){
+                spaceStructure[i] = "Здание";
+            }
+            if (stagesInQuest >= 5 && Formulas.getProbableBoolean(5)){
+                spaceStructure[stagesInQuest-1] = "Задний двор";
+                System.out.println("Сгенерирован задний двор");
+            }
+            System.out.println("Структура квеста " + spaceStructure);
+            return spaceStructure;
         }
 
-        return false;
+        for (int i = stageCounter; i < stageCounter + 3; i++){
+            spaceStructure[i] = "Здание";
+        }
+        stageCounter += 3;
+
+        for ( ; stageCounter < stagesInQuest - 3; stageCounter++){
+            if (Formulas.getProbableBoolean(10)) {
+                spaceStructure[stageCounter] = "Внутренний двор";
+                System.out.println("Сгенерирован внутренний двор");
+                System.out.println("Структура квеста " + spaceStructure);
+
+                for (int k = stageCounter +1 ; k < stagesInQuest; k++){
+                    spaceStructure[k] = "Здание";
+                    stageCounter++;
+                }
+                System.out.println("Структура квеста " + spaceStructure);
+
+                if (stagesInQuest > stageCounter && Formulas.getProbableBoolean(5)){
+                    spaceStructure[stagesInQuest-1] = "Задний двор";
+                    System.out.println("Сгенерирован задний двор");
+                }
+                System.out.println("Структура квеста " + spaceStructure);
+                return spaceStructure;
+
+            }
+            else{
+                spaceStructure[stageCounter] = "Здание";
+                System.out.println("Структура квеста " + spaceStructure);
+            }
+
+
+        }
+
+        for ( ; stageCounter < stagesInQuest; stageCounter++){
+            spaceStructure[stageCounter] = "Здание";
+        }
+
+        if (Formulas.getProbableBoolean(5)){
+            spaceStructure[stagesInQuest-1] = "Задний двор";
+            System.out.println("Сгенерирован задний двор");
+        }
+
+        System.out.println("Структура квеста " + spaceStructure);
+        return spaceStructure;
+
     }
 
-    public static void calculateLevelFromStats(CharacterCreator character) {
-        //todo адаптировать формулу получения уровня из статов под класс персонажа
-        character.setLevel((character.getAttentiveness() + character.getAttentivenessMod() +
-                character.getEndurance() + character.getEnduranceMod() +
-                character.getStrength() + character.getStrengthMod() +
-                character.getReaction() + character.getReactionMod()) / 4);
+
+// РАСЧЕТЫ ЭТАПОВ
+
+    public static void calculateStagesParameters(QuestConstructor quest, StageConstructor stage) {
+        int[] enemiesPoints = new int[quest.getStagesInQuest()];
+        int[] systemsPoints = new int[quest.getStagesInQuest()];
+        int[] objectsPoints = new int[quest.getStagesInQuest()];
+        Formulas.distributeEnemiesPoints(quest);
+        Formulas.distributeSystemsPoints(quest);
+        Formulas.distributeObjectsPoints(quest);
+        stage.setStageObjectsPoints(0);
+        stage.setStageEnemiesPoints(0);
+        stage.setStageSystemsPoints(0);
+        stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
+
+
     }
 
-    public static List<Integer> countStatsFromLevel(EnemyHumanCreator enemyHuman) {
+    public static int calculateStageSize(StageLocations chosenLocation) {
+        int stageSize;
+        stageSize = Formulas.randomNumber.nextInt(chosenLocation.getMaxStageSize() - chosenLocation.getMinStageSize()+1) +
+                chosenLocation.getMinStageSize();
+        return stageSize;
+    }
+
+    public static int defineKeyStage(QuestConstructor quest, QuestValuesVariants[] questValuesVariants) {
+        int keyStageNumber = Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
+                quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
+                questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage();
+        return keyStageNumber;
+
+    }
+
+    public static String[][] calculateStagesStructure(QuestConstructor quest, String[][] stagesStructure){
+        int introStages;
+        String[] typeStructure = new String[quest.getStagesInQuest()];
+        String[] spaceStructure = Formulas.calculateOpenSpace(quest);
+
+        for(int i = 0; i < stagesStructure.length; i++){
+            typeStructure[i] = "";
+        }
+
+        introStages = Formulas.randomNumber.nextInt(QuestValuesVariants.values()[quest.getDifficultyRatio()].getMaxIntroStage() + 1);
+
+        for(int i = 0; i <= introStages; i++){
+            typeStructure[i] = "Интро";
+        }
+
+        if (quest.isKeyObject()){
+            typeStructure[quest.getKeyStageNumber()] = "Ключевой";
+        }
+        System.out.println("Типовая структура квеста: " + typeStructure);
+        System.out.println("Пространственная структура квеста: " + spaceStructure);
+
+        stagesStructure = new String[][]{typeStructure, spaceStructure};
+        System.out.println("Двухмерный массив структуры квеста: " + stagesStructure);
+
+        return stagesStructure;
+    }
+
+
+// РАСЧЕТЫ СОПЕРНИКОВ
+
+    public static List<Integer> calculateStatsFromLevel(EnemyHumanCreator enemyHuman) {
 
         int statsPointsLeft = enemyHuman.getLevel() * 4;
         List<Integer> statsMassive = new ArrayList<>();
@@ -103,9 +254,9 @@ public abstract class Formulas {
         return level;
     }
 
-    public static int countEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
+    public static int calculateEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
 
-         int questEnemiesPoints = quest.getQuestLevel() * 150 +
+        int questEnemiesPoints = quest.getQuestLevel() * 150 +
                 quest.getDifficultyRatio() * (100 + randomNumber.nextInt(51)) +
                 quest.getStagesInQuest() * 50;
         return questEnemiesPoints;
@@ -182,9 +333,9 @@ public abstract class Formulas {
                                     ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
                         }
                         else if (enemyItems.size() < 4){
-                        enemyItems.set(bagPlaceID, filteredItems.get(filteredItemNumber).getItemName());
-                        i++;
-                        bagPlaceID++;
+                            enemyItems.set(bagPlaceID, filteredItems.get(filteredItemNumber).getItemName());
+                            i++;
+                            bagPlaceID++;
 
                             if (filteredItems.get(filteredItemNumber).isUnique()) {
                                 System.out.println("Предмет " + filteredItems.get(filteredItemNumber) + " является уникальным");
@@ -215,7 +366,55 @@ public abstract class Formulas {
         return enemyItems;
     }
 
-    // реализовать объединение предметов в стеки
+    public static int calculateJaws(EnemyHumanCreator enemyHuman) { // рассчитываем количество джос из выпавшего предмета
+        return (20 + enemyHuman.getLevel() * 15 - Formulas.randomNumber.nextInt(enemyHuman.getLevel() * 2 + 11));
+
+    }
+
+    public static int calculateNumberOfItems(EnemyHumanCreator enemyHuman) {
+        int itemsCount = Formulas.randomNumber.nextInt(enemyHuman.getLevel()/5 + 1) + enemyHuman.getLevel() / 8;
+        itemsCount += Formulas.randomNumber.nextInt(3) - 1;
+
+        if (itemsCount < 0) {
+            itemsCount = 0;
+        }
+        return itemsCount;
+    }
+
+    //todo придумать формулу получения числа соперников на этапе
+    public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для этапа
+
+        // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и условия является ли этап ключевым
+        stage.setStageEnemiesPoints(0);
+
+    }
+
+    public static int calculateItemsPoints(EnemyHumanCreator enemyHuman){
+        int itemsPoints = Formulas.randomNumber.nextInt(enemyHuman.getLevel() / 2 ) * 10 + 10;
+        itemsPoints += Formulas.randomNumber.nextInt(21) - 10;
+
+        return itemsPoints;
+    }
+
+    public static void distributeEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
+        int[] enemiesPoints = new int[quest.getStagesInQuest()];
+    }
+
+// РАСЧЕТЫ СИСТЕМ ОХРАНЫ
+
+    public static void distributeSystemsPoints(QuestConstructor quest) { // вычисляем количество очков псистем охраны для квеста
+    int[] systemsPoints = new int[quest.getStagesInQuest()];
+}
+
+// РАСЧЕТЫ ИНТЕРАКТИВНЫХ ОБЪЕКТОВ
+
+    public static void distributeObjectsPoints(QuestConstructor quest) { // вычисляем количество очков интерактивных объектов для квеста
+        int[] objectsPoints = new int[quest.getStagesInQuest()];
+    }
+
+
+// РАСЧЕТЫ ПРЕДМЕТОВ
+
     public static List<String> formItemStacks(List<String> items, String newItem) {
 
         int changedItemIndex = -1;
@@ -257,177 +456,6 @@ public abstract class Formulas {
 
         return (counter + " " + itemName);
     }
-
-    public static int calculateJaws(EnemyHumanCreator enemyHuman) { // рассчитываем количество джос из выпавшего предмета
-        return (20 + enemyHuman.getLevel() * 15 - Formulas.randomNumber.nextInt(enemyHuman.getLevel() * 2 + 11));
-
-    }
-
-    public static int calculateNumberOfItems(EnemyHumanCreator enemyHuman) {
-        int itemsCount = Formulas.randomNumber.nextInt(enemyHuman.getLevel()/5 + 1) + enemyHuman.getLevel() / 8;
-        itemsCount += Formulas.randomNumber.nextInt(3) - 1;
-
-        if (itemsCount < 0) {
-            itemsCount = 0;
-        }
-        return itemsCount;
-    }
-
-    public static void calculateStageParameters(QuestConstructor quest, StageConstructor stage) {
-
-
-    }
-
-    public static int calculateStageSize(StageTypes chosenLocation) {
-        int stageSize;
-        stageSize = Formulas.randomNumber.nextInt(chosenLocation.getMaxStageSize() - chosenLocation.getMinStageSize()+1) +
-                chosenLocation.getMinStageSize();
-        return stageSize;
-    }
-
-
-    //todo придумать формулу получения числа соперников на этапе
-    public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для этапа
-
-        // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и условия является ли этап ключевым
-        stage.setStageEnemiesPoints(0);
-
-    }
-
-    public static int calculateItemsPoints(EnemyHumanCreator enemyHuman){
-        int itemsPoints = Formulas.randomNumber.nextInt(enemyHuman.getLevel() / 2 ) * 10 + 10;
-        itemsPoints += Formulas.randomNumber.nextInt(21) - 10;
-
-        return itemsPoints;
-    }
-
-    public static void distributeEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
-// Сначала создать файлы всех этапов квеста, содержащие размер этапа, порядковый номера этапа, и условие является ли этап ключевым
-        int[] enemiesPoints = new int[quest.getStagesInQuest()];
-    }
-
-
-    //todo придумать формулу вычисляющую ключевой этап квеста
-    public static int defineKeyStage(QuestConstructor quest, QuestValuesVariants[] questValuesVariants) {
-        int keyStageNumber = Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
-                quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
-                questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage();
-        return keyStageNumber;
-
-    }
-
-    public static String[] calculateOpenSpace(QuestConstructor quest) {
-        int stagesInQuest = quest.getStagesInQuest();
-        String[] spaceStructure = new String[stagesInQuest];
-        int introOpenSpaces;
-        int stageCounter;
-
-        if (quest.isQuestOpenSpace()){
-            System.out.println("Квест под открытым небом");
-            for (int i = 0; i < stagesInQuest; i++){
-                spaceStructure[i] = "Улица";
-            }
-            return spaceStructure;
-        }
-
-        stageCounter = 0;
-        introOpenSpaces = Formulas.randomNumber.nextInt(stagesInQuest/3 + 1);
-        for (int i = 0; i < introOpenSpaces; i++){
-            spaceStructure[i] = "Улица";
-            stageCounter++;
-            System.out.println("Добавлена интро-улица");
-        }
-        System.out.println("Структура квеста " + spaceStructure);
-
-        if (stagesInQuest <= 6){
-            System.out.println("Размер квеста " + stagesInQuest + "<= 6");
-            for (int i = stageCounter; i < stagesInQuest; i++){
-                spaceStructure[i] = "Здание";
-            }
-            if (stagesInQuest >= 5 && Formulas.getProbableBoolean(5)){
-                spaceStructure[stagesInQuest-1] = "Задний двор";
-                System.out.println("Сгенерирован задний двор");
-            }
-            System.out.println("Структура квеста " + spaceStructure);
-            return spaceStructure;
-        }
-
-        for (int i = stageCounter; i < stageCounter + 3; i++){
-            spaceStructure[i] = "Здание";
-        }
-        stageCounter += 3;
-
-            for ( ; stageCounter < stagesInQuest - 3; stageCounter++){
-                if (Formulas.getProbableBoolean(10)) {
-                    spaceStructure[stageCounter] = "Внутренний двор";
-                    System.out.println("Сгенерирован внутренний двор");
-                    System.out.println("Структура квеста " + spaceStructure);
-
-                    for (int k = stageCounter +1 ; k < stagesInQuest; k++){
-                        spaceStructure[k] = "Здание";
-                        stageCounter++;
-                    }
-                    System.out.println("Структура квеста " + spaceStructure);
-
-                    if (stagesInQuest > stageCounter && Formulas.getProbableBoolean(5)){
-                        spaceStructure[stagesInQuest-1] = "Задний двор";
-                        System.out.println("Сгенерирован задний двор");
-                    }
-                    System.out.println("Структура квеста " + spaceStructure);
-                    return spaceStructure;
-
-                }
-                else{
-                spaceStructure[stageCounter] = "Здание";
-                    System.out.println("Структура квеста " + spaceStructure);
-                }
-
-
-        }
-
-        for ( ; stageCounter < stagesInQuest; stageCounter++){
-            spaceStructure[stageCounter] = "Здание";
-        }
-
-        if (Formulas.getProbableBoolean(5)){
-            spaceStructure[stagesInQuest-1] = "Задний двор";
-            System.out.println("Сгенерирован задний двор");
-        }
-
-        System.out.println("Структура квеста " + spaceStructure);
-        return spaceStructure;
-
-    }
-
-    //todo завершить генерацию структуру квеста по этапам
-    public static String[][] calculateQuestStructure(QuestConstructor quest, String[][] stagesStructure){
-        int introStages;
-        String[] typeStructure = new String[quest.getStagesInQuest()];
-        String[] spaceStructure = Formulas.calculateOpenSpace(quest);
-
-        for(int i = 0; i < stagesStructure.length; i++){
-            typeStructure[i] = "";
-        }
-
-        introStages = Formulas.randomNumber.nextInt(QuestValuesVariants.values()[quest.getDifficultyRatio()].getMaxIntroStage() + 1);
-
-        for(int i = 0; i <= introStages; i++){
-            typeStructure[i] = "Интро";
-        }
-
-        if (quest.isKeyObject()){
-            typeStructure[quest.getKeyStageNumber()] = "Ключевой";
-        }
-        System.out.println("Типовая структура квеста: " + typeStructure);
-        System.out.println("Пространственная структура квеста: " + spaceStructure);
-
-        stagesStructure = new String[][]{typeStructure, spaceStructure};
-        System.out.println("Двухмерный массив структуры квеста: " + stagesStructure);
-
-        return stagesStructure;
-    }
-
-
 
 }
 

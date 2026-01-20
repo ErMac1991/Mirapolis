@@ -86,7 +86,8 @@ public class Starter {
                 System.out.println("Выбран вакантный квест " + quest.getQuestID());
                 QuestConstructor.generateReceivedQuest(quest, character); // создаём и заполняем файл принятого квеста
                 System.out.println("Создан файл принятого квеста");
-                StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем все файлы этапов квеста
+                StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем базовые параметры этапов квеста
+                Formulas.calculateStagesParameters(quest, stage);
 
 //todo прописать очередь методов для генерации взятого квеста
                 System.out.println("Квест принят");

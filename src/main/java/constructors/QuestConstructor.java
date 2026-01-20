@@ -197,7 +197,7 @@ public class QuestConstructor {
     public static void generateReceivedQuest(QuestConstructor quest, CharacterCreator character) throws IOException { // Создаём содержание взятого квеста
 
         quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
-        quest.setQuestEnemyPoints(Formulas.countEnemiesPoints(quest));
+        quest.setQuestEnemyPoints(Formulas.calculateEnemiesPoints(quest));
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
 
     }
