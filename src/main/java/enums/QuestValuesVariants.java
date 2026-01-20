@@ -46,29 +46,6 @@ public enum QuestValuesVariants {
         this.maxIntroStage = maxIntroStage;
     }
 
-    //todo завершить генерацию структуру квеста по этапам
-    public static String[][] calculateQuestStructure(QuestConstructor quest, String[][] stagesStructure){
-        int introStages;
-        String[] typeStructure = new String[quest.getStagesInQuest()];
-        String[] spaceStructure = new String[quest.getStagesInQuest()];
 
-        spaceStructure = Formulas.calculateOpenSpace(quest);
-
-        for(int i = 0; i < stagesStructure.length; i++){
-            typeStructure[i] = "";
-        }
-
-        introStages = Formulas.randomNumber.nextInt(QuestValuesVariants.values()[quest.getDifficultyRatio()].getMaxIntroStage() + 1);
-
-        for(int i = 0; i <= introStages; i++){
-            typeStructure[i] = "Интро";
-        }
-
-        if (quest.isKeyObject()){
-            typeStructure[quest.getKeyStageNumber()] = "Ключевой";
-        }
-
-        return stagesStructure;
-    }
 
 }

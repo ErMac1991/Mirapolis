@@ -1,7 +1,6 @@
 package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import enums.QuestValuesVariants;
 import enums.StageTypes;
 import operations.Checks;
 import operations.FileManager;
@@ -130,23 +129,10 @@ public class StageConstructor {
     }
 
     public  static void generateAllStages(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException {
-        String[][] stagesStructure = new String[quest.getStagesInQuest()][quest.getStagesInQuest()]; // todo попробовать представить структуру этапов как двухмерный массив по признакам Интро и ОпенСпейс
-        stagesStructure = QuestValuesVariants.calculateQuestStructure(quest, stagesStructure);
+        String[][] stagesStructure = new String[2][quest.getStagesInQuest()];
+        stagesStructure = Formulas.calculateQuestStructure(quest, stagesStructure);
 
         for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
-
-            // удалить после написания метода расчёта параметров этапа
-            stage.setStageName("TestStageName");
-            stage.setStageSize(4);
-            stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
-            stage.setStageOpenSpace(false); // вычислять из процентового рандома, с опорой на параметры квеста
-// todo В методе выбора Типа этапа вычислить количество интро-этапов и ключевой этап исходя из QuestValuesVariants.
-//  После создать фильтр по этим параметрам и isOpenSpace.
-//  Подтянуть случайный подходящий вариант типа помещения и заполнить для этапа stage подобранные параметры из StageTypes.
-
-
-            StageTypes.chooseStageType(quest,stage,stagesStructure[i][i]);
-
 
             // не удалять
             stage.setStageNumber(i);
@@ -157,6 +143,9 @@ public class StageConstructor {
             stage.setStageEnemiesPoints(0);
             stage.setSystemsOnStage(null);
             stage.setStageSystemsPoints(0);
+
+            StageTypes.chooseLocation(quest, stage, stagesStructure[1][i], stagesStructure[2][i]);
+            stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
 
             // todo создать метод расчёта параметров этапа
             Formulas.calculateStageParameters(quest, stage);

@@ -2,6 +2,7 @@ package enums;
 
 import constructors.QuestConstructor;
 import constructors.StageConstructor;
+import operations.Formulas;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,21 +16,24 @@ public enum StageTypes {
             2,
             8,
             false,
-            false
+            false,
+            0
     ),
     ABSTRACTHALL(
             "Холл",
             4,
             8,
             false,
-            true
+            true,
+            0
     ),
     ABSTRACTSTREET(
             "Улица",
             1,
             6,
             true,
-            true
+            true,
+            0
     )
 
     ;
@@ -38,6 +42,7 @@ public enum StageTypes {
     int maxStageSize;
     boolean isOpenSpace;
     boolean isCanBeIntro; // может быть входнолй локацией
+    int minDifficultyRatio;
 
 
     public String getStageName() {
@@ -55,39 +60,64 @@ public enum StageTypes {
     public boolean isCanBeIntro() {
         return isCanBeIntro;
     }
+    public int getMinDifficultyRatio() {
+        return minDifficultyRatio;
+    }
 
-    StageTypes(String stageName, int minStageSize, int maxStageSize, boolean isOpenSpace, boolean isCanBeIntro) {
+    StageTypes(String stageName, int minStageSize, int maxStageSize, boolean isOpenSpace, boolean isCanBeIntro, int minDifficultyRatio) {
         this.stageName = stageName;
         this.minStageSize = minStageSize;
         this.maxStageSize = maxStageSize;
         this.isOpenSpace = isOpenSpace;
         this.isCanBeIntro = isCanBeIntro;
+        this.minDifficultyRatio = minDifficultyRatio;
     }
 
-    public static void chooseStageType(QuestConstructor quest, StageConstructor stage, String stageStatus){ // выбирает подходящий тип для сгенерированного квеста
+    public static void chooseLocation(QuestConstructor quest, StageConstructor stage, String stageStatus, String spaceStatus){ // выбирает подходящий тип для сгенерированного квеста
         //todo придумать как рассчитывать и генерировать структуру квестов по этапам и как заполнять этапы помещениями
 
         Stream<StageTypes> filteredStageTypes = Arrays.stream(StageTypes.values());
+        List<StageTypes> filteredStageTypesList;
+
+        StageTypes chosenLocation;
+
 
         switch (stageStatus){
             case "Интро":
                 filteredStageTypes.filter(StageTypes -> StageTypes.isCanBeIntro());
                 break;
             case "Ключевой":
-                // Code block 2
+                stage.setKeyStage(true);
                 break;
-            // ... more cases
+
             default:
-                // Code block for no match
+                System.out.println("Обычный или неизвестный этап");
                 break;
         }
-        List<StageTypes> filteredStageTypesList = Arrays.stream(StageTypes.values())
-                .filter(StageTypes -> StageTypes.getQuestMinLevel() <= quest.getQuestLevel()) // фильтрует типы квеста, подходящие по уровню
-                .filter(StageTypes -> StageTypes.getQuestMaxLevel() >= quest.getQuestLevel())
-                .collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих типов этапов: " + filteredStageTypes);
 
+        switch (spaceStatus){
+            case "Улица":
+                filteredStageTypes.filter(StageTypes -> StageTypes.isOpenSpace());
+                break;
+            case "Здание":
+                filteredStageTypes.filter(StageTypes -> !StageTypes.isOpenSpace());
+                break;
 
+            default:
+                System.out.println("Неизвестный статус пространства");
+                break;
+        }
+
+        filteredStageTypes.filter(StageTypes -> StageTypes.getMinDifficultyRatio() <= quest.getDifficultyRatio());
+
+        filteredStageTypesList = filteredStageTypes.collect(Collectors.toList()); // Собираем в список
+        System.out.println("Список подходящих локаций: " + filteredStageTypesList);
+
+        chosenLocation = filteredStageTypesList.get(Formulas.randomNumber.nextInt(filteredStageTypesList.size()));
+        System.out.println("Выбранная локация: " + chosenLocation);
+
+        stage.setStageName(chosenLocation.getStageName());
+        stage.setStageSize(Formulas.calculateStageSize(chosenLocation));
 
     }
 

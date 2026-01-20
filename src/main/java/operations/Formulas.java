@@ -7,6 +7,7 @@ import constructors.StageConstructor;
 import enums.Items;
 import enums.QuestTypes;
 import enums.QuestValuesVariants;
+import enums.StageTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,9 +38,7 @@ public abstract class Formulas {
                 questValuesVariants[quest.getDifficultyRatio()].getRandomValue()) +
                 questValuesVariants[quest.getDifficultyRatio()].getConstantValue());
         System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
-        quest.setKeyStageNumber(Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
-                quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
-                questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage());
+        quest.setKeyStageNumber(defineKeyStage(quest, questValuesVariants));
     }
 
     public static void questPricesCalculate(QuestConstructor quest) {
@@ -279,6 +278,13 @@ public abstract class Formulas {
 
     }
 
+    public static int calculateStageSize(StageTypes chosenLocation) {
+        int stageSize;
+        stageSize = Formulas.randomNumber.nextInt(chosenLocation.getMaxStageSize() - chosenLocation.getMinStageSize()+1) +
+                chosenLocation.getMinStageSize();
+        return stageSize;
+    }
+
 
     //todo придумать формулу получения числа соперников на этапе
     public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для этапа
@@ -302,8 +308,11 @@ public abstract class Formulas {
 
 
     //todo придумать формулу вычисляющую ключевой этап квеста
-    public void defineKeyStage(QuestConstructor quest) {
-
+    public static int defineKeyStage(QuestConstructor quest, QuestValuesVariants[] questValuesVariants) {
+        int keyStageNumber = Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
+                quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
+                questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage();
+        return keyStageNumber;
 
     }
 
@@ -388,6 +397,34 @@ public abstract class Formulas {
         System.out.println("Структура квеста " + spaceStructure);
         return spaceStructure;
 
+    }
+
+    //todo завершить генерацию структуру квеста по этапам
+    public static String[][] calculateQuestStructure(QuestConstructor quest, String[][] stagesStructure){
+        int introStages;
+        String[] typeStructure = new String[quest.getStagesInQuest()];
+        String[] spaceStructure = Formulas.calculateOpenSpace(quest);
+
+        for(int i = 0; i < stagesStructure.length; i++){
+            typeStructure[i] = "";
+        }
+
+        introStages = Formulas.randomNumber.nextInt(QuestValuesVariants.values()[quest.getDifficultyRatio()].getMaxIntroStage() + 1);
+
+        for(int i = 0; i <= introStages; i++){
+            typeStructure[i] = "Интро";
+        }
+
+        if (quest.isKeyObject()){
+            typeStructure[quest.getKeyStageNumber()] = "Ключевой";
+        }
+        System.out.println("Типовая структура квеста: " + typeStructure);
+        System.out.println("Пространственная структура квеста: " + spaceStructure);
+
+        stagesStructure = new String[][]{typeStructure, spaceStructure};
+        System.out.println("Двухмерный массив структуры квеста: " + stagesStructure);
+
+        return stagesStructure;
     }
 
 
