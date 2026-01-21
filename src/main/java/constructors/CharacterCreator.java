@@ -61,7 +61,7 @@ public class CharacterCreator extends Unit {
         this.luck = 5;
         this.fame = 5;
         this.mentalHealth = 90;
-        this.enduranceMod = 90;
+        this.enduranceMod = 0;
         this.attentivenessMod = 0;
         this.reactionMod = 0;
         this.strengthMod = 0;
@@ -358,6 +358,7 @@ public class CharacterCreator extends Unit {
     public static void createCharacter(String userLogin) throws IOException {
 
         CharacterCreator newCharacter = new CharacterCreator(userLogin);
+        newCharacter.setLevel(Formulas.calculateLevelFromStats(newCharacter));
 
         if (Checks.isFileExist("Персонажи\\" + newCharacter.userLogin + "\\Персонаж.txt")) {
             System.out.println("Персонаж с логином " + newCharacter.userLogin + " уже существует.");

@@ -1,13 +1,15 @@
 package operations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import constructors.*;
+import constructors.CharacterCreator;
+import constructors.EnemyHumanCreator;
+import constructors.QuestConstructor;
+import constructors.StageConstructor;
 import enums.Items;
 import enums.QuestTypes;
 import enums.QuestValuesVariants;
 import enums.StageLocations;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,14 +39,26 @@ public abstract class Formulas {
         return false;
     }
 
+    public static List<String> deleteDuplicates(List<String> list){
+
+        list = list.stream()
+                .distinct() // Удаляет дубликаты, сохраняя порядок
+                .collect(Collectors.toList());
+
+        return list;
+    }
+
 // РАСЧЕТЫ ПЕРСОНАЖА
 
-    public static void calculateLevelFromStats(CharacterCreator character) {
+    public static int calculateLevelFromStats(CharacterCreator character) {
+
+        int characterLevel;
         //todo адаптировать формулу получения уровня из статов под класс персонажа
-        character.setLevel((character.getAttentiveness() + character.getAttentivenessMod() +
+        characterLevel = (character.getAttentiveness() + character.getAttentivenessMod() +
                 character.getEndurance() + character.getEnduranceMod() +
                 character.getStrength() + character.getStrengthMod() +
-                character.getReaction() + character.getReactionMod()) / 4);
+                character.getReaction() + character.getReactionMod()) / 4;
+        return characterLevel;
     }
 
 // РАСЧЕТЫ КВЕСТОВ
@@ -171,21 +185,22 @@ public abstract class Formulas {
 
     }
 
-    public static String getVacantQuestsList(ObjectMapper objectMapper, QuestConstructor quest, CharacterCreator character){
+    public static List<String> getVacantQuestsList(ObjectMapper objectMapper, QuestConstructor quest, CharacterCreator character){
         //todo дописать метод возвращения списка доступных персонажу вакантных квестов
-        String vacantQuests = "";
-        int characterLevel;
-        String questID;
+        List<String> vacantQuests = new ArrayList<>();
+        int characterLevel = 0;
+        String questFileName;
+        int questFilesCounter;
+        int questID;
+        List<Path> vacantQuestsList = new ArrayList<>();
+        Path directoryPath = Paths.get("F:/Проекты/Стримы/Mirapolis/Квесты/Пул"); // Путь к папке
+
         try {
             characterLevel = character.getLevel();
         } catch (NullPointerException e) {
+            System.out.println("Не подтянулся уровень персонажа");
             e.printStackTrace();
         }
-
-        int questFiles;
-        List<Path> vacantQuestsList = new ArrayList<>();
-
-        Path directoryPath = Paths.get("F:/Проекты/Стримы/Mirapolis/Квесты/Пул"); // Путь к папке
 
         try (Stream<Path> filesStream = Files.list(directoryPath)) { // Потоковый доступ
             System.out.println("Файлы и папки в директории (nio.file):" + filesStream);
@@ -193,23 +208,31 @@ public abstract class Formulas {
             System.out.println("Список файлов: " + filesStream);
             vacantQuestsList = filesStream.filter(Files::isRegularFile).collect(Collectors.toList());
             System.out.println("Лист файлов: " + vacantQuestsList);
-
-
-
-        } catch (IOException e) {
+            }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
-        questFiles = vacantQuestsList.size();
-        for (int i = 0; i < questFiles; i++){
+        questFilesCounter = vacantQuestsList.size();
+
+        for (int i = 0; i < questFilesCounter; i++){
             System.out.println("Выбранный файл: " + vacantQuestsList.get(i));
+            questFileName = String.valueOf(vacantQuestsList.get(i).getFileName());
+            questID = Integer.parseInt(questFileName.substring(0, questFileName.lastIndexOf('.')));
+            quest.setQuestID(questID);
+
             try {
-                //quest.setQuestID(vacantQuestsList.get(i));
                 QuestConstructor.chooseQuest(objectMapper, quest);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            questID = String.valueOf(vacantQuestsList.get(i).getFileName());
+            if (characterLevel >= (quest.getQuestLevel() - 3) && characterLevel <= (quest.getQuestLevel() + 3)){
+            vacantQuests.set(vacantQuests.size(), quest.getQuestName() + " (" + quest.getQuestLevel() + " уровень)");
+            }
+        }
+
+        if (vacantQuests.size() == 0){
+            System.out.println("Для персонажа нет подходящих квестов");
         }
 
         return vacantQuests;

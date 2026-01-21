@@ -1,14 +1,16 @@
 package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import operations.*;
-
+import operations.Checks;
+import operations.FileManager;
+import operations.Formulas;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class QuestConstructor {
     String questTask; // Описание квестовой задачи
@@ -200,6 +202,18 @@ public class QuestConstructor {
         quest.setQuestEnemyPoints(Formulas.calculateEnemiesPoints(quest));
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
 
+    }
+
+    public static String getVacantQuests(List<String> vacantQuestsList){
+        String vacantQuests = "";
+        for (int i = 0; i < vacantQuestsList.size(); i++){
+            vacantQuests += (i+1) + ") " + vacantQuestsList.get(i);
+            if(i != vacantQuestsList.size() -1){
+                vacantQuests += "\n";
+            }
+        }
+
+        return vacantQuests;
     }
 
 

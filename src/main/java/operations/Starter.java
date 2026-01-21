@@ -5,6 +5,7 @@ import constructors.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class Starter {
     ObjectMapper objectMapper = new ObjectMapper();
@@ -34,7 +35,7 @@ public class Starter {
 
         switch (typeOfSubjectFromArgs) { // тип изменяемого субъекта: персонаж/противник/квест
 
-            case "newCharacter":
+            case "newCharacter":{
                 System.out.println("Тип субъекта - Новый персонаж");
                 //updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
                 userLoginFromArgs = updateData.split("\"")[7];
@@ -43,10 +44,9 @@ public class Starter {
 
                 // Очистка переменных
                 updateData = null;
-                break;
+                break;}
 
-
-            case "character":
+            case "character":{
                 System.out.println("Тип субъекта - Существующий персонаж");
                 updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
                 System.out.println("updateData = " + updateData);
@@ -71,27 +71,33 @@ public class Starter {
                 charactersChanges = null;
                 character = null;
                 updateData = null;
-                break;
+                break;}
 
-            case "newVacantQuest":
+            case "newVacantQuest":{
                 System.out.println("Тип субъекта - Новый Вакантный Квест");
                 QuestConstructor.generateVacantQuest(quest);
                 System.out.println("Новый вакантный квест создан");
-                break;
+                break;}
 
-            case "vacantQuestsList":
+            case "vacantQuestsList":{
                 System.out.println("Тип субъекта - Список Вакантных Квестов");
+                String vacantQuests;
                 character.setUserLogin(updateData.split("\"")[7]);
                 System.out.println("userNameFromArgs = " + character.getUserLogin());
                 character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
 
-                String vacantQuestsList = Formulas.getVacantQuestsList(objectMapper, quest, character);
+                List<String> vacantQuestsList = Formulas.getVacantQuestsList(objectMapper, quest, character);
+                if (Checks.hasDuplicates(vacantQuestsList)){
+                    vacantQuestsList = Formulas.deleteDuplicates(vacantQuestsList);
+                }
+
+                vacantQuests = QuestConstructor.getVacantQuests(vacantQuestsList);
 
                 System.out.println("Список вакантных квестов, доступных персонажу " + character.getUserLogin() +
-                        ": " + vacantQuestsList);
-                break;
+                        ": " + vacantQuests);
+                break;}
 
-            case "newReceivedQuest": // в команде передавать логин игрока, берущего квест, ID вакантного квеста
+            case "newReceivedQuest":{ // в команде передавать логин игрока, берущего квест, ID вакантного квеста
                 System.out.println("Тип субъекта - Новый Полученный Квест");
 
                 character.setUserLogin(updateData.split("\"")[7]);
@@ -109,14 +115,14 @@ public class Starter {
 //todo прописать очередь методов для генерации взятого квеста
                 System.out.println("Квест принят");
                 // Удаление вакантного квеста после взятия
-                break;
+                break;}
 
-            default:
+            default:{
                 try {System.out.println("Тип изменяемого субъекта: " + updateData.split("\"")[1] + " не распознан!");}
                 catch (NullPointerException e){
                     System.out.println("Произошла попытка получить часть несуществующей команды: " + e.getMessage());
                 }
-                break;
+                break;}
 
         }
 

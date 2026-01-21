@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Checks {
 
@@ -82,6 +85,17 @@ public class Checks {
 
         if (counter == Items.valueOf(itemName).getStackLimit()){
             return true;
+        }
+        return false;
+    }
+
+    public static boolean hasDuplicates(List<String> list){
+
+        Set<String> set = new HashSet<>();
+        for (String element : list) {
+            if (!set.add(element)) {
+                return true;
+            }
         }
         return false;
     }
