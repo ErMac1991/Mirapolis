@@ -152,7 +152,7 @@ public class QuestConstructor {
 
     public static QuestConstructor chooseQuest(ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
         System.out.println(quest.getQuestID());
-        if (!Checks.isFileExist("Квесты\\Пул\\" + quest.getQuestID() + ".txt")) {
+        if (!Checks.isFileExist("Квесты/Пул/" + quest.getQuestID() + ".txt")) {
             System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
             return null;
         }

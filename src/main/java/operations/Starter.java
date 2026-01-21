@@ -85,7 +85,7 @@ public class Starter {
                 System.out.println("userNameFromArgs = " + character.getUserLogin());
                 character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
 
-                String vacantQuestsList = Formulas.getVacantQuestsList(character);
+                String vacantQuestsList = Formulas.getVacantQuestsList(objectMapper, quest, character);
 
                 System.out.println("Список вакантных квестов, доступных персонажу " + character.getUserLogin() +
                         ": " + vacantQuestsList);

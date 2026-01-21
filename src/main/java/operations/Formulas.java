@@ -1,17 +1,22 @@
 package operations;
 
-import constructors.CharacterCreator;
-import constructors.EnemyHumanCreator;
-import constructors.QuestConstructor;
-import constructors.StageConstructor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import constructors.*;
 import enums.Items;
 import enums.QuestTypes;
 import enums.QuestValuesVariants;
 import enums.StageLocations;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class Formulas {
 
@@ -166,12 +171,48 @@ public abstract class Formulas {
 
     }
 
-    public static String getVacantQuestsList(CharacterCreator character){
+    public static String getVacantQuestsList(ObjectMapper objectMapper, QuestConstructor quest, CharacterCreator character){
         //todo дописать метод возвращения списка доступных персонажу вакантных квестов
-        String vacantQuestsList = "";
+        String vacantQuests = "";
+        int characterLevel;
+        String questID;
+        try {
+            characterLevel = character.getLevel();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        int questFiles;
+        List<Path> vacantQuestsList = new ArrayList<>();
+
+        Path directoryPath = Paths.get("F:/Проекты/Стримы/Mirapolis/Квесты/Пул"); // Путь к папке
+
+        try (Stream<Path> filesStream = Files.list(directoryPath)) { // Потоковый доступ
+            System.out.println("Файлы и папки в директории (nio.file):" + filesStream);
+            //filesStream.filter(Files::isRegularFile); // Фильтруем только файлы
+            System.out.println("Список файлов: " + filesStream);
+            vacantQuestsList = filesStream.filter(Files::isRegularFile).collect(Collectors.toList());
+            System.out.println("Лист файлов: " + vacantQuestsList);
 
 
-        return vacantQuestsList;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        questFiles = vacantQuestsList.size();
+        for (int i = 0; i < questFiles; i++){
+            System.out.println("Выбранный файл: " + vacantQuestsList.get(i));
+            try {
+                //quest.setQuestID(vacantQuestsList.get(i));
+                QuestConstructor.chooseQuest(objectMapper, quest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            questID = String.valueOf(vacantQuestsList.get(i).getFileName());
+        }
+
+        return vacantQuests;
     }
 
 
