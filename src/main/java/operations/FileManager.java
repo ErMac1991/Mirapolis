@@ -32,10 +32,10 @@ public class FileManager {
         if (!Checks.isFileExist(actionsQueueFile.getName())) {
             System.out.println("При попытке заполнения, не найден файл " + actionsQueueFile.getName());
         }
-        System.out.println("Код первого символа в : " + reader.read());
+        System.out.println("Код первого символа в файле: " + reader.read());
 
-        if (reader.read() != -1) { // Если первая строка пуста (?)
-
+        if (reader.read() != -1) { // Если первая строка не пуста (?)
+            System.out.println("Первая строка не пуста");
             writer.write("\n");
         }
 
@@ -192,7 +192,6 @@ public class FileManager {
 
         Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt"),
                 "{\"questID\":" + quest.getQuestID() +  "," +
-                        "\"level\":" + quest.getQuestLevel() + "," +
                         "\"questName\":\"" + quest.getQuestName() +  "\"," +
                         "\"questTask\":\"" + quest.getQuestTask() +  "\"," +
                         "\"questLevel\":" + quest.getQuestLevel() + "," +
@@ -245,13 +244,14 @@ public class FileManager {
 
     public static int getID(File counterIDFile) throws IOException { // Возвращает свободный ID квеста и обновляет счётчик квестов
 
-        if (!Checks.isFileExist("Системный файлы\\" +  counterIDFile.getName())) {
-            System.out.println("Не найдет файл счётчика " + counterIDFile.getName());
+        String counterIDFileName = counterIDFile.getName();
+        if (!Checks.isFileExist("СистемныеФайлы/" +  counterIDFileName)) {
+            System.out.println("Не найдет файл счётчика " + counterIDFileName);
             return -1;
         }
 
         idCounter = Integer.parseInt(Files.readString(Path.of(counterIDFile.getPath())));
-        System.out.println("Идентификатор " + counterIDFile.getName() + ": " + idCounter);
+        System.out.println("Идентификатор " + counterIDFileName + ": " + idCounter);
         Files.writeString(Path.of(counterIDFile.getPath()), String.valueOf(idCounter + 1));
 
         return idCounter;

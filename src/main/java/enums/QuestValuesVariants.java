@@ -5,14 +5,14 @@ import operations.Formulas;
 
 public enum QuestValuesVariants {
     ROOKIE("Для новичков", 2, 2,2,0),
-    LIGHTLOW("Лёгкий", 3, 2,3,1),
-    LIGHTHIGH("Лёгкий", 4, 2, 4,1),
-    MIDDLELOW("Умеренный", 3, 3,4,1),
-    MIDDLEHIGH("Умеренный", 4, 3,5,2),
-    DIFFICULTLOW("Сложный", 3, 4,5,2),
-    DIFFICULTHIGH("Сложный", 4, 4,6,2),
-    HEAVYLOW("Тяжёлый", 3, 5,6,2),
-    HEAVYHIGH("Тяжёлый", 3, 6,7,2),
+    LIGHTLOW("Лёгкий", 2, 3,3,1),
+    LIGHTHIGH("Лёгкий", 3, 3, 3,1),
+    MIDDLELOW("Умеренный", 2, 4,4,1),
+    MIDDLEHIGH("Умеренный", 3, 4,4,1),
+    DIFFICULTLOW("Сложный", 2, 5,5,2),
+    DIFFICULTHIGH("Сложный", 3, 5,5,2),
+    HEAVYLOW("Тяжёлый", 2, 6,6,2),
+    HEAVYHIGH("Тяжёлый", 3, 6,6,2),
     HARDCORE("Хардкорный", 2, 7,7,2);
 
     String questDifficulty;

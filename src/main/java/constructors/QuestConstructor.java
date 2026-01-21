@@ -30,7 +30,7 @@ public class QuestConstructor {
     int deposit; // Взнос за взятие квеста
     LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
     LocalDateTime questTakeDateTime; // Дата и время взятия квеста игроком
-    final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\QuestsCounter.txt");
+    final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\СистемныеФайлы\\QuestsCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
     public String getQuestTask() {
@@ -166,7 +166,7 @@ public class QuestConstructor {
         return quest;
     }
 
-    public static QuestConstructor chooseQuest(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest) throws IOException {
+    public static QuestConstructor chooseReceivedQuest(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest) throws IOException {
         System.out.println(quest.getQuestID());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\QuestData.txt")) {
             System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");

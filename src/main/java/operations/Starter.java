@@ -74,13 +74,30 @@ public class Starter {
                 break;
 
             case "newVacantQuest":
-                System.out.println("Тип субъекта - Новый Квест");
+                System.out.println("Тип субъекта - Новый Вакантный Квест");
                 QuestConstructor.generateVacantQuest(quest);
                 System.out.println("Новый вакантный квест создан");
                 break;
 
+            case "vacantQuestsList":
+                System.out.println("Тип субъекта - Список Вакантных Квестов");
+                character.setUserLogin(updateData.split("\"")[7]);
+                System.out.println("userNameFromArgs = " + character.getUserLogin());
+                character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
+
+                String vacantQuestsList = Formulas.getVacantQuestsList(character);
+
+                System.out.println("Список вакантных квестов, доступных персонажу " + character.getUserLogin() +
+                        ": " + vacantQuestsList);
+                break;
+
             case "newReceivedQuest": // в команде передавать логин игрока, берущего квест, ID вакантного квеста
                 System.out.println("Тип субъекта - Новый Полученный Квест");
+
+                character.setUserLogin(updateData.split("\"")[7]);
+                System.out.println("userNameFromArgs = " + character.getUserLogin());
+                character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
+
                 // Проверка на возможность взять квест по уровню (?)
                 quest = QuestConstructor.chooseQuest(objectMapper, quest);
                 System.out.println("Выбран вакантный квест " + quest.getQuestID());

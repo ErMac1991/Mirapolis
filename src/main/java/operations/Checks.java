@@ -8,13 +8,16 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Checks {
 
 
     public static boolean isFileExist(String endOfPathFile){
-        //if (!isFileExist(category){}
-        return Files.exists(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\" + endOfPathFile));
+        boolean isFileExist;
+        Path filePath = Paths.get("F:/Проекты/Стримы/Mirapolis/" + endOfPathFile);
+        isFileExist = Files.exists(filePath);
+        return isFileExist;
     }
 
     public static boolean isSystemUpdated(File actionsQueueFile) throws IOException {

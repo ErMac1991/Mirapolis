@@ -22,8 +22,10 @@ public class CommandHelper {
             return null;
         }
 
+        System.out.println("Переданные агрументы: " + args);
+
             for (int i = 0; i < args.length; i++) {
-                System.out.println("Армумент " + i + " = " + args[i]);
+                System.out.println("Аргумент " + i + " = " + args[i]);
 
                 if (i == args.length - 1){
                     command += args[i];
@@ -43,19 +45,19 @@ public class CommandHelper {
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
 
-        /*if (reader.read() == -1) {
+        if (reader.read() == -1) {
             reader.close();
             return "Полученная строка изменений пуста";
-        }*/
+        }
         try{
             lineOfChanges = reader.readLine();
         }
         catch (Exception e){
             System.out.println("В файле " + actionsQueueFile.getName() + " отсутствует 1я строка из файла: ");
             return e.getMessage();
-        };
+        }
 
-            System.out.println("Считываем 1ю строку из файла" + actionsQueueFile.getName() + ": " + lineOfChanges);
+            System.out.println("Считываем 1ю строку из файла " + actionsQueueFile.getName() + ": " + lineOfChanges);
 
             reader.close();
             return lineOfChanges;
@@ -69,7 +71,7 @@ public class CommandHelper {
             case "ТЕСТ":
                 System.out.println("Команда из бота принята и обработана");
             case "Создать персонажа":
-                if (Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt") == false){
+                if (Checks.isFileExist("Персонажи/" + character.getUserLogin() + "/Персонаж.txt") == false){
                     CharacterCreator.createCharacter(character.getUserLogin());
                 }
 

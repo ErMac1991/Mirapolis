@@ -56,7 +56,11 @@ public abstract class Formulas {
 
     public static void getQuestValues(QuestConstructor quest) { // выбирает подходящий тип для сгенерированного квеста
         QuestValuesVariants[] questValuesVariants = QuestValuesVariants.values();
-        quest.setDifficultyRatio(quest.getQuestLevel() / 3); // коэффициент сложности
+        int questDifficultyRatio = quest.getQuestLevel() / 3;
+        if (questDifficultyRatio > 9) {
+            questDifficultyRatio = 9;
+        }
+        quest.setDifficultyRatio(questDifficultyRatio); // коэффициент сложности
         System.out.println("Для квеста уровнем: " + quest.getQuestLevel() + " коэффициент сложности: " + quest.getDifficultyRatio());
         quest.setQuestDifficulty(questValuesVariants[quest.getDifficultyRatio()].getQuestDifficulty());// наименование сложности
         System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
@@ -162,6 +166,14 @@ public abstract class Formulas {
 
     }
 
+    public static String getVacantQuestsList(CharacterCreator character){
+        //todo дописать метод возвращения списка доступных персонажу вакантных квестов
+        String vacantQuestsList = "";
+
+
+        return vacantQuestsList;
+    }
+
 
 // РАСЧЕТЫ ЭТАПОВ
 
@@ -188,6 +200,7 @@ public abstract class Formulas {
     }
 
     public static int defineKeyStage(QuestConstructor quest, QuestValuesVariants[] questValuesVariants) {
+        System.out.println("Этапов в квесте: " + quest.getStagesInQuest());
         int keyStageNumber = Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
                 quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
                 questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage();
