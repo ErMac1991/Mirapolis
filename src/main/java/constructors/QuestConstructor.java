@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import operations.Checks;
 import operations.FileManager;
 import operations.Formulas;
+import operations.Starter;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 
 public class QuestConstructor {
     String questTask; // Описание квестовой задачи
@@ -30,8 +33,8 @@ public class QuestConstructor {
     int questItemsPoints; // очки предметов лута на квест
     int royalty; // Награда за выполнение задания
     int deposit; // Взнос за взятие квеста
-    LocalDateTime questGenerationDateTime; // Дата и время генерации вакантного квеста
-    LocalDateTime questTakeDateTime; // Дата и время взятия квеста игроком
+    String questGenerationDateTime; // Дата и время генерации вакантного квеста
+    String questTakeDateTime; // Дата и время взятия квеста игроком
     final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\СистемныеФайлы\\QuestsCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
@@ -89,10 +92,10 @@ public class QuestConstructor {
     public void setDeposit(int deposit) {
         this.deposit = deposit;
     }
-    public LocalDateTime getQuestGenerationDateTime() {
+    public String getQuestGenerationDateTime() {
         return questGenerationDateTime;
     }
-    public void setQuestGenerationDateTime(LocalDateTime questGenerationDateTime) {
+    public void setQuestGenerationDateTime(String questGenerationDateTime) {
         this.questGenerationDateTime = questGenerationDateTime;
     }
     public boolean isQuestOpenSpace() {
@@ -107,10 +110,10 @@ public class QuestConstructor {
     public void setQuestMultiPlayer(boolean questMultiPlayer) {
         isQuestMultiPlayer = questMultiPlayer;
     }
-    public LocalDateTime getQuestTakeDateTime() {
+    public String getQuestTakeDateTime() {
         return questTakeDateTime;
     }
-    public void setQuestTakeDateTime(LocalDateTime questTakeDateTime) {
+    public void setQuestTakeDateTime(String questTakeDateTime) {
         this.questTakeDateTime = questTakeDateTime;
     }
     public File getQuestCounterFile() {
@@ -153,16 +156,16 @@ public class QuestConstructor {
     }
 
     public static QuestConstructor chooseQuest(ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
-        System.out.println(quest.getQuestID());
+        System.out.println("ID выбираемого квеста: " + quest.getQuestID());
         if (!Checks.isFileExist("Квесты/Пул/" + quest.getQuestID() + ".txt")) {
             System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
             return null;
         }
         System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt найден");
         System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt")));
+                "F:/Проекты/Стримы/Mirapolis/Квесты/Пул/" + quest.getQuestID() + ".txt")));
         quest = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt")), objectMapper, quest);
+                "F:/Проекты/Стримы/Mirapolis/Квесты/Пул/" + quest.getQuestID() + ".txt")), objectMapper, quest);
         System.out.println("Выбран вакантный квест " + quest.getQuestID());
 
         return quest;
@@ -191,14 +194,15 @@ public class QuestConstructor {
         quest.setQuestID(FileManager.getID(quest.getQuestCounterFile()));
 
         Formulas.calculateQuestParameters(quest);
-        quest.setQuestGenerationDateTime(LocalDateTime.now()); // время генерации квеста
+
+        quest.setQuestGenerationDateTime(Starter.formatter.format(LocalDateTime.now())); // время генерации квеста
 
         FileManager.fillPojoToJsonFile(quest);
     }
 
     public static void generateReceivedQuest(QuestConstructor quest, CharacterCreator character) throws IOException { // Создаём содержание взятого квеста
 
-        quest.setQuestTakeDateTime(LocalDateTime.now()); // время взятия квеста игроком
+        quest.setQuestTakeDateTime(Starter.formatter.format(LocalDateTime.now())); // время взятия квеста игроком
         quest.setQuestEnemyPoints(Formulas.calculateEnemiesPoints(quest));
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
 

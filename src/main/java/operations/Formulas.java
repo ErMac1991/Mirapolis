@@ -201,18 +201,17 @@ public abstract class Formulas {
             System.out.println("Не подтянулся уровень персонажа");
             e.printStackTrace();
         }
+        System.out.println("Уровень персонажа: " + characterLevel);
 
-        try (Stream<Path> filesStream = Files.list(directoryPath)) { // Потоковый доступ
-            System.out.println("Файлы и папки в директории (nio.file):" + filesStream);
-            //filesStream.filter(Files::isRegularFile); // Фильтруем только файлы
-            System.out.println("Список файлов: " + filesStream);
+        try (Stream<Path> filesStream = Files.list(directoryPath)) {
+
             vacantQuestsList = filesStream.filter(Files::isRegularFile).collect(Collectors.toList());
-            System.out.println("Лист файлов: " + vacantQuestsList);
+
             }
         catch (IOException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Лист файлов: " + vacantQuestsList);
         questFilesCounter = vacantQuestsList.size();
 
         for (int i = 0; i < questFilesCounter; i++){
@@ -222,12 +221,14 @@ public abstract class Formulas {
             quest.setQuestID(questID);
 
             try {
-                QuestConstructor.chooseQuest(objectMapper, quest);
+                quest = QuestConstructor.chooseQuest(objectMapper, quest);
             } catch (IOException e) {
+                System.out.println("Ошибка ввода-вывода");
                 e.printStackTrace();
             }
             if (characterLevel >= (quest.getQuestLevel() - 3) && characterLevel <= (quest.getQuestLevel() + 3)){
-            vacantQuests.set(vacantQuests.size(), quest.getQuestName() + " (" + quest.getQuestLevel() + " уровень)");
+                System.out.println("Квест с ID: " + quest.getQuestID() + " подходит персонажу");
+            vacantQuests.add(quest.getQuestName() + " (" + quest.getQuestLevel() + " ур.) ID: " + quest.getQuestID());
             }
         }
 

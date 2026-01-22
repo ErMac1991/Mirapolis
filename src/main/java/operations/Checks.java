@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,23 @@ public class Checks {
         return isFileExist;
     }
 
+    public static boolean isFileEmpty(File file){
+        List<String> lines = new ArrayList<>();
+        try {
+            lines = Files.readAllLines(Path.of(file.getPath()));
+        } catch (IOException e) {
+            System.out.println("Ошибка ввода-вывода при чтения из файла");
+            e.printStackTrace();
+        }
+
+        if (lines.isEmpty()) {
+            return true;
+        }
+
+        System.out.println("Файл " + file.getName() + " не пустой и содержит: " + lines);
+        return false;
+    }
+
     public static boolean isSystemUpdated(File actionsQueueFile) throws IOException {
 
         while (true) {
@@ -31,12 +49,12 @@ public class Checks {
 
                 return true;
 
-            } else {
+            }
                 System.out.println("Файл не найден, ждем 2 секунды...");
-                }
+
 
             try {
-                Thread.sleep(2000); // Ждем 2000 миллисекунд (2 секундs)
+                Thread.sleep(2000); // Ждем 2000 миллисекунд (2 секунды)
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // Восстанавливаем прерванный статус потока
                 System.err.println("Процесс проверки прерван: " + e.getMessage());

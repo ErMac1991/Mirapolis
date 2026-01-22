@@ -5,6 +5,7 @@ import constructors.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Starter {
@@ -15,7 +16,8 @@ public class Starter {
     StageConstructor stage = new StageConstructor();
     EnemyHumanCreator enemyHuman = new EnemyHumanCreator();
     EnemyMachineCreator enemyMachineCreator = new EnemyMachineCreator();
-    final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\ActionsQueue.txt");
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+    final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\СистемныеФайлы\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubjectFromArgs;
     String userLoginFromArgs;
@@ -26,11 +28,14 @@ public class Starter {
 
     public void updateGameData() throws IOException {
 
+        FileManager.deleteEmptyFile(actionsQueueFile);
         if (!Checks.isSystemUpdated(actionsQueueFile)) {
             System.out.println("Обновления игровых файлов не найдены");
         }
-
+        Checks.isSystemUpdated(actionsQueueFile);
+        //todo вставить проверку на пустую строку в файле и метод на удаление пустой строки
         updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
+
         typeOfSubjectFromArgs = updateData.split("\"")[3];
 
         switch (typeOfSubjectFromArgs) { // тип изменяемого субъекта: персонаж/противник/квест
@@ -104,6 +109,9 @@ public class Starter {
                 System.out.println("userNameFromArgs = " + character.getUserLogin());
                 character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
 
+                quest.setQuestID(Integer.parseInt(updateData.split("\"")[11]));
+                System.out.println("questIDFromArgs = " + quest.getQuestID());
+
                 // Проверка на возможность взять квест по уровню (?)
                 quest = QuestConstructor.chooseQuest(objectMapper, quest);
                 System.out.println("Выбран вакантный квест " + quest.getQuestID());
@@ -118,7 +126,7 @@ public class Starter {
                 break;}
 
             default:{
-                try {System.out.println("Тип изменяемого субъекта: " + updateData.split("\"")[1] + " не распознан!");}
+                try {System.out.println("Тип изменяемого субъекта: " + updateData.split("\"")[3] + " не распознан!");}
                 catch (NullPointerException e){
                     System.out.println("Произошла попытка получить часть несуществующей команды: " + e.getMessage());
                 }

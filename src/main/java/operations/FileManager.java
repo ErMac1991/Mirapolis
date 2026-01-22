@@ -10,6 +10,7 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
@@ -98,21 +99,15 @@ public class FileManager {
                 return;
             }
 
-            System.out.println("Если файл " + file.getName() + " пустой - удалить его");
+            FileManager.deleteEmptyFile(file);
+    }
 
-            lines = Files.readAllLines(Path.of(file.getPath()));
-
-            System.out.println(lines);
-
-            if (lines.isEmpty()) {
-                file.delete();
-                System.out.println("Пустой файл " + file.getName() + " удалён");
-                return;
-            }
-
-            System.out.println("Файл " + file.getName() + " не пустой и содержит: " + lines);
-
-
+    public static void deleteEmptyFile(File file){
+        System.out.println("Если файл " + file.getName() + " пустой - удалить его");
+        if (Checks.isFileEmpty(file)) {
+            file.delete();
+            System.out.println("Пустой файл " + file.getName() + " удалён");
+        }
     }
 
     public static void createCharacterFile(String userLogin) throws IOException { // создаёт и заполняет текстовый файл для хранения джейсона персонажа
@@ -195,8 +190,8 @@ public class FileManager {
                         "\"questName\":\"" + quest.getQuestName() +  "\"," +
                         "\"questTask\":\"" + quest.getQuestTask() +  "\"," +
                         "\"questLevel\":" + quest.getQuestLevel() + "," +
-                        "\"isQuestOpenSpace\":\"" + quest.isQuestOpenSpace() +  "\"," +
-                        "\"isQuestMultiPlayer\":\"" + quest.isQuestMultiPlayer() +  "\"," +
+                        "\"questOpenSpace\":\"" + quest.isQuestOpenSpace() +  "\"," +
+                        "\"questMultiPlayer\":\"" + quest.isQuestMultiPlayer() +  "\"," +
                         "\"questDifficulty\":\"" + quest.getQuestDifficulty() +  "\"," +
                         "\"difficultyRatio\":" + quest.getDifficultyRatio() +  "," +
                         "\"stagesInQuest\":" + quest.getStagesInQuest() +  "," +

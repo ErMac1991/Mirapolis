@@ -19,7 +19,7 @@ public class CommandHelper {
         // Проверяем, что есть хотя бы один аргумент и формируем общую команду
         if (!(args.length > 0)) {
             System.out.println("Передана пустая команда (не найдены агрументы)");
-            return null;
+            return command;
         }
 
         System.out.println("Переданные агрументы: " + args);
@@ -41,13 +41,14 @@ public class CommandHelper {
 
     public static String getLineOfChangesFromFile(File actionsQueueFile) throws IOException {
 
-        String lineOfChanges = null;
+        String lineOfChanges = "";
 
         BufferedReader reader = new BufferedReader(new FileReader(actionsQueueFile.getPath()));
 
         if (reader.read() == -1) {
             reader.close();
-            return "Полученная строка изменений пуста";
+            System.out.println("Полученная строка изменений пуста");
+            return lineOfChanges;
         }
         try{
             lineOfChanges = reader.readLine();
@@ -56,6 +57,8 @@ public class CommandHelper {
             System.out.println("В файле " + actionsQueueFile.getName() + " отсутствует 1я строка из файла: ");
             return e.getMessage();
         }
+
+        lineOfChanges = lineOfChanges.replace("\\", "");
 
             System.out.println("Считываем 1ю строку из файла " + actionsQueueFile.getName() + ": " + lineOfChanges);
 
