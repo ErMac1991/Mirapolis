@@ -105,7 +105,7 @@ public class StageConstructor {
         String[][] stagesStructure = new String[2][quest.getStagesInQuest()];
         stagesStructure = Formulas.calculateStagesStructure(quest, stagesStructure);
 
-        for(int i = 1; i <= quest.getStagesInQuest(); i++){ // цикл по созданию этапов
+        for(int i = 1; i <= quest.getStagesInQuest(); i++) { // цикл по созданию этапов c базовыми параметрами
 
             // не удалять
             stage.setStageNumber(i);
@@ -115,12 +115,22 @@ public class StageConstructor {
             stage.setStageSystemsPoints(0);
 
             StageLocations.chooseLocation(quest, stage, stagesStructure[1][i], stagesStructure[2][i]);
-
-            // todo создать метод расчёта параметров этапа
-            Formulas.calculateStagesParameters(quest, stage);
-
             FileManager.fillPojoToJsonFile(quest, character, stage);
             System.out.println("Этап " + i + " сгенерирован");
+        }
+
+        Formulas.calculateStagesPoints(quest, stagesStructure[0]);
+
+        for(int i = 1; i <= quest.getStagesInQuest(); i++) { // цикл по дополнению этапов оставшимися параметрами
+            // todo создать метод расчёта параметров этапа
+
+            stage.setStageObjectsPoints(0);
+            stage.setStageEnemiesPoints(0);
+            stage.setStageSystemsPoints(0);
+            stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
+
+            FileManager.fillPojoToJsonFile(quest, character, stage);
+            System.out.println("Этап " + i + " дополнен");
         }
     }
 }

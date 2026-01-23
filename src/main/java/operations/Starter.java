@@ -20,7 +20,6 @@ public class Starter {
     final File actionsQueueFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\СистемныеФайлы\\ActionsQueue.txt");
     String updateData; // Строка изменений
     String typeOfSubjectFromArgs;
-    String userLoginFromArgs;
 
     public File getActionsQueueFile() {
         return actionsQueueFile;
@@ -33,8 +32,15 @@ public class Starter {
             System.out.println("Обновления игровых файлов не найдены");
         }
         Checks.isSystemUpdated(actionsQueueFile);
-        //todo вставить проверку на пустую строку в файле и метод на удаление пустой строки
+
         updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
+        //todo протестировать проверку на пустую строку в файле и метод на удаление пустой строки
+        while (updateData.equals("\n")){
+            System.out.println("Подтянута пустая строка. Удаляем пустую строку");
+            FileManager.eraseLineFromFile(actionsQueueFile, 1, true);
+            Checks.isSystemUpdated(actionsQueueFile);
+            updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
+        }
 
         typeOfSubjectFromArgs = updateData.split("\"")[3];
 
@@ -42,87 +48,33 @@ public class Starter {
 
             case "newCharacter":{
                 System.out.println("Тип субъекта - Новый персонаж");
-                //updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
-                userLoginFromArgs = updateData.split("\"")[7];
-                System.out.println("updateData = " + updateData);
-                CharacterCreator.createCharacter(userLoginFromArgs);
-
-                // Очистка переменных
-                updateData = null;
+                String userLogin = updateData.split("\"")[7];
+                newCharacter(userLogin);
                 break;}
 
-            case "character":{
+            case "changeCharacter":{
+                //todo переписать под изменение параметров персонажа
                 System.out.println("Тип субъекта - Существующий персонаж");
-                updateData = CommandHelper.getLineOfChangesFromFile(actionsQueueFile);
-                System.out.println("updateData = " + updateData);
-                character.setUserLogin(updateData.split("\"")[7]);
-                System.out.println("userNameFromArgs = " + character.getUserLogin());
-                character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
-
-                charactersChanges = character;
-                charactersChanges = FileManager.parseStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
-                if (!userLoginFromArgs.equals(charactersChanges.getUserLogin())) {
-                    System.out.println("Логин игрока из файла: " + userLoginFromArgs + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
-                    return;
-                }
-                System.out.println("Логин игрока из файла: " + userLoginFromArgs + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
-                System.out.println("Квест персонажа " + character.getUserLogin() + " до изменений: " + character.getQuest());
-                System.out.println("Квест в изменениях: " + charactersChanges.getQuest());
-                character = CharacterCreator.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
-                System.out.println("Квест персонажа " + character.getUserLogin() + " после изменений: " + character.getQuest());
-                FileManager.fillPojoToJsonFile(character);// Перенос данных из Pojo персонажа в Json файл персонажа
-
-                // Очистка переменных
-                charactersChanges = null;
-                character = null;
-                updateData = null;
+                String userLogin = updateData.split("\"")[7];
+                changeCharacter(userLogin);
                 break;}
 
             case "newVacantQuest":{
                 System.out.println("Тип субъекта - Новый Вакантный Квест");
-                QuestConstructor.generateVacantQuest(quest);
-                System.out.println("Новый вакантный квест создан");
+                newVacantQuest();
                 break;}
 
             case "vacantQuestsList":{
                 System.out.println("Тип субъекта - Список Вакантных Квестов");
-                String vacantQuests;
-                character.setUserLogin(updateData.split("\"")[7]);
-                System.out.println("userNameFromArgs = " + character.getUserLogin());
-                character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
-
-                List<String> vacantQuestsList = Formulas.getVacantQuestsList(objectMapper, quest, character);
-                if (Checks.hasDuplicates(vacantQuestsList)){
-                    vacantQuestsList = Formulas.deleteDuplicates(vacantQuestsList);
-                }
-
-                vacantQuests = QuestConstructor.getVacantQuests(vacantQuestsList);
-
-                System.out.println("Список вакантных квестов, доступных персонажу " + character.getUserLogin() +
-                        ": " + vacantQuests);
+                String userLogin = updateData.split("\"")[7];
+                vacantQuestsList(userLogin);
                 break;}
 
             case "newReceivedQuest":{ // в команде передавать логин игрока, берущего квест, ID вакантного квеста
                 System.out.println("Тип субъекта - Новый Полученный Квест");
-
-                character.setUserLogin(updateData.split("\"")[7]);
-                System.out.println("userNameFromArgs = " + character.getUserLogin());
-                character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
-
-                quest.setQuestID(Integer.parseInt(updateData.split("\"")[11]));
-                System.out.println("questIDFromArgs = " + quest.getQuestID());
-
-                // Проверка на возможность взять квест по уровню (?)
-                quest = QuestConstructor.chooseQuest(objectMapper, quest);
-                System.out.println("Выбран вакантный квест " + quest.getQuestID());
-                QuestConstructor.generateReceivedQuest(quest, character); // создаём и заполняем файл принятого квеста
-                System.out.println("Создан файл принятого квеста");
-                StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем базовые параметры этапов квеста
-                Formulas.calculateStagesParameters(quest, stage);
-
-//todo прописать очередь методов для генерации взятого квеста
-                System.out.println("Квест принят");
-                // Удаление вакантного квеста после взятия
+                String userLogin = updateData.split("\"")[7];
+                String questID = updateData.split("\"")[11];
+                newReceivedQuest(userLogin, questID);
                 break;}
 
             default:{
@@ -152,6 +104,89 @@ public class Starter {
         else{
             System.out.println("Файл с очередью действий найден");
         }
+    }
+
+    public void newCharacter(String userLogin) throws IOException {
+
+            CharacterCreator.createCharacter(userLogin);
+    }
+
+    public void changeCharacter(String userLogin) throws IOException {
+        character.setUserLogin(userLogin);
+        System.out.println("userNameFromArgs = " + character.getUserLogin());
+        character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
+
+        charactersChanges = character;
+        charactersChanges = FileManager.parseStringJsonToPojo(updateData, objectMapper, charactersChanges); // объект изменений
+        if (!userLogin.equals(charactersChanges.getUserLogin())) {
+            System.out.println("Логин игрока из файла: " + userLogin + " не совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
+            return;
+        }
+        System.out.println("Логин игрока из файла: " + userLogin + " совпадает с логином из Pojo: " + charactersChanges.getUserLogin());
+        System.out.println("Квест персонажа " + character.getUserLogin() + " до изменений: " + character.getQuest());
+        System.out.println("Квест в изменениях: " + charactersChanges.getQuest());
+        character = CharacterCreator.updateCharacterPojo(character, charactersChanges);//Внесение изменений в Pojo персонажа слиянием с объектом изменений
+        System.out.println("Квест персонажа " + character.getUserLogin() + " после изменений: " + character.getQuest());
+        FileManager.fillPojoToJsonFile(character);// Перенос данных из Pojo персонажа в Json файл персонажа
+    }
+
+    public void newVacantQuest() throws IOException {
+        QuestConstructor.generateVacantQuest(quest);
+        System.out.println("Новый вакантный квест создан");
+    }
+
+    public void vacantQuestsList(String userLogin) throws IOException {
+        String vacantQuests;
+        character.setUserLogin(userLogin);
+        System.out.println("userNameFromArgs = " + character.getUserLogin());
+        character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
+
+        List<String> vacantQuestsList = Formulas.getVacantQuestsList(objectMapper, quest, character);
+                /*if (Checks.hasDuplicates(vacantQuestsList)){
+                    vacantQuestsList = Formulas.deleteDuplicates(vacantQuestsList);
+                }*/ //проверка на дубликаты квестов в листе
+
+        vacantQuests = QuestConstructor.getVacantQuests(vacantQuestsList);
+
+        System.out.println("Список вакантных квестов, доступных персонажу " + character.getUserLogin() +
+                ": \n" + vacantQuests);
+    }
+
+    public void newReceivedQuest(String userLogin, String questID) throws IOException {
+        character.setUserLogin(userLogin);
+        System.out.println("userLogin из команды: " + character.getUserLogin());
+        character = CharacterCreator.chooseCharacter(objectMapper, character);// Переключение на изменяемого персонажа
+
+        System.out.println("questID из команды: " + questID);
+
+        if (!Checks.isFileExist("Квесты/Пул/" + questID + ".txt")){
+            System.out.println("Файл вакантного квеста с ID = " + questID + " не найденв пуле");
+            vacantQuestsList(userLogin);
+            return;
+        }
+
+        quest.setQuestID(Integer.parseInt(questID));
+        System.out.println("Передан questID " + quest.getQuestID());
+        quest = QuestConstructor.chooseQuest(objectMapper, quest);
+        System.out.println("Выбран вакантный квест " + quest.getQuestID());
+
+        if (!Checks.isNumberValid(character.getLevel(), quest.getQuestLevel() - 3, quest.getQuestLevel() + 3)){
+            System.out.println("Вакантного квеста с ID = " + questID +
+                    " и сложностью " + quest.getQuestLevel() +
+                    " не подходит персонажу " + character.getUserLogin() +
+                    " с уровнем " + character.getLevel());
+            vacantQuestsList(userLogin);
+            return;
+        }
+
+        QuestConstructor.generateReceivedQuest(quest, character); // создаём и заполняем файл принятого квеста
+        System.out.println("Создан файл принятого квеста");
+        StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем базовые параметры этапов квеста
+
+        //todo прописать очередь методов для генерации взятого квеста
+
+        System.out.println("Квест принят");
+        // todo удалить вакантный квест после взятия
     }
 
 }

@@ -46,13 +46,9 @@ public class Checks {
         while (true) {
             if (actionsQueueFile.exists()) {
                 System.out.println("Файл обновлений найден!");
-
                 return true;
-
             }
                 System.out.println("Файл не найден, ждем 2 секунды...");
-
-
             try {
                 Thread.sleep(2000); // Ждем 2000 миллисекунд (2 секунды)
             } catch (InterruptedException e) {
@@ -117,4 +113,12 @@ public class Checks {
         }
         return false;
     }
+
+    public static boolean isNumberValid(int number, int lowLimit, int highLimit){
+       if(number >= lowLimit && number <= highLimit){
+           return true;
+       }
+        return false;
+    }
+
 }

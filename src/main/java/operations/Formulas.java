@@ -226,7 +226,7 @@ public abstract class Formulas {
                 System.out.println("Ошибка ввода-вывода");
                 e.printStackTrace();
             }
-            if (characterLevel >= (quest.getQuestLevel() - 3) && characterLevel <= (quest.getQuestLevel() + 3)){
+            if (Checks.isNumberValid(characterLevel, quest.getQuestLevel() - 3, quest.getQuestLevel() + 3)){
                 System.out.println("Квест с ID: " + quest.getQuestID() + " подходит персонажу");
             vacantQuests.add(quest.getQuestName() + " (" + quest.getQuestLevel() + " ур.) ID: " + quest.getQuestID());
             }
@@ -242,17 +242,18 @@ public abstract class Formulas {
 
 // РАСЧЕТЫ ЭТАПОВ
 
-    public static void calculateStagesParameters(QuestConstructor quest, StageConstructor stage) {
+    public static void calculateStagesPoints(QuestConstructor quest, String[] stageTypeStructure) {
+        int[][] stagesPoints;
         int[] enemiesPoints = new int[quest.getStagesInQuest()];
         int[] systemsPoints = new int[quest.getStagesInQuest()];
         int[] objectsPoints = new int[quest.getStagesInQuest()];
-        Formulas.distributeEnemiesPoints(quest);
-        Formulas.distributeSystemsPoints(quest);
-        Formulas.distributeObjectsPoints(quest);
-        stage.setStageObjectsPoints(0);
-        stage.setStageEnemiesPoints(0);
-        stage.setStageSystemsPoints(0);
-        stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
+        enemiesPoints = Formulas.distributeEnemiesPoints(quest,stageTypeStructure);
+        systemsPoints = Formulas.distributeSystemsPoints(quest);
+        objectsPoints = Formulas.distributeObjectsPoints(quest);
+
+        stagesPoints = new int[][]{enemiesPoints, systemsPoints, objectsPoints};
+
+
 
 
     }
@@ -290,6 +291,9 @@ public abstract class Formulas {
 
         if (quest.isKeyObject()){
             typeStructure[quest.getKeyStageNumber()] = "Ключевой";
+            for (int i = quest.getKeyStageNumber() + 1; i < stagesStructure.length; i++){
+                typeStructure[quest.getKeyStageNumber()] = "Аутро";
+            }
         }
         System.out.println("Типовая структура квеста: " + typeStructure);
         System.out.println("Пространственная структура квеста: " + spaceStructure);
@@ -474,20 +478,63 @@ public abstract class Formulas {
         return itemsPoints;
     }
 
-    public static void distributeEnemiesPoints(QuestConstructor quest) { // вычисляем количество очков противников для квеста
+    public static int[] distributeEnemiesPoints(QuestConstructor quest, String[] stageStructure) { // вычисляем количество очков противников для квеста
+        int questEnemiesPoints = quest.getQuestEnemyPoints();
+        int pointsLeft = questEnemiesPoints;
         int[] enemiesPoints = new int[quest.getStagesInQuest()];
+        int stagePoints;
+
+
+        for (int i = 0; i < stageStructure.length; i++){
+            switch (stageStructure[i]){
+                case "Интро":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(5)+3)) / 10;
+                    enemiesPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "Ключевой":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(4)+5)) / 10;
+                    enemiesPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "Аутро":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(2)+1)) / 10;
+                    enemiesPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "":
+                    stagePoints = questEnemiesPoints / stageStructure.length;
+                    enemiesPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                default:
+                    System.out.println("Не распознан тип этапа");
+                    enemiesPoints[i] = 0;
+            }
+            System.out.println("На этап " + (stageStructure[i]+1) +
+                    " начислено " + enemiesPoints[i] +
+                    " очков противника. Осталось очков: " + pointsLeft);
+        }
+
+        for (int i = pointsLeft; i>0; i--){
+
+        }
+
+        return enemiesPoints;
     }
 
 // РАСЧЕТЫ СИСТЕМ ОХРАНЫ
 
-    public static void distributeSystemsPoints(QuestConstructor quest) { // вычисляем количество очков псистем охраны для квеста
+    public static int[] distributeSystemsPoints(QuestConstructor quest) { // вычисляем количество очков псистем охраны для квеста
     int[] systemsPoints = new int[quest.getStagesInQuest()];
+    return systemsPoints;
 }
 
 // РАСЧЕТЫ ИНТЕРАКТИВНЫХ ОБЪЕКТОВ
 
-    public static void distributeObjectsPoints(QuestConstructor quest) { // вычисляем количество очков интерактивных объектов для квеста
+    public static int[] distributeObjectsPoints(QuestConstructor quest) { // вычисляем количество очков интерактивных объектов для квеста
         int[] objectsPoints = new int[quest.getStagesInQuest()];
+        return objectsPoints;
     }
 
 

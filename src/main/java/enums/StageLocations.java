@@ -118,7 +118,6 @@ public enum StageLocations {
         System.out.println("Выбранная локация: " + chosenLocation);
 
         stage.setStageName(chosenLocation.getStageName());
-       // stage.setStageSize(Formulas.calculateStageSize(chosenLocation));
         stage.setStageSize(Formulas.calculateStageSize(chosenLocation));
         System.out.println("Назначена локация: " + stage.getStageName() +
                 " за номером: " + stage.getStageNumber() +

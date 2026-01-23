@@ -10,7 +10,6 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
@@ -232,8 +231,12 @@ public class FileManager {
                         "\"stageSize\":" + stage.getStageSize() +  "," +
                         "\"stageNumber\":" + stage.getStageNumber() +  "," +
                         "\"stageType\":\"" + stage.getStageType() + "\"," +
-                        "\"isStageOpenSpace\":" + stage.isStageOpenSpace() + "," +
-                        "\"isKeyStage\":" + stage.isKeyStage() + "}");
+                        "\"isStageOpenSpace\":\"" + stage.isStageOpenSpace() + "\"," +
+                        "\"isKeyStage\":\"" + stage.isKeyStage() + "\"," +
+                        "\"stageEnemiesPoints\":" + stage.getStageEnemiesPoints() +  "," +
+                        "\"stageSystemsPoints\":" + stage.getStageSystemsPoints() +  "," +
+                        "\"stageObjectsPoints\":" + stage.getStageObjectsPoints() +  "," +"}");
+
 
     }
 
