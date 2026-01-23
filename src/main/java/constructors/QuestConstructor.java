@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -204,6 +203,9 @@ public class QuestConstructor {
 
         quest.setQuestTakeDateTime(Starter.formatter.format(LocalDateTime.now())); // время взятия квеста игроком
         quest.setQuestEnemyPoints(Formulas.calculateEnemiesPoints(quest));
+        quest.setQuestSystemsPoints(Formulas.calculateSystemsPoints(quest));
+        quest.setQuestObjectsPoints(Formulas.calculateObjectsPoints(quest));
+
         FileManager.fillPojoToJsonFile(quest, character); // заполняется файл взятого квеста
 
     }

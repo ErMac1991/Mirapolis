@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import constructors.CharacterCreator;
 import constructors.EnemyHumanCreator;
 import constructors.QuestConstructor;
-import constructors.StageConstructor;
 import enums.Items;
 import enums.QuestTypes;
 import enums.QuestValuesVariants;
@@ -248,8 +247,8 @@ public abstract class Formulas {
         int[] systemsPoints = new int[quest.getStagesInQuest()];
         int[] objectsPoints = new int[quest.getStagesInQuest()];
         enemiesPoints = Formulas.distributeEnemiesPoints(quest,stageTypeStructure);
-        systemsPoints = Formulas.distributeSystemsPoints(quest);
-        objectsPoints = Formulas.distributeObjectsPoints(quest);
+        systemsPoints = Formulas.distributeSystemsPoints(quest,stageTypeStructure);
+        objectsPoints = Formulas.distributeObjectsPoints(quest,stageTypeStructure);
 
         stagesPoints = new int[][]{enemiesPoints, systemsPoints, objectsPoints};
 
@@ -463,14 +462,6 @@ public abstract class Formulas {
         return itemsCount;
     }
 
-    //todo придумать формулу получения числа соперников на этапе
-    public static void calculateStageEnemiesPoints(QuestConstructor quest, StageConstructor stage) { // вычисляем количество очков противников для этапа
-
-        // Вписать в очки противников квеста. Вычислять из размера этапа, порядкового номера этапа, и условия является ли этап ключевым
-        stage.setStageEnemiesPoints(0);
-
-    }
-
     public static int calculateItemsPoints(EnemyHumanCreator enemyHuman){
         int itemsPoints = Formulas.randomNumber.nextInt(enemyHuman.getLevel() / 2 ) * 10 + 10;
         itemsPoints += Formulas.randomNumber.nextInt(21) - 10;
@@ -516,24 +507,141 @@ public abstract class Formulas {
                     " очков противника. Осталось очков: " + pointsLeft);
         }
 
-        for (int i = pointsLeft; i>0; i--){
+        System.out.println("Начисленные очки противника поэтапно: " + enemiesPoints +
+                ". Осталось очков: " + pointsLeft);
 
+        for (int i = pointsLeft; i>0; i--){
+            enemiesPoints[Formulas.randomNumber.nextInt(quest.getStagesInQuest())] ++;
+            pointsLeft--;
         }
+        System.out.println("Начисленные очки противника поэтапно: " + enemiesPoints +
+                ". Осталось очков: " + pointsLeft);
 
         return enemiesPoints;
     }
 
 // РАСЧЕТЫ СИСТЕМ ОХРАНЫ
 
-    public static int[] distributeSystemsPoints(QuestConstructor quest) { // вычисляем количество очков псистем охраны для квеста
+    public static int calculateSystemsPoints(QuestConstructor quest) { // вычисляем количество очков систем охраны для квеста
+        //todo Переписать коэффициенты в формулах для систем охраны
+        int questSystemsPoints = quest.getQuestLevel() * 150 +
+                quest.getDifficultyRatio() * (100 + randomNumber.nextInt(51)) +
+                quest.getStagesInQuest() * 50;
+        return questSystemsPoints;
+
+    }
+
+    public static int[] distributeSystemsPoints(QuestConstructor quest, String[] stageStructure) { // вычисляем количество очков систем охраны для квеста
     int[] systemsPoints = new int[quest.getStagesInQuest()];
+        int questEnemiesPoints = quest.getQuestEnemyPoints();
+        int pointsLeft = questEnemiesPoints;
+        int stagePoints;
+
+        //todo Переписать коэффициенты в формулах для систем охраны
+        for (int i = 0; i < stageStructure.length; i++){
+            switch (stageStructure[i]){
+                case "Интро":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(5)+3)) / 10;
+                    systemsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "Ключевой":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(4)+5)) / 10;
+                    systemsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "Аутро":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(2)+1)) / 10;
+                    systemsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "":
+                    stagePoints = questEnemiesPoints / stageStructure.length;
+                    systemsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                default:
+                    System.out.println("Не распознан тип этапа");
+                    systemsPoints[i] = 0;
+            }
+            System.out.println("На этап " + (stageStructure[i]+1) +
+                    " начислено " + systemsPoints[i] +
+                    " очков систем охраны. Осталось очков: " + pointsLeft);
+        }
+
+        System.out.println("Начисленные очки систем охраны поэтапно: " + systemsPoints +
+                ". Осталось очков: " + pointsLeft);
+
+        for (int i = pointsLeft; i>0; i--){
+            systemsPoints[Formulas.randomNumber.nextInt(quest.getStagesInQuest())] ++;
+            pointsLeft--;
+        }
+        System.out.println("Начисленные очки систем охраны поэтапно: " + systemsPoints +
+                ". Осталось очков: " + pointsLeft);
+
     return systemsPoints;
 }
 
 // РАСЧЕТЫ ИНТЕРАКТИВНЫХ ОБЪЕКТОВ
+public static int calculateObjectsPoints(QuestConstructor quest) { // вычисляем количество очков интерактивных объектов для квеста
+    //todo Переписать формулы для объектов
 
-    public static int[] distributeObjectsPoints(QuestConstructor quest) { // вычисляем количество очков интерактивных объектов для квеста
+    int questObjectsPoints = quest.getQuestLevel() * 150 +
+            quest.getDifficultyRatio() * (100 + randomNumber.nextInt(51)) +
+            quest.getStagesInQuest() * 50;
+    return questObjectsPoints;
+
+}
+
+
+    public static int[] distributeObjectsPoints(QuestConstructor quest, String[] stageStructure) { // вычисляем количество очков интерактивных объектов для квеста
         int[] objectsPoints = new int[quest.getStagesInQuest()];
+        int questEnemiesPoints = quest.getQuestEnemyPoints();
+        int pointsLeft = questEnemiesPoints;
+        int stagePoints;
+
+        //todo Переписать формулы для объектов исходя из параметров размеров и наполненности каждого этапа
+        for (int i = 0; i < stageStructure.length; i++){
+            switch (stageStructure[i]){
+                case "Интро":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(5)+3)) / 10;
+                    objectsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "Ключевой":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(4)+5)) / 10;
+                    objectsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "Аутро":
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(2)+1)) / 10;
+                    objectsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                case "":
+                    stagePoints = questEnemiesPoints / stageStructure.length;
+                    objectsPoints[i] = stagePoints;
+                    pointsLeft -= stagePoints;
+                    break;
+                default:
+                    System.out.println("Не распознан тип этапа");
+                    objectsPoints[i] = 0;
+            }
+            System.out.println("На этап " + (stageStructure[i]+1) +
+                    " начислено " + objectsPoints[i] +
+                    " очков интерактивных объектов. Осталось очков: " + pointsLeft);
+        }
+
+        System.out.println("Начисленные очки интерактивных объектов поэтапно: " + objectsPoints +
+                ". Осталось очков: " + pointsLeft);
+
+        for (int i = pointsLeft; i>0; i--){
+            objectsPoints[Formulas.randomNumber.nextInt(quest.getStagesInQuest())] ++;
+            pointsLeft--;
+        }
+        System.out.println("Начисленные очки интерактивных объектов поэтапно: " + objectsPoints +
+                ". Осталось очков: " + pointsLeft);
+
         return objectsPoints;
     }
 
