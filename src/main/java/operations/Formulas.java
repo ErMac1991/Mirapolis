@@ -537,26 +537,26 @@ public abstract class Formulas {
         int pointsLeft = questEnemiesPoints;
         int stagePoints;
 
-        //todo Переписать коэффициенты в формулах для систем охраны
+
         for (int i = 0; i < stageStructure.length; i++){
             switch (stageStructure[i]){
                 case "Интро":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(5)+3)) / 10;
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(6)+5)) / 10;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "Ключевой":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(4)+5)) / 10;
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(3)+8)) / 10;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "Аутро":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(2)+1)) / 10;
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(1)+1)) / 10;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "":
-                    stagePoints = questEnemiesPoints / stageStructure.length;
+                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(8))) / 10;;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
