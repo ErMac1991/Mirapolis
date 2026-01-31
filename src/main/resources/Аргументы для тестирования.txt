@@ -1,0 +1,14 @@
+СОЗДАНИЕ НОВОГО ПЕРСОНАЖА ПО ЛОГИНУ
+{\"subject\":\"newCharacter\",\"userLogin\":\"NickName\"}
+
+СОЗДАНИЕ НОВОГО ВАКАНТНОГО КВЕСТА
+{\"subject\":\"newVacantQuest\"}
+
+ПОЛУЧЕНИЕ СПИСКА ВАКАНТНЫХ КВЕСТОВ, ДОСТУПНЫХ ПЕРСОНАЖУ 
+{\"subject\":\"vacantQuestsList\",\"userLogin\":\"NickName\"}
+
+ВЗЯТИЕ ПЕРСОНАЖЕМ КВЕСТА
+{\"subject\":\"newReceivedQuest\",\"userLogin\":\"NickName\",\"questID\":\"58\"}
+
+ВЗЯТИЕ ПЕРСОНАЖЕМ ТЕСТОВОГО КВЕСТА
+{\"subject\":\"character\",\"userLogin\":\"NickName\",\"quest\":\"TEST\"}
