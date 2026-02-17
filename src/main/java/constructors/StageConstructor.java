@@ -126,7 +126,7 @@ public class StageConstructor {
         }
 
         for(int i = 0; i < quest.getStagesInQuest(); i++) { // цикл по дополнению этапов оставшимися параметрами
-
+            //todo вынести заполнение этапов в отдельный метод
             //todo создать и заполнить файлы противников, систем и объектов
 
             stage.setStageNumber(i+1);
@@ -139,9 +139,10 @@ public class StageConstructor {
         }
     }
 
-    public  static void generateStagesFilling (CharacterCreator character, QuestConstructor quest, StageConstructor stage, int[][] stagesPoints){
+    public  static void generateStagesFilling (CharacterCreator character, QuestConstructor quest, StageConstructor stage,
+                                               EnemyHumanCreator enemy, int[][] stagesPoints){
 
-        Formulas.buyStageEnemies(quest);
+        Formulas.buyStageEnemies(character, quest, stage, enemy);
 
         List<Systems> chosenSystems = new ArrayList<>();
         List<StageObjects> chosenObjects = new ArrayList<>();

@@ -2,6 +2,7 @@ package enums;
 
 import constructors.QuestConstructor;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,8 @@ public enum Enemies {
     public String getEnemyType() {
         return enemyType;
     }
+    final File EnemyCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\СистемныеФайлы\\EnemiesCounter.txt");
+
 
     Enemies(String enemyType, String enemyName, int enemyMinLevel, int enemyMaxLevel, int enemyPoints) {
         this.enemyType = enemyType;
@@ -46,6 +49,10 @@ public enum Enemies {
         this.enemyMinLevel = enemyMinLevel;
         this.enemyMaxLevel = enemyMaxLevel;
         this.enemyPoints = enemyPoints;
+    }
+
+    public File getEnemyCounterFile() {
+        return EnemyCounterFile;
     }
 
     public static List<Enemies> filterEnemies(QuestConstructor quest) { // получаем выборку подходящих соперников

@@ -1,7 +1,6 @@
 package constructors;
 
 import enums.Enemies;
-import operations.FileManager;
 import operations.Formulas;
 
 import java.io.File;
@@ -26,7 +25,7 @@ public class EnemyHumanCreator extends Unit {
     String rightLeg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     int jaws; // количество джос
     int itemsPoints; //количество очков предметов
-    final File EnemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesCounter.txt");
+    final File enemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesIDCounter.txt");
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
 
@@ -169,7 +168,7 @@ public class EnemyHumanCreator extends Unit {
         this.fourthBagPlace = fourthBagPlace;
     }
     public File getEnemyIDCounterFile() {
-        return EnemyIDCounterFile;
+        return enemyIDCounterFile;
     }
     public int getJaws() {
         return jaws;
@@ -184,10 +183,11 @@ public class EnemyHumanCreator extends Unit {
         this.itemsPoints = itemsPoints;
     }
 
-    public void createNewEnemyHuman(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemyHuman) throws IOException {
-        enemyHuman.setEnemyHumanID(FileManager.getID(enemyHuman.getEnemyIDCounterFile()));
+    public static void createNewEnemyHuman(QuestConstructor quest, StageConstructor stage,
+                                           EnemyHumanCreator enemy, Enemies enemyEnum) throws IOException {
 
-        FileManager.fillPojoToJsonFile(character, quest, stage, enemyHuman);
+
+
 
     }
 

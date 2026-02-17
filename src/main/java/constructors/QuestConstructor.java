@@ -36,6 +36,7 @@ public class QuestConstructor {
     String questTakeDateTime; // Дата и время взятия квеста игроком
     final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\СистемныеФайлы\\QuestsCounter.txt");
 
+
     // ГЕТТЕРЫ И СЕТТЕРЫ
     public String getQuestTask() {
         return questTask;

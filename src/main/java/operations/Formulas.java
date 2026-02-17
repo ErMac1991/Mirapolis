@@ -517,7 +517,7 @@ public abstract class Formulas {
         return enemiesPoints;
     }
 
-    public static void buyStageEnemies(QuestConstructor quest, StageConstructor stage){
+    public static void buyStageEnemies(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemy){
         List<Enemies> chosenEnemies = new ArrayList<>();
         int enemiesPointsLeft = stage.getStageEnemiesPoints();
         List<Enemies> sortedEnemies = Enemies.filterEnemies(quest);
@@ -539,6 +539,27 @@ public abstract class Formulas {
             }
         }
 
+        for (int i = 0 ; i < chosenEnemies.size() ; i++){
+
+            try {
+                enemy.setEnemyHumanID(FileManager.getID(enemy.getEnemyIDCounterFile()));
+                System.out.println("ID противника: " + enemy.getEnemyHumanID());
+                EnemyHumanCreator.createNewEnemyHuman(quest, stage, enemy, chosenEnemies.get(i));
+                //todo прописать создание объекта противника
+
+            } catch (IOException e) {
+                System.out.println("Произошла ошибка при создании противника" + enemy.getEnemyHumanID());
+                e.printStackTrace();
+            }
+
+            try {
+                FileManager.fillPojoToJsonFile(character, quest, stage, enemy);
+            } catch (IOException e) {
+                System.out.println("Произошла ошибка в создании файла противника");
+                e.printStackTrace();
+            }
+        }
+
 
     }
 
@@ -555,30 +576,30 @@ public abstract class Formulas {
 
     public static int[] distributeSystemsPoints(QuestConstructor quest, String[] stageStructure) { // вычисляем количество очков систем охраны для квеста
     int[] systemsPoints = new int[quest.getStagesInQuest()];
-        int questEnemiesPoints = quest.getQuestEnemyPoints();
-        int pointsLeft = questEnemiesPoints;
+        int questSystemsPoints = quest.getQuestSystemsPoints();
+        int pointsLeft = questSystemsPoints;
         int stagePoints;
 
 
         for (int i = 0; i < stageStructure.length; i++){
             switch (stageStructure[i]){
                 case "Интро":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(6)+5)) / 10;
+                    stagePoints = (questSystemsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(6)+5)) / 10;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "Ключевой":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(3)+8)) / 10;
+                    stagePoints = (questSystemsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(3)+8)) / 10;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "Аутро":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(1)+1)) / 10;
+                    stagePoints = (questSystemsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(1)+1)) / 10;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(8))) / 10;;
+                    stagePoints = (questSystemsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(8))) / 10;;
                     systemsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
