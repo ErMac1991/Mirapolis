@@ -1,7 +1,10 @@
 package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import enums.Enemies;
 import enums.StageLocations;
+import enums.StageObjects;
+import enums.Systems;
 import operations.Checks;
 import operations.FileManager;
 import operations.Formulas;
@@ -9,6 +12,8 @@ import operations.Formulas;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StageConstructor {
     String stageName; // название территории этапа
@@ -88,49 +93,65 @@ public class StageConstructor {
 
     public static void chooseStage(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest, StageConstructor stage) throws IOException {
         System.out.println(quest.getQuestID());
-        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\Q" + quest.getQuestID() + "\\S" + stage.getStageNumber() + "\\StageData.txt")) {
+        if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")) {
             System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
             return;
         }
         System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста:  StageData.txt найден");
         System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")));
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")));
         stage = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
-                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\stage" + stage.getStageNumber() + "\\StageData.txt")),
+                "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")),
                 objectMapper, stage);
         System.out.println("Выбран этап " + stage.getStageNumber() + " квеста " + quest.getQuestID());
     }
 
-    public  static void generateAllStages(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException {
+    public  static void generateAllStages(ObjectMapper objectMapper, QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException {
         String[][] stagesStructure = new String[2][quest.getStagesInQuest()];
         stagesStructure = Formulas.calculateStagesStructure(quest, stagesStructure);
+        int[][] stagesPoints = new int[3][quest.getStagesInQuest()];
+        stagesPoints = Formulas.calculateStagesPoints(quest, stagesStructure[0]);
 
-        for(int i = 1; i <= quest.getStagesInQuest(); i++) { // цикл по созданию этапов c базовыми параметрами
+        for(int i = 0; i < quest.getStagesInQuest(); i++) { // цикл по созданию этапов c базовыми параметрами
 
-            // не удалять
             stage.setStageNumber(i);
             stage.setKeyStage(false);
-            stage.setStageObjectsPoints(0);
-            stage.setStageEnemiesPoints(0);
-            stage.setStageSystemsPoints(0);
+            stage.setStageEnemiesPoints(stagesPoints[0][i]);
+            stage.setStageSystemsPoints(stagesPoints[1][i]);
+            stage.setStageObjectsPoints(stagesPoints[2][i]);
 
-            StageLocations.chooseLocation(quest, stage, stagesStructure[1][i], stagesStructure[2][i]);
+            StageLocations.chooseLocation(quest, stage, stagesStructure[0][i], stagesStructure[1][i]);
             FileManager.fillPojoToJsonFile(quest, character, stage);
-            System.out.println("Этап " + i + " сгенерирован");
+            System.out.println("Этап " + (i+1) + " сгенерирован");
         }
 
-        Formulas.calculateStagesPoints(quest, stagesStructure[0]);
+        for(int i = 0; i < quest.getStagesInQuest(); i++) { // цикл по дополнению этапов оставшимися параметрами
 
-        for(int i = 1; i <= quest.getStagesInQuest(); i++) { // цикл по дополнению этапов оставшимися параметрами
-            // todo создать метод расчёта параметров этапа
+            //todo создать и заполнить файлы противников, систем и объектов
 
-            stage.setStageObjectsPoints(0);
-            stage.setStageEnemiesPoints(0);
-            stage.setStageSystemsPoints(0);
-            stage.setStageType("TestStageType"); // вычислять исходя из присутствия соперников, известности игрока, сложности
+            stage.setStageNumber(i+1);
+            StageConstructor.chooseStage(objectMapper, character, quest, stage);
+
+            StageConstructor.generateStagesFilling(character, quest, stage, stagesPoints); // создаём и заполняем файлы наполнения этапов квеста
 
             FileManager.fillPojoToJsonFile(quest, character, stage);
-            System.out.println("Этап " + i + " дополнен");
+            System.out.println("Этап " + (i+1) + " дополнен");
         }
+    }
+
+    public  static void generateStagesFilling (CharacterCreator character, QuestConstructor quest, StageConstructor stage, int[][] stagesPoints){
+
+        Formulas.buyStageEnemies(quest);
+
+        List<Systems> chosenSystems = new ArrayList<>();
+        List<StageObjects> chosenObjects = new ArrayList<>();
+
+
+
+
+        // методы закупа противников/систем/объектов на очки этапа
+        // методы реализации остатков
+        // создание файлов и запись
+
     }
 }

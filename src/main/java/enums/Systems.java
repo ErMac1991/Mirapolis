@@ -1,7 +1,9 @@
 package enums;
 
 public enum Systems {
-    CAMERA("Камера наблюдения", 7, 30, 7, 35)
+    TESTSYSTEM("Тестовая система охраны", 1, 30, 1, 10),
+    CAMERA("Камера наблюдения", 7, 30, 7, 35),
+    TURRET("Турель", 16, 30,45, 72)
     ;
 
     String systemName;

@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import constructors.CharacterCreator;
 import constructors.EnemyHumanCreator;
 import constructors.QuestConstructor;
-import enums.Items;
-import enums.QuestTypes;
-import enums.QuestValuesVariants;
-import enums.StageLocations;
+import constructors.StageConstructor;
+import enums.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -241,20 +239,14 @@ public abstract class Formulas {
 
 // РАСЧЕТЫ ЭТАПОВ
 
-    public static void calculateStagesPoints(QuestConstructor quest, String[] stageTypeStructure) {
+    public static int[][] calculateStagesPoints(QuestConstructor quest, String[] stageTypeStructure) {
         int[][] stagesPoints;
-        int[] enemiesPoints = new int[quest.getStagesInQuest()];
-        int[] systemsPoints = new int[quest.getStagesInQuest()];
-        int[] objectsPoints = new int[quest.getStagesInQuest()];
-        enemiesPoints = Formulas.distributeEnemiesPoints(quest,stageTypeStructure);
-        systemsPoints = Formulas.distributeSystemsPoints(quest,stageTypeStructure);
-        objectsPoints = Formulas.distributeObjectsPoints(quest,stageTypeStructure);
+        int[] enemiesPoints = Formulas.distributeEnemiesPoints(quest,stageTypeStructure);
+        int[] systemsPoints = Formulas.distributeSystemsPoints(quest,stageTypeStructure);
+        int[] objectsPoints = Formulas.distributeObjectsPoints(quest,stageTypeStructure);
 
         stagesPoints = new int[][]{enemiesPoints, systemsPoints, objectsPoints};
-
-
-
-
+        return stagesPoints;
     }
 
     public static int calculateStageSize(StageLocations chosenLocation) {
@@ -301,6 +293,11 @@ public abstract class Formulas {
         System.out.println("Двухмерный массив структуры квеста: " + stagesStructure);
 
         return stagesStructure;
+    }
+
+    public static String calculateStageType(CharacterCreator character, StageConstructor stage){
+        String stageType = "Спокойный";
+        return stageType;
     }
 
 
@@ -520,6 +517,31 @@ public abstract class Formulas {
         return enemiesPoints;
     }
 
+    public static void buyStageEnemies(QuestConstructor quest, StageConstructor stage){
+        List<Enemies> chosenEnemies = new ArrayList<>();
+        int enemiesPointsLeft = stage.getStageEnemiesPoints();
+        List<Enemies> sortedEnemies = Enemies.filterEnemies(quest);
+        Enemies chosen;
+
+        while (sortedEnemies.size()>0){
+            int sortedEnemyNumber = Formulas.randomNumber.nextInt(sortedEnemies.size());
+            chosen = sortedEnemies.get(sortedEnemyNumber);
+
+            if (chosen.getEnemyPoints() > enemiesPointsLeft){
+                System.out.println("На противника " + chosen.getEnemyName() + " не хватает очков. Удаляем его из подборки");
+                sortedEnemies.remove(sortedEnemyNumber);
+            }
+            else{
+                enemiesPointsLeft -= chosen.getEnemyPoints();
+                System.out.println("Противник " + chosen.getEnemyName() + " приобретён на этап");
+                chosenEnemies.add(chosen);
+                System.out.println("Список нанятых: " + chosenEnemies);
+            }
+        }
+
+
+    }
+
 // РАСЧЕТЫ СИСТЕМ ОХРАНЫ
 
     public static int calculateSystemsPoints(QuestConstructor quest) { // вычисляем количество очков систем охраны для квеста
@@ -596,30 +618,29 @@ public static int calculateObjectsPoints(QuestConstructor quest) { // вычис
 
     public static int[] distributeObjectsPoints(QuestConstructor quest, String[] stageStructure) { // вычисляем количество очков интерактивных объектов для квеста
         int[] objectsPoints = new int[quest.getStagesInQuest()];
-        int questEnemiesPoints = quest.getQuestEnemyPoints();
-        int pointsLeft = questEnemiesPoints;
+        int questObjectsPoints = quest.getQuestObjectsPoints();
+        int pointsLeft = questObjectsPoints;
         int stagePoints;
 
-        //todo Переписать формулы для объектов исходя из параметров размеров и наполненности каждого этапа
         for (int i = 0; i < stageStructure.length; i++){
             switch (stageStructure[i]){
                 case "Интро":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(5)+3)) / 10;
+                    stagePoints = (questObjectsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(8)+5)) / 10;
                     objectsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "Ключевой":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(4)+5)) / 10;
+                    stagePoints = (questObjectsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(3)+2)) / 10;
                     objectsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "Аутро":
-                    stagePoints = (questEnemiesPoints / stageStructure.length * (Formulas.randomNumber.nextInt(2)+1)) / 10;
+                    stagePoints = (questObjectsPoints / stageStructure.length * (Formulas.randomNumber.nextInt(7)+4)) / 10;
                     objectsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;
                 case "":
-                    stagePoints = questEnemiesPoints / stageStructure.length;
+                    stagePoints = questObjectsPoints / stageStructure.length;
                     objectsPoints[i] = stagePoints;
                     pointsLeft -= stagePoints;
                     break;

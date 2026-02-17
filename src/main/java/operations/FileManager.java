@@ -226,7 +226,7 @@ public class FileManager {
 
     public static void fillPojoToJsonFile(QuestConstructor quest, CharacterCreator character, StageConstructor stage) throws IOException { //МЕТОД ЗАПИСЫВАЮЩИЙ POJO В ФАЙЛ этапа взятого квеста
 
-        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + ".txt"),
+        Files.writeString(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\St." + stage.getStageNumber() + ".txt"),
                 "{\"stageName\":\"" + stage.getStageName() + "\"," +
                         "\"stageSize\":" + stage.getStageSize() +  "," +
                         "\"stageNumber\":" + stage.getStageNumber() +  "," +
