@@ -517,7 +517,7 @@ public abstract class Formulas {
         return enemiesPoints;
     }
 
-    public static void buyStageEnemies(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemy){
+    public static int buyStageEnemies(CharacterCreator character, QuestConstructor quest, StageConstructor stage, EnemyHumanCreator enemy){
         List<Enemies> chosenEnemies = new ArrayList<>();
         int enemiesPointsLeft = stage.getStageEnemiesPoints();
         List<Enemies> sortedEnemies = Enemies.filterEnemies(quest);
@@ -533,7 +533,7 @@ public abstract class Formulas {
             }
             else{
                 enemiesPointsLeft -= chosen.getEnemyPoints();
-                System.out.println("Противник " + chosen.getEnemyName() + " приобретён на этап");
+                System.out.println("Противник " + chosen.getEnemyName() + " приобретён на этап. Остаток очков противника: " + enemiesPointsLeft);
                 chosenEnemies.add(chosen);
                 System.out.println("Список нанятых: " + chosenEnemies);
             }
@@ -560,7 +560,7 @@ public abstract class Formulas {
             }
         }
 
-
+        return enemiesPointsLeft;
     }
 
 // РАСЧЕТЫ СИСТЕМ ОХРАНЫ

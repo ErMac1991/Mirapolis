@@ -181,8 +181,13 @@ public class Starter {
 
         QuestConstructor.generateReceivedQuest(quest, character); // создаём и заполняем файл принятого квеста
         System.out.println("Создан файл принятого квеста");
-        StageConstructor.generateAllStages(objectMapper,quest,character,stage); // создаём и заполняем базовые параметры этапов квеста
+        StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем базовые параметры этапов квеста
 
+        for (int i = 0; i < quest.getStagesInQuest(); i++) {
+            stage.setStageNumber(i+1);
+            StageConstructor.chooseStage(objectMapper, character, quest, stage);
+
+        }
 
         //todo прописать вычисление типа каждого этапа взятого квеста
 
