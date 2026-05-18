@@ -92,18 +92,18 @@ public class StageConstructor {
     }
 
     public static void chooseStage(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest, StageConstructor stage) throws IOException {
-        System.out.println(quest.getQuestID());
+        logger.info(quest.getQuestID());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")) {
-            System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
+            logger.info("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
             return;
         }
-        System.out.println("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста:  StageData.txt найден");
-        System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
+        logger.info("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста:  StageData.txt найден");
+        logger.info("Передаём на десериализацию:" + Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")));
         stage = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")),
                 objectMapper, stage);
-        System.out.println("Выбран этап " + stage.getStageNumber() + " квеста " + quest.getQuestID());
+        logger.info("Выбран этап " + stage.getStageNumber() + " квеста " + quest.getQuestID());
     }
 
     public  static void generateAllStages(QuestConstructor quest, CharacterCreator character, StageConstructor stage, EnemyHumanCreator enemy) throws IOException {
@@ -123,7 +123,7 @@ public class StageConstructor {
             FileManager.fillPojoToJsonFile(quest, character, stage);
 
             generateStageFilling(character, quest, stage, enemy);
-            System.out.println("Этап " + (i + 1) + " сгенерирован");
+            logger.info("Этап " + (i + 1) + " сгенерирован");
         }
     }
 
@@ -139,7 +139,7 @@ public class StageConstructor {
 
             enemiesPointsLeft += Formulas.buyStageEnemies(character, quest, stage, enemy);
 
-            System.out.println("Этап " + (i + 1) + " дополнен");
+            logger.info("Этап " + (i + 1) + " дополнен");
         }
 
 

@@ -156,33 +156,33 @@ public class QuestConstructor {
     }
 
     public static QuestConstructor chooseQuest(ObjectMapper objectMapper, QuestConstructor quest) throws IOException {
-        System.out.println("ID выбираемого квеста: " + quest.getQuestID());
+        logger.info("ID выбираемого квеста: " + quest.getQuestID());
         if (!Checks.isFileExist("Квесты/Пул/" + quest.getQuestID() + ".txt")) {
-            System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
+            logger.info("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
             return null;
         }
-        System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt найден");
-        System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
+        logger.info("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt найден");
+        logger.info("Передаём на десериализацию:" + Files.readString(Paths.get(
                 "F:/Проекты/Стримы/Mirapolis/Квесты/Пул/" + quest.getQuestID() + ".txt")));
         quest = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
                 "F:/Проекты/Стримы/Mirapolis/Квесты/Пул/" + quest.getQuestID() + ".txt")), objectMapper, quest);
-        System.out.println("Выбран вакантный квест " + quest.getQuestID());
+        logger.info("Выбран вакантный квест " + quest.getQuestID());
 
         return quest;
     }
 
     public static QuestConstructor chooseReceivedQuest(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest) throws IOException {
-        System.out.println(quest.getQuestID());
+        logger.info(quest.getQuestID());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\QuestData.txt")) {
-            System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
+            logger.info("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt не найден");
             return null;
         }
-        System.out.println("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt найден");
-        System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
+        logger.info("При выборе вакантного квеста файл квеста " + quest.getQuestID() + ".txt найден");
+        logger.info("Передаём на десериализацию:" + Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + ".txt")));
         quest = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Квесты\\Пул\\" + quest.getQuestID() + ".txt")), objectMapper, quest);
-        System.out.println("Выбран вакантный квест " + quest.getQuestID());
+        logger.info("Выбран вакантный квест " + quest.getQuestID());
 
         return quest;
     }
@@ -190,7 +190,7 @@ public class QuestConstructor {
     public static void generateVacantQuest(QuestConstructor quest) throws IOException {
 
         quest.setQuestLevel(Formulas.randomNumber.nextInt(30) + 1); // Получаем уровень квеста
-        System.out.println("Уровень квеста: " + quest.getQuestLevel());
+        logger.info("Уровень квеста: " + quest.getQuestLevel());
         quest.setQuestID(FileManager.getID(quest.getQuestCounterFile()));
 
         Formulas.calculateQuestParameters(quest);

@@ -88,10 +88,10 @@ public enum Items {
                 .filter(Items -> Items.getItemMinLevel() <= enemyHuman.getLevel()) // фильтрует предметы, подходящие по уровню противника
                 .filter(Items -> Items.getItemMaxLevel() >= enemyHuman.getLevel())
                 .collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих квесту и противнику предметов: " + filteredItems);
+        logger.info("Список подходящих квесту и противнику предметов: " + filteredItems);
 
         if (filteredItems.size() == 0) {
-            System.out.println("Ни один из предметов не подходит для уровней квеста " + quest.getQuestLevel() +
+            logger.info("Ни один из предметов не подходит для уровней квеста " + quest.getQuestLevel() +
                     " и противника: " + enemyHuman.getLevel());
             return null;
         }

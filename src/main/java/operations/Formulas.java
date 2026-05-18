@@ -25,7 +25,7 @@ public abstract class Formulas {
 
     public static boolean getProbableBoolean(int probabilityPercent) {
         if (!Checks.isRightPercent(probabilityPercent)) {
-            System.out.println("Ошибка проверки на правильное указание процента");
+            logger.info("Ошибка проверки на правильное указание процента");
             return false;
         }
 
@@ -77,25 +77,25 @@ public abstract class Formulas {
             questDifficultyRatio = 9;
         }
         quest.setDifficultyRatio(questDifficultyRatio); // коэффициент сложности
-        System.out.println("Для квеста уровнем: " + quest.getQuestLevel() + " коэффициент сложности: " + quest.getDifficultyRatio());
+        logger.info("Для квеста уровнем: " + quest.getQuestLevel() + " коэффициент сложности: " + quest.getDifficultyRatio());
         quest.setQuestDifficulty(questValuesVariants[quest.getDifficultyRatio()].getQuestDifficulty());// наименование сложности
-        System.out.println("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
+        logger.info("Квест уровня " + quest.getQuestLevel() + " попадает в раздел: " + quest.getQuestDifficulty());
         quest.setStagesInQuest(Formulas.randomNumber.nextInt( // количество этапов в квесте,
                 questValuesVariants[quest.getDifficultyRatio()].getRandomValue()) +
                 questValuesVariants[quest.getDifficultyRatio()].getConstantValue());
-        System.out.println("Количество этапов в квесте: " + quest.getStagesInQuest());
+        logger.info("Количество этапов в квесте: " + quest.getStagesInQuest());
         quest.setKeyStageNumber(defineKeyStage(quest, questValuesVariants));
     }
 
     public static void questPricesCalculate(QuestConstructor quest) {
         quest.setDeposit(100 + quest.getDifficultyRatio() * 100); // цена за взятие квеста
-        System.out.println("Стоимость за взятие квеста: " + quest.getDeposit());
+        logger.info("Стоимость за взятие квеста: " + quest.getDeposit());
 
         quest.setRoyalty(quest.getDeposit() +
                 quest.getStagesInQuest() * 50 +
                 quest.getDifficultyRatio() * 50 +
                 randomNumber.nextInt(51) * quest.getDifficultyRatio());// вознаграждение за прохождение квеста
-        System.out.println("Награда за выполнение квеста: " + quest.getRoyalty());
+        logger.info("Награда за выполнение квеста: " + quest.getRoyalty());
 
     }
 
@@ -106,7 +106,7 @@ public abstract class Formulas {
         int stageCounter;
 
         if (quest.isQuestOpenSpace()){
-            System.out.println("Квест под открытым небом");
+            logger.info("Квест под открытым небом");
             for (int i = 0; i < stagesInQuest; i++){
                 spaceStructure[i] = "Улица";
             }
@@ -118,20 +118,20 @@ public abstract class Formulas {
         for (int i = 0; i < introOpenSpaces; i++){
             spaceStructure[i] = "Улица";
             stageCounter++;
-            System.out.println("Добавлена интро-улица");
+            logger.info("Добавлена интро-улица");
         }
-        System.out.println("Структура квеста " + spaceStructure);
+        logger.info("Структура квеста " + spaceStructure);
 
         if (stagesInQuest <= 6){
-            System.out.println("Размер квеста " + stagesInQuest + "<= 6");
+            logger.info("Размер квеста " + stagesInQuest + "<= 6");
             for (int i = stageCounter; i < stagesInQuest; i++){
                 spaceStructure[i] = "Здание";
             }
             if (stagesInQuest >= 5 && Formulas.getProbableBoolean(5)){
                 spaceStructure[stagesInQuest-1] = "Задний двор";
-                System.out.println("Сгенерирован задний двор");
+                logger.info("Сгенерирован задний двор");
             }
-            System.out.println("Структура квеста " + spaceStructure);
+            logger.info("Структура квеста " + spaceStructure);
             return spaceStructure;
         }
 
@@ -143,26 +143,26 @@ public abstract class Formulas {
         for ( ; stageCounter < stagesInQuest - 3; stageCounter++){
             if (Formulas.getProbableBoolean(10)) {
                 spaceStructure[stageCounter] = "Внутренний двор";
-                System.out.println("Сгенерирован внутренний двор");
-                System.out.println("Структура квеста " + spaceStructure);
+                logger.info("Сгенерирован внутренний двор");
+                logger.info("Структура квеста " + spaceStructure);
 
                 for (int k = stageCounter +1 ; k < stagesInQuest; k++){
                     spaceStructure[k] = "Здание";
                     stageCounter++;
                 }
-                System.out.println("Структура квеста " + spaceStructure);
+                logger.info("Структура квеста " + spaceStructure);
 
                 if (stagesInQuest > stageCounter && Formulas.getProbableBoolean(5)){
                     spaceStructure[stagesInQuest-1] = "Задний двор";
-                    System.out.println("Сгенерирован задний двор");
+                    logger.info("Сгенерирован задний двор");
                 }
-                System.out.println("Структура квеста " + spaceStructure);
+                logger.info("Структура квеста " + spaceStructure);
                 return spaceStructure;
 
             }
             else{
                 spaceStructure[stageCounter] = "Здание";
-                System.out.println("Структура квеста " + spaceStructure);
+                logger.info("Структура квеста " + spaceStructure);
             }
 
 
@@ -174,10 +174,10 @@ public abstract class Formulas {
 
         if (Formulas.getProbableBoolean(5)){
             spaceStructure[stagesInQuest-1] = "Задний двор";
-            System.out.println("Сгенерирован задний двор");
+            logger.info("Сгенерирован задний двор");
         }
 
-        System.out.println("Структура квеста " + spaceStructure);
+        logger.info("Структура квеста " + spaceStructure);
         return spaceStructure;
 
     }
@@ -195,10 +195,10 @@ public abstract class Formulas {
         try {
             characterLevel = character.getLevel();
         } catch (NullPointerException e) {
-            System.out.println("Не подтянулся уровень персонажа");
+            logger.info("Не подтянулся уровень персонажа");
             e.printStackTrace();
         }
-        System.out.println("Уровень персонажа: " + characterLevel);
+        logger.info("Уровень персонажа: " + characterLevel);
 
         try (Stream<Path> filesStream = Files.list(directoryPath)) {
 
@@ -208,11 +208,11 @@ public abstract class Formulas {
         catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Лист файлов: " + vacantQuestsList);
+        logger.info("Лист файлов: " + vacantQuestsList);
         questFilesCounter = vacantQuestsList.size();
 
         for (int i = 0; i < questFilesCounter; i++){
-            System.out.println("Выбранный файл: " + vacantQuestsList.get(i));
+            logger.info("Выбранный файл: " + vacantQuestsList.get(i));
             questFileName = String.valueOf(vacantQuestsList.get(i).getFileName());
             questID = Integer.parseInt(questFileName.substring(0, questFileName.lastIndexOf('.')));
             quest.setQuestID(questID);
@@ -220,17 +220,17 @@ public abstract class Formulas {
             try {
                 quest = QuestConstructor.chooseQuest(objectMapper, quest);
             } catch (IOException e) {
-                System.out.println("Ошибка ввода-вывода");
+                logger.info("Ошибка ввода-вывода");
                 e.printStackTrace();
             }
             if (Checks.isNumberValid(characterLevel, quest.getQuestLevel() - 3, quest.getQuestLevel() + 3)){
-                System.out.println("Квест с ID: " + quest.getQuestID() + " подходит персонажу");
+                logger.info("Квест с ID: " + quest.getQuestID() + " подходит персонажу");
             vacantQuests.add(quest.getQuestName() + " (" + quest.getQuestLevel() + " ур.) ID: " + quest.getQuestID());
             }
         }
 
         if (vacantQuests.size() == 0){
-            System.out.println("Для персонажа нет подходящих квестов");
+            logger.info("Для персонажа нет подходящих квестов");
         }
 
         return vacantQuests;
@@ -257,7 +257,7 @@ public abstract class Formulas {
     }
 
     public static int defineKeyStage(QuestConstructor quest, QuestValuesVariants[] questValuesVariants) {
-        System.out.println("Этапов в квесте: " + quest.getStagesInQuest());
+        logger.info("Этапов в квесте: " + quest.getStagesInQuest());
         int keyStageNumber = Formulas.randomNumber.nextInt( // порядковый номер ключевого этапа,
                 quest.getStagesInQuest() - questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage() + 1) +
                 questValuesVariants[quest.getDifficultyRatio()].getMinKeyStage();
@@ -286,11 +286,11 @@ public abstract class Formulas {
                 typeStructure[quest.getKeyStageNumber()] = "Аутро";
             }
         }
-        System.out.println("Типовая структура квеста: " + typeStructure);
-        System.out.println("Пространственная структура квеста: " + spaceStructure);
+        logger.info("Типовая структура квеста: " + typeStructure);
+        logger.info("Пространственная структура квеста: " + spaceStructure);
 
         stagesStructure = new String[][]{typeStructure, spaceStructure};
-        System.out.println("Двухмерный массив структуры квеста: " + stagesStructure);
+        logger.info("Двухмерный массив структуры квеста: " + stagesStructure);
 
         return stagesStructure;
     }
@@ -307,12 +307,12 @@ public abstract class Formulas {
 
         int statsPointsLeft = enemyHuman.getLevel() * 4;
         List<Integer> statsMassive = new ArrayList<>();
-        System.out.println("Доступно очков статов: " + statsPointsLeft);
+        logger.info("Доступно очков статов: " + statsPointsLeft);
         int minStatsPoints = statsPointsLeft / 10;
         for (int i = 0; i < 4; i++) { // раскидываем минимальные значения
             statsMassive.add(minStatsPoints);
             statsPointsLeft -= minStatsPoints;
-            System.out.println("Добавлено минимальное значение " + statsMassive.get(i) + " в позицию листа " + i + ". Остаток очков: " + statsPointsLeft);
+            logger.info("Добавлено минимальное значение " + statsMassive.get(i) + " в позицию листа " + i + ". Остаток очков: " + statsPointsLeft);
         }
 
         while (statsPointsLeft != 0) {
@@ -355,12 +355,12 @@ public abstract class Formulas {
 
         while (i < itemsCount && filteredItems.size()>0) {
             int filteredItemNumber = Formulas.randomNumber.nextInt(filteredItems.size());
-            System.out.println("Индекс выбранного предмета в отфильрованном листе " + filteredItemNumber +
+            logger.info("Индекс выбранного предмета в отфильрованном листе " + filteredItemNumber +
                     ". Соответствующий предмет: " + filteredItems.get(filteredItemNumber) + " " + filteredItems.get(filteredItemNumber).getItemName());
             if (filteredItems.get(filteredItemNumber).equals(Items.JAWS)) {
-                System.out.println("Зачисляем джос");
+                logger.info("Зачисляем джос");
                 if (Formulas.getProbableBoolean(filteredItems.get(filteredItemNumber).getGenerationChance())) {
-                    System.out.println("Зачисление джос прошло проверку вариации " + filteredItems.get(filteredItemNumber).getGenerationChance() + "%");
+                    logger.info("Зачисление джос прошло проверку вариации " + filteredItems.get(filteredItemNumber).getGenerationChance() + "%");
                     jawsToAdd = calculateJaws(enemyHuman);
 
                     if (jawsToAdd * filteredItems.get(filteredItemNumber).getItemPoints()> itemsPointsLeft) {
@@ -368,20 +368,20 @@ public abstract class Formulas {
                     }
                     itemsPointsLeft -= jawsToAdd * filteredItems.get(filteredItemNumber).getItemPoints();
                     jawsToAccount += jawsToAdd;
-                    System.out.println("Всего джос: " + jawsToAccount + ". Лимит для этого противника: " + jawsLimit);
+                    logger.info("Всего джос: " + jawsToAccount + ". Лимит для этого противника: " + jawsLimit);
                 }
 
                 if (jawsToAccount > jawsLimit) {
                     itemsPointsLeft += (jawsToAccount - jawsLimit) * filteredItems.get(filteredItemNumber).getItemPoints();
                     jawsToAccount = jawsLimit;
-                    System.out.println("Всего джос: " + jawsToAccount + " достигло максимума");
+                    logger.info("Всего джос: " + jawsToAccount + " достигло максимума");
                     filteredItems.remove(filteredItemNumber);
                 }
             }
             else {
 
                 if (filteredItems.get(filteredItemNumber).getItemPoints() > itemsPointsLeft) { // проверка на то что очков хватает
-                    System.out.println("Количество нераспределённых очков предметов: " + itemsPointsLeft +
+                    logger.info("Количество нераспределённых очков предметов: " + itemsPointsLeft +
                             ". Предмет " + filteredItems.get(filteredItemNumber).getItemName() + " стоимостью " +
                             filteredItems.get(filteredItemNumber).getItemPoints() + " не по карману");
                     filteredItems.remove(filteredItemNumber);
@@ -389,25 +389,25 @@ public abstract class Formulas {
                 else {
 
                     if (getProbableBoolean(filteredItems.get(filteredItemNumber).getGenerationChance())) {
-                        System.out.println("Вероятность " + filteredItems.get(filteredItemNumber).getGenerationChance() + " сыграла. " +
+                        logger.info("Вероятность " + filteredItems.get(filteredItemNumber).getGenerationChance() + " сыграла. " +
                                 "В выборку попал предмет: " + filteredItems.get(filteredItemNumber) +
                                 ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
                         //todo перенести проверку содержания предмета в листе в отдельный метод в Checks
                         if (enemyItems.contains(filteredItems.get(filteredItemNumber).getItemName())){ // проверка на добавление в стек
-                            System.out.println("В листе уже имеется предмет " + filteredItems.get(filteredItemNumber).getItemName() +
+                            logger.info("В листе уже имеется предмет " + filteredItems.get(filteredItemNumber).getItemName() +
                                     ". Закидываем его в стек. Массив: " + enemyItems);
 
                             List<String> changedEnemyItems = formItemStacks(enemyItems, filteredItems.get(filteredItemNumber).getItemName());
 
                             if(enemyItems.equals(changedEnemyItems)){
-                                System.out.println("Массивы равны, значит enemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
+                                logger.info("Массивы равны, значит enemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
                                 filteredItems.remove(filteredItemNumber);
                             }
                             else{
                                 itemsPointsLeft -= filteredItems.get(filteredItemNumber).getItemPoints();
                                 i++;
                             }
-                            System.out.println("Массив после внесения предмета в стек: " + enemyItems +
+                            logger.info("Массив после внесения предмета в стек: " + enemyItems +
                                     ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
                         }
                         else if (enemyItems.size() < 4){
@@ -416,14 +416,14 @@ public abstract class Formulas {
                             bagPlaceID++;
 
                             if (filteredItems.get(filteredItemNumber).isUnique()) {
-                                System.out.println("Предмет " + filteredItems.get(filteredItemNumber) + " является уникальным");
+                                logger.info("Предмет " + filteredItems.get(filteredItemNumber) + " является уникальным");
                                 filteredItems.remove(filteredItemNumber);
-                                System.out.println("Предмет удалён из списка отфильтрованных предметов");
+                                logger.info("Предмет удалён из списка отфильтрованных предметов");
 
                             }
                         }
                         else{
-                            System.out.println("EnemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
+                            logger.info("EnemyItems полон, предмет некуда добавить. Удаляем этот предмет из filteredItems");
                             filteredItems.remove(filteredItemNumber);
                         }
 
@@ -437,7 +437,7 @@ public abstract class Formulas {
         }
         enemyHuman.setJaws(jawsToAccount);
 
-        System.out.println("Джос перечислено: " + enemyHuman.getJaws() +
+        logger.info("Джос перечислено: " + enemyHuman.getJaws() +
                 ". Лист выборки предметов: " + enemyItems +
                 ". Количество нераспределённых очков предметов: " + itemsPointsLeft);
 
@@ -496,22 +496,22 @@ public abstract class Formulas {
                     pointsLeft -= stagePoints;
                     break;
                 default:
-                    System.out.println("Не распознан тип этапа");
+                    logger.info("Не распознан тип этапа");
                     enemiesPoints[i] = 0;
             }
-            System.out.println("На этап " + (stageStructure[i]+1) +
+            logger.info("На этап " + (stageStructure[i]+1) +
                     " начислено " + enemiesPoints[i] +
                     " очков противника. Осталось очков: " + pointsLeft);
         }
 
-        System.out.println("Начисленные очки противника поэтапно: " + enemiesPoints +
+        logger.info("Начисленные очки противника поэтапно: " + enemiesPoints +
                 ". Осталось очков: " + pointsLeft);
 
         for (int i = pointsLeft; i>0; i--){
             enemiesPoints[Formulas.randomNumber.nextInt(quest.getStagesInQuest())] ++;
             pointsLeft--;
         }
-        System.out.println("Начисленные очки противника поэтапно: " + enemiesPoints +
+        logger.info("Начисленные очки противника поэтапно: " + enemiesPoints +
                 ". Осталось очков: " + pointsLeft);
 
         return enemiesPoints;
@@ -528,14 +528,14 @@ public abstract class Formulas {
             chosen = sortedEnemies.get(sortedEnemyNumber);
 
             if (chosen.getEnemyPoints() > enemiesPointsLeft){
-                System.out.println("На противника " + chosen.getEnemyName() + " не хватает очков. Удаляем его из подборки");
+                logger.info("На противника " + chosen.getEnemyName() + " не хватает очков. Удаляем его из подборки");
                 sortedEnemies.remove(sortedEnemyNumber);
             }
             else{
                 enemiesPointsLeft -= chosen.getEnemyPoints();
-                System.out.println("Противник " + chosen.getEnemyName() + " приобретён на этап. Остаток очков противника: " + enemiesPointsLeft);
+                logger.info("Противник " + chosen.getEnemyName() + " приобретён на этап. Остаток очков противника: " + enemiesPointsLeft);
                 chosenEnemies.add(chosen);
-                System.out.println("Список нанятых: " + chosenEnemies);
+                logger.info("Список нанятых: " + chosenEnemies);
             }
         }
 
@@ -543,19 +543,19 @@ public abstract class Formulas {
 
             try {
                 enemy.setEnemyHumanID(FileManager.getID(enemy.getEnemyIDCounterFile()));
-                System.out.println("ID противника: " + enemy.getEnemyHumanID());
+                logger.info("ID противника: " + enemy.getEnemyHumanID());
                 EnemyHumanCreator.createNewEnemyHuman(quest, stage, enemy, chosenEnemies.get(i));
                 //todo прописать создание объекта противника
 
             } catch (IOException e) {
-                System.out.println("Произошла ошибка при создании противника" + enemy.getEnemyHumanID());
+                logger.info("Произошла ошибка при создании противника" + enemy.getEnemyHumanID());
                 e.printStackTrace();
             }
 
             try {
                 FileManager.fillPojoToJsonFile(character, quest, stage, enemy);
             } catch (IOException e) {
-                System.out.println("Произошла ошибка в создании файла противника");
+                logger.info("Произошла ошибка в создании файла противника");
                 e.printStackTrace();
             }
         }
@@ -604,22 +604,22 @@ public abstract class Formulas {
                     pointsLeft -= stagePoints;
                     break;
                 default:
-                    System.out.println("Не распознан тип этапа");
+                    logger.info("Не распознан тип этапа");
                     systemsPoints[i] = 0;
             }
-            System.out.println("На этап " + (stageStructure[i]+1) +
+            logger.info("На этап " + (stageStructure[i]+1) +
                     " начислено " + systemsPoints[i] +
                     " очков систем охраны. Осталось очков: " + pointsLeft);
         }
 
-        System.out.println("Начисленные очки систем охраны поэтапно: " + systemsPoints +
+        logger.info("Начисленные очки систем охраны поэтапно: " + systemsPoints +
                 ". Осталось очков: " + pointsLeft);
 
         for (int i = pointsLeft; i>0; i--){
             systemsPoints[Formulas.randomNumber.nextInt(quest.getStagesInQuest())] ++;
             pointsLeft--;
         }
-        System.out.println("Начисленные очки систем охраны поэтапно: " + systemsPoints +
+        logger.info("Начисленные очки систем охраны поэтапно: " + systemsPoints +
                 ". Осталось очков: " + pointsLeft);
 
     return systemsPoints;
@@ -666,22 +666,22 @@ public static int calculateObjectsPoints(QuestConstructor quest) { // вычис
                     pointsLeft -= stagePoints;
                     break;
                 default:
-                    System.out.println("Не распознан тип этапа");
+                    logger.info("Не распознан тип этапа");
                     objectsPoints[i] = 0;
             }
-            System.out.println("На этап " + (stageStructure[i]+1) +
+            logger.info("На этап " + (stageStructure[i]+1) +
                     " начислено " + objectsPoints[i] +
                     " очков интерактивных объектов. Осталось очков: " + pointsLeft);
         }
 
-        System.out.println("Начисленные очки интерактивных объектов поэтапно: " + objectsPoints +
+        logger.info("Начисленные очки интерактивных объектов поэтапно: " + objectsPoints +
                 ". Осталось очков: " + pointsLeft);
 
         for (int i = pointsLeft; i>0; i--){
             objectsPoints[Formulas.randomNumber.nextInt(quest.getStagesInQuest())] ++;
             pointsLeft--;
         }
-        System.out.println("Начисленные очки интерактивных объектов поэтапно: " + objectsPoints +
+        logger.info("Начисленные очки интерактивных объектов поэтапно: " + objectsPoints +
                 ". Осталось очков: " + pointsLeft);
 
         return objectsPoints;
@@ -702,19 +702,19 @@ public static int calculateObjectsPoints(QuestConstructor quest) { // вычис
 
         if (Checks.isItemFullStack(items.get(changedItemIndex))) {
             if (items.size() == 4){
-                System.out.println("Последний стек предмета полон, мест под новый стек нет");
+                logger.info("Последний стек предмета полон, мест под новый стек нет");
                 return items;
             }
 
             items.set(items.size(), newItem);
-            System.out.println("Создан новый стек предмета. Массив предметов: " + items);
+            logger.info("Создан новый стек предмета. Массив предметов: " + items);
 
             return items;
         }
 
-        System.out.println("Найден неполный стек предмета, пополняем его на предмет. Массив предметов до добавления: " + items);
+        logger.info("Найден неполный стек предмета, пополняем его на предмет. Массив предметов до добавления: " + items);
         items.set(changedItemIndex, addItemToStack(items.get(changedItemIndex)));
-        System.out.println("Стек предмета пополнен. Массив предметов после добавления: " + items);
+        logger.info("Стек предмета пополнен. Массив предметов после добавления: " + items);
 
         return items;
     }

@@ -3,6 +3,7 @@ package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import operations.*;
+import org.slf4j.LoggerFactory;
 
 
 import java.io.IOException;
@@ -10,13 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-
+import java.util.logging.Logger;
 
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class CharacterCreator extends Unit {
     //todo внести переменные энергитический лимит и текущей энергии
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(CharacterCreator.class);
     String userLogin; // логин игрока
     String head; // Голова. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     String body; // Туловище. Указывается "Плоть", если родное или восстановленное ИЛИ модель протеза
@@ -361,12 +362,12 @@ public class CharacterCreator extends Unit {
         newCharacter.setLevel(Formulas.calculateLevelFromStats(newCharacter));
 
         if (Checks.isFileExist("Персонажи\\" + newCharacter.userLogin + "\\Персонаж.txt")) {
-            System.out.println("Персонаж с логином " + newCharacter.userLogin + " уже существует.");
+            logger.info("Персонаж с логином " + newCharacter.userLogin + " уже существует.");
             return;
         }
         FileManager.createCharacterFile(newCharacter.userLogin);
         FileManager.fillPojoToJsonFile(newCharacter);
-        System.out.println("Персонаж с логином " + newCharacter.userLogin + " создан");
+        logger.info("Персонаж с логином " + newCharacter.userLogin + " создан");
 
 
     }
@@ -374,17 +375,17 @@ public class CharacterCreator extends Unit {
 
 
     public static CharacterCreator chooseCharacter(ObjectMapper objectMapper, CharacterCreator character) throws IOException {
-        System.out.println(character.getUserLogin());
+        logger.info(character.getUserLogin());
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")) {
-            System.out.println("При выборе персонажа файл персонажа " + character.getUserLogin() + " не найден");
+            logger.info("При выборе персонажа файл персонажа " + character.getUserLogin() + " не найден");
             return null;
         }
-        System.out.println("При выборе персонажа файл персонажа " + character.getUserLogin() + " найден");
-        System.out.println("Передаём на десериализацию:" + Files.readString(Paths.get(
+        logger.info("При выборе персонажа файл персонажа " + character.getUserLogin() + " найден");
+        logger.info("Передаём на десериализацию:" + Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")));
         character = FileManager.parseStringJsonToPojo(Files.readString(Paths.get(
                 "F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + character.getUserLogin() + "\\Персонаж.txt")), objectMapper, character);
-        System.out.println("Выбран персонаж " + character.getUserLogin() + ". Его квест:  " + character.quest);
+        logger.info("Выбран персонаж " + character.getUserLogin() + ". Его квест:  " + character.quest);
 
         return character;
     }
@@ -392,7 +393,7 @@ public class CharacterCreator extends Unit {
     public static CharacterCreator updateCharacterPojo(CharacterCreator character, CharacterCreator charactersChanges) throws IOException {
 
         character = charactersChanges;
-        System.out.println(character.getQuest());
+        logger.info(character.getQuest());
         return character;
     }
 

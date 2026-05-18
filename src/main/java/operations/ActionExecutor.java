@@ -2,11 +2,14 @@ package operations;
 
 import constructors.CharacterCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ActionExecutor {
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(ActionExecutor.class);
 
     int lineNumber = 1; // Номер строки для чтения (1-based)
     static String firstLine;
@@ -31,7 +34,7 @@ public class ActionExecutor {
 
         while ((reader.readLine()) != null){
             firstLine = reader.readLine();
-            System.out.println("Подтянута строка изменения персонажа из файла ActionsQueue: " + firstLine);
+            logger.info("Подтянута строка изменения персонажа из файла ActionsQueue: " + firstLine);
 
         }
     }

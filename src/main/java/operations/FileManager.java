@@ -20,7 +20,7 @@ public class FileManager {
 
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
         actionsQueueFile.createNewFile();
-        System.out.println("Создан файл с очередью действий " + actionsQueueFile.getName());
+        logger.info("Создан файл с очередью действий " + actionsQueueFile.getName());
     }
 
     public static void fillActionsQueueFile(File actionsQueueFile, String command) throws IOException {
@@ -30,19 +30,19 @@ public class FileManager {
 
 
         if (!Checks.isFileExist(actionsQueueFile.getName())) {
-            System.out.println("При попытке заполнения, не найден файл " + actionsQueueFile.getName());
+            logger.info("При попытке заполнения, не найден файл " + actionsQueueFile.getName());
         }
-        System.out.println("Код первого символа в файле: " + reader.read());
+        logger.info("Код первого символа в файле: " + reader.read());
 
         if (reader.read() != -1) { // Если первая строка не пуста (?)
-            System.out.println("Первая строка не пуста");
+            logger.info("Первая строка не пуста");
             writer.write("\n");
         }
 
         writer.write(command);
         writer.close();
         reader.close();
-        System.out.println("Заполнен файл с очередью действий " + actionsQueueFile.getName() + " командой: " + command);
+        logger.info("Заполнен файл с очередью действий " + actionsQueueFile.getName() + " командой: " + command);
 
 
     }
@@ -68,8 +68,8 @@ public class FileManager {
         String textToReplace = "";
         File tempFile = File.createTempFile("TempFile", ".txt", new File("F:\\Проекты\\Стримы\\Mirapolis\\"));
 
-        System.out.println("Всё, что считано с файла: " + lines);
-        System.out.println("Длина массива равна: " + lines.size());
+        logger.info("Всё, что считано с файла: " + lines);
+        logger.info("Длина массива равна: " + lines.size());
 
         // Заполняем временный файл строками из исходного, за исключением удаляемой строки
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
@@ -81,20 +81,20 @@ public class FileManager {
                     textToReplace += "\n";
                 }
             } else {
-                System.out.println("Строка " + lineNumber + " найдена и не включена в строковую переменную для записи во временный файл");
+                logger.info("Строка " + lineNumber + " найдена и не включена в строковую переменную для записи во временный файл");
             }
         }
             writer.write(textToReplace);
 
-            System.out.println("Временный файл заполнен значением: " + textToReplace );
+            logger.info("Временный файл заполнен значением: " + textToReplace );
 
             writer.close();
             file.delete(); // удалить исходный файл
             tempFile.renameTo(file); // переименовываем временный файл в исходное имя файла
-            System.out.println("Путь актуального файла: " + file.getPath() + " а название: " + file.getName());
+            logger.info("Путь актуального файла: " + file.getPath() + " а название: " + file.getName());
 
             if (deleteEmptyFile == false) {
-                System.out.println("Файл не нужно удалять, даже если он пустой");
+                logger.info("Файл не нужно удалять, даже если он пустой");
                 return;
             }
 
@@ -102,10 +102,10 @@ public class FileManager {
     }
 
     public static void deleteEmptyFile(File file){
-        System.out.println("Если файл " + file.getName() + " пустой - удалить его");
+        logger.info("Если файл " + file.getName() + " пустой - удалить его");
         if (Checks.isFileEmpty(file)) {
             file.delete();
-            System.out.println("Пустой файл " + file.getName() + " удалён");
+            logger.info("Пустой файл " + file.getName() + " удалён");
         }
     }
 
@@ -115,7 +115,7 @@ public class FileManager {
             Files.createDirectory(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\"));
             Files.createFile(Path.of("F:\\Проекты\\Стримы\\Mirapolis\\Персонажи\\" + userLogin + "\\Персонаж.txt"));
         } catch (FileAlreadyExistsException e) {
-            System.out.println("Создаваемый файл или папка уже существуют");
+            logger.info("Создаваемый файл или папка уже существуют");
             e.printStackTrace();
         }
 
@@ -244,12 +244,12 @@ public class FileManager {
 
         String counterIDFileName = counterIDFile.getName();
         if (!Checks.isFileExist("СистемныеФайлы/" +  counterIDFileName)) {
-            System.out.println("Не найдет файл счётчика " + counterIDFileName);
+            logger.info("Не найдет файл счётчика " + counterIDFileName);
             return -1;
         }
 
         idCounter = Integer.parseInt(Files.readString(Path.of(counterIDFile.getPath())));
-        System.out.println("Идентификатор " + counterIDFileName + ": " + idCounter);
+        logger.info("Идентификатор " + counterIDFileName + ": " + idCounter);
         Files.writeString(Path.of(counterIDFile.getPath()), String.valueOf(idCounter + 1));
 
         return idCounter;

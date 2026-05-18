@@ -2,9 +2,11 @@ package enums;
 
 import constructors.QuestConstructor;
 import operations.Formulas;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public enum QuestTypes { // список видов квестов
@@ -49,6 +51,7 @@ public enum QuestTypes { // список видов квестов
 
     static int index; // индекс случайного элемента листа
 
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(QuestTypes.class);
 
     public String getQuestName() {
         return questName;
@@ -88,10 +91,10 @@ public enum QuestTypes { // список видов квестов
                 .filter(QuestTypes -> QuestTypes.getQuestMinLevel() <= quest.getQuestLevel()) // фильтрует типы квеста, подходящие по уровню
                 .filter(QuestTypes -> QuestTypes.getQuestMaxLevel() >= quest.getQuestLevel())
                 .collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих типов квестов: " + filteredQuestTypes);
+        logger.info("Список подходящих типов квестов: " + filteredQuestTypes);
 
         if (filteredQuestTypes.size() == 0) {
-            System.out.println("Ни один из типов квестов не подходит для уровня: " + quest.getQuestLevel());
+            logger.info("Ни один из типов квестов не подходит для уровня: " + quest.getQuestLevel());
             return;
         }
 
@@ -99,19 +102,19 @@ public enum QuestTypes { // список видов квестов
 
 
         quest.setQuestName(filteredQuestTypes.get(index).getQuestName()); // передаём название квеста
-        System.out.println("Название квеста " + quest.getQuestName() + " передано");
+        logger.info("Название квеста " + quest.getQuestName() + " передано");
         quest.setQuestTask(filteredQuestTypes.get(index).getQuestTask()); // передаём описание задачи
-        System.out.println("Описание задачи " + quest.getQuestTask() + " передано");
+        logger.info("Описание задачи " + quest.getQuestTask() + " передано");
 
         if(filteredQuestTypes.get(index).isCanBeOpenSpace()){ // передаём статус Квест под открытым небом
             quest.setQuestOpenSpace(Formulas.getProbableBoolean(5));
         } else quest.setQuestOpenSpace(false);
-        System.out.println("статус \"Квест под открытым небом\": " + quest.isQuestOpenSpace() + " передан");
+        logger.info("статус \"Квест под открытым небом\": " + quest.isQuestOpenSpace() + " передан");
 
         if(filteredQuestTypes.get(index).isCanBeMultiPlayer()){ // передаём статус Многопользовательский квест
             quest.setQuestMultiPlayer(Formulas.getProbableBoolean(0)); // ПОКА МНОГОПОЛЬЗОВАТЕЛЬСКИЕ КВЕСТЫ НЕ РАЗРАБАТЫВАЮТСЯ
         } else quest.setQuestMultiPlayer(false);
-        System.out.println("статус \"Многопользовательский квест\": " + quest.isQuestMultiPlayer() + " передан");
+        logger.info("статус \"Многопользовательский квест\": " + quest.isQuestMultiPlayer() + " передан");
     }
 
 

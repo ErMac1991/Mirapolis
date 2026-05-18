@@ -2,12 +2,14 @@ package constructors;
 
 import enums.Enemies;
 import operations.Formulas;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static constructors.EnemyMachineCreator.setEnemyMachineParameters;
 import static enums.Enemies.filterEnemies;
@@ -26,6 +28,8 @@ public class EnemyHumanCreator extends Unit {
     int jaws; // количество джос
     int itemsPoints; //количество очков предметов
     final File enemyIDCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\EnemiesIDCounter.txt");
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(EnemyHumanCreator.class);
+
 
     // ГЕТТЕРЫ И СЕТТЕРЫ
 
@@ -197,21 +201,21 @@ public class EnemyHumanCreator extends Unit {
         int index;
         List<Enemies> filteredEnemies = filterEnemies(quest);
         int enemyPointsRemains = quest.getQuestEnemyPoints();
-        System.out.println("Количество очков противника для распределения: " + enemyPointsRemains);
+        logger.info("Количество очков противника для распределения: " + enemyPointsRemains);
         int minEnemyPoints = Arrays.stream(Enemies.values())
                 .min(Comparator.comparingInt(Enemies::getEnemyPoints))
                 .get()
                 .getEnemyPoints();
-        System.out.println("Минимальная стоимость противника из выборки: " + minEnemyPoints + " очков");
+        logger.info("Минимальная стоимость противника из выборки: " + minEnemyPoints + " очков");
 
         while (enemyPointsRemains >= minEnemyPoints){
 
             index = Formulas.randomNumber.nextInt(filteredEnemies.size());
-            System.out.println("Выбран индекс листа " + index + ". Противник под этим индексом: " + filteredEnemies.get(index).getEnemyName());
+            logger.info("Выбран индекс листа " + index + ". Противник под этим индексом: " + filteredEnemies.get(index).getEnemyName());
 
             if (enemyPointsRemains >= filteredEnemies.get(index).getEnemyPoints()){
                 enemyPointsRemains -= filteredEnemies.get(index).getEnemyPoints();
-                System.out.println("Стоимость противника " + filteredEnemies.get(index).getEnemyName() +
+                logger.info("Стоимость противника " + filteredEnemies.get(index).getEnemyName() +
                         " списана в размере: " + filteredEnemies.get(index).getEnemyPoints() +
                         " очков. Остаток: " + enemyPointsRemains + " очков");
 
@@ -228,17 +232,17 @@ public class EnemyHumanCreator extends Unit {
                     case "Машина":
                         setEnemyMachineParameters(quest, enemyMachine, filteredEnemies.get(index));
                     default:
-                        System.out.println("Выбрано неведомое нечто");
+                        logger.info("Выбрано неведомое нечто");
                 }
 
             }
             else{
-                System.out.println("На противника " + filteredEnemies.get(index).getEnemyName() + " очков не хватает.");
+                logger.info("На противника " + filteredEnemies.get(index).getEnemyName() + " очков не хватает.");
                 filteredEnemies.remove(index);
-                System.out.println("Удалили его из списка");
+                logger.info("Удалили его из списка");
             }
         }
-        System.out.println("Все очки противников растрачены. Остаток: " + enemyPointsRemains);
+        logger.info("Все очки противников растрачены. Остаток: " + enemyPointsRemains);
 
     }
 
@@ -249,31 +253,31 @@ public class EnemyHumanCreator extends Unit {
 
 //todo Заполнить параметры противника человека И/ИЛИ киборга
         enemyHuman.setEnemyHumanName(enemyUnit.getEnemyName()); // передаём наименование противника
-        System.out.println("Наименование противника человека " + enemyHuman.getEnemyHumanName() + " передано");
+        logger.info("Наименование противника человека " + enemyHuman.getEnemyHumanName() + " передано");
         enemyHuman.setEnemyHumanPoints(enemyUnit.getEnemyPoints()); // передаём стоимость противника в ОП
-        System.out.println("Количество очков противника человека " + enemyHuman.getEnemyHumanPoints() + " передано");
+        logger.info("Количество очков противника человека " + enemyHuman.getEnemyHumanPoints() + " передано");
 
         enemyHuman.setLevel(Formulas.calculateEnemyLevel(quest, enemyHuman));
 
             counter = Formulas.randomNumber.nextInt(statsToDistribute.size());
             enemyHuman.setAttentiveness(statsToDistribute.get(counter));
             statsToDistribute.remove(counter);
-        System.out.println("Внимательность противника человека " + enemyHuman.getAttentiveness() + " передано");
+        logger.info("Внимательность противника человека " + enemyHuman.getAttentiveness() + " передано");
 
             counter = Formulas.randomNumber.nextInt(statsToDistribute.size());
             enemyHuman.setReaction(statsToDistribute.get(counter));
             statsToDistribute.remove(counter);
-        System.out.println("Реакция противника человека " + enemyHuman.getAttentiveness() + " передано");
+        logger.info("Реакция противника человека " + enemyHuman.getAttentiveness() + " передано");
 
             counter = Formulas.randomNumber.nextInt(statsToDistribute.size());
             enemyHuman.setEndurance(statsToDistribute.get(counter));
             statsToDistribute.remove(counter);
-        System.out.println("Выносливость противника человека " + enemyHuman.getAttentiveness() + " передано");
+        logger.info("Выносливость противника человека " + enemyHuman.getAttentiveness() + " передано");
 
             counter = Formulas.randomNumber.nextInt(statsToDistribute.size());
             enemyHuman.setStrength(statsToDistribute.get(counter));
             statsToDistribute.remove(counter);
-        System.out.println("Сила противника человека " + enemyHuman.getAttentiveness() + " передано");
+        logger.info("Сила противника человека " + enemyHuman.getAttentiveness() + " передано");
 
         enemyHuman.setItemsPoints(Formulas.calculateItemsPoints(enemyHuman)); // начисляет очки предметов
 
@@ -286,14 +290,14 @@ public class EnemyHumanCreator extends Unit {
 
 
         if (itemsToTake.size() == 0){
-            System.out.println("Нет предметов для распределения");
+            logger.info("Нет предметов для распределения");
             return;
         }
 
         for (int i = 0; i < itemsToTake.size(); i++){
 
                 enemyItems.set(i, itemsToTake.get(i));
-                System.out.println("Массив после добавления нового предмета: " + enemyItems);
+                logger.info("Массив после добавления нового предмета: " + enemyItems);
 
         }
 

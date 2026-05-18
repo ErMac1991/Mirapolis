@@ -1,10 +1,12 @@
 package enums;
 
 import constructors.QuestConstructor;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public enum Enemies {
@@ -24,6 +26,7 @@ public enum Enemies {
     int enemyMinLevel;
     int enemyMaxLevel;
     int enemyPoints;
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(Enemies.class);
 
     public String getEnemyName() {
         return enemyName;
@@ -60,10 +63,10 @@ public enum Enemies {
                 .filter(Enemies -> Enemies.getEnemyMinLevel() <= quest.getQuestLevel()) // фильтрует типы квеста, подходящие по уровню
                 .filter(Enemies -> Enemies.getEnemyMaxLevel() >= quest.getQuestLevel())
                 .collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих типов противников: " + filteredEnemies);
+        logger.info("Список подходящих типов противников: " + filteredEnemies);
 
         if (filteredEnemies.size() == 0) {
-            System.out.println("Ни один из типов противников не подходит для уровня: " + quest.getQuestLevel());
+            logger.info("Ни один из типов противников не подходит для уровня: " + quest.getQuestLevel());
             return null;
         }
 

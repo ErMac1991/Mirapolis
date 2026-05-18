@@ -92,7 +92,7 @@ public enum StageLocations {
                 break;
 
             default:
-                System.out.println("Обычный или неизвестный этап");
+                logger.info("Обычный или неизвестный этап");
                 break;
         }
 
@@ -105,21 +105,21 @@ public enum StageLocations {
                 break;
 
             default:
-                System.out.println("Неизвестный статус пространства");
+                logger.info("Неизвестный статус пространства");
                 break;
         }
 
 
 
         filteredStageLocationsList = filteredStageTypes.collect(Collectors.toList()); // Собираем в список
-        System.out.println("Список подходящих локаций: " + filteredStageLocationsList);
+        logger.info("Список подходящих локаций: " + filteredStageLocationsList);
 
         chosenLocation = filteredStageLocationsList.get(Formulas.randomNumber.nextInt(filteredStageLocationsList.size()));
-        System.out.println("Выбранная локация: " + chosenLocation);
+        logger.info("Выбранная локация: " + chosenLocation);
 
         stage.setStageName(chosenLocation.getStageName());
         stage.setStageSize(Formulas.calculateStageSize(chosenLocation));
-        System.out.println("Назначена локация: " + stage.getStageName() +
+        logger.info("Назначена локация: " + stage.getStageName() +
                 " за номером: " + stage.getStageNumber() +
                 " и размером: " + stage.getStageSize());
 

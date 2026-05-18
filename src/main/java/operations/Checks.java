@@ -3,6 +3,7 @@ package operations;
 import constructors.CharacterCreator;
 import constructors.EnemyHumanCreator;
 import enums.Items;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +14,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class Checks {
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(Checks.class);
+
 
 
     public static boolean isFileExist(String endOfPathFile){
@@ -29,7 +33,7 @@ public class Checks {
         try {
             lines = Files.readAllLines(Path.of(file.getPath()));
         } catch (IOException e) {
-            System.out.println("Ошибка ввода-вывода при чтения из файла");
+            logger.info("Ошибка ввода-вывода при чтения из файла");
             e.printStackTrace();
         }
 
@@ -37,7 +41,7 @@ public class Checks {
             return true;
         }
 
-        System.out.println("Файл " + file.getName() + " не пустой и содержит: " + lines);
+        logger.info("Файл " + file.getName() + " не пустой и содержит: " + lines);
         return false;
     }
 
@@ -45,10 +49,10 @@ public class Checks {
 
         while (true) {
             if (actionsQueueFile.exists()) {
-                System.out.println("Файл обновлений найден!");
+                logger.info("Файл обновлений найден!");
                 return true;
             }
-                System.out.println("Файл не найден, ждем 2 секунды...");
+            logger.info("Файл не найден, ждем 2 секунды...");
             try {
                 Thread.sleep(2000); // Ждем 2000 миллисекунд (2 секунды)
             } catch (InterruptedException e) {
@@ -62,7 +66,7 @@ public class Checks {
 
     public static boolean isRightPercent(int percent){
         if (percent >= 0 && percent <=100){return true;}
-        System.out.println("Ошибка во введённом значении процента: " + percent);
+        logger.info("Ошибка во введённом значении процента: " + percent);
         return false;
     }
 

@@ -18,14 +18,14 @@ public class CommandHelper {
         String command = ""; // команда полученная через аргументы
         // Проверяем, что есть хотя бы один аргумент и формируем общую команду
         if (!(args.length > 0)) {
-            System.out.println("Передана пустая команда (не найдены агрументы)");
+            logger.info("Передана пустая команда (не найдены агрументы)");
             return command;
         }
 
-        System.out.println("Переданные агрументы: " + args);
+        logger.info("Переданные агрументы: " + args);
 
             for (int i = 0; i < args.length; i++) {
-                System.out.println("Аргумент " + i + " = " + args[i]);
+                logger.info("Аргумент " + i + " = " + args[i]);
 
                 if (i == args.length - 1){
                     command += args[i];
@@ -34,7 +34,7 @@ public class CommandHelper {
                     command += args[i] + "\n";
                 }
             }
-            System.out.println("Сформированная команда: " + command);
+            logger.info("Сформированная команда: " + command);
             return command;
 
     }
@@ -47,20 +47,20 @@ public class CommandHelper {
 
         if (reader.read() == -1) {
             reader.close();
-            System.out.println("Полученная строка изменений пуста");
+            logger.info("Полученная строка изменений пуста");
             return lineOfChanges;
         }
         try{
             lineOfChanges = reader.readLine();
         }
         catch (Exception e){
-            System.out.println("В файле " + actionsQueueFile.getName() + " отсутствует 1я строка из файла: ");
+            logger.info("В файле " + actionsQueueFile.getName() + " отсутствует 1я строка из файла: ");
             return e.getMessage();
         }
 
         lineOfChanges = lineOfChanges.replace("\\", "");
 
-            System.out.println("Считываем 1ю строку из файла " + actionsQueueFile.getName() + ": " + lineOfChanges);
+            logger.info("Считываем 1ю строку из файла " + actionsQueueFile.getName() + ": " + lineOfChanges);
 
             reader.close();
             return lineOfChanges;
@@ -72,7 +72,7 @@ public class CommandHelper {
     public void commandsSwitcher(CharacterCreator character, String command) throws IOException {
         switch (command) {
             case "ТЕСТ":
-                System.out.println("Команда из бота принята и обработана");
+                logger.info("Команда из бота принята и обработана");
             case "Создать персонажа":
                 if (Checks.isFileExist("Персонажи/" + character.getUserLogin() + "/Персонаж.txt") == false){
                     CharacterCreator.createCharacter(character.getUserLogin());
