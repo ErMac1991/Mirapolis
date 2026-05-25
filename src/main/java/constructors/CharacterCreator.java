@@ -27,11 +27,13 @@ public class CharacterCreator extends Unit {
     String rightLeg; // Правая нога. Указывается "Плоть", если родная или восстановленная ИЛИ модель протеза
     int inventiveness; // находчивость
     int luck; // удача
-    int fame; // известность
+    int fameMassive; // известность в группировке Массив
+    int fameArmCorp; // известность в АРМ-Корп
     int mentalHealth; // ментальное здоровье по 100 балльной шкале
     int inventivenessMod; // модификатор находчивости
     int luckMod; // модификатор удачи
-    int fameMod; // модификатор известности
+    int fameMassiveMod; // модификатор известности
+    int fameArmCorpMod; // модификатор известности
     int mentalHealthMod; // модификатор ментального здоровья
     String[] bag = new String[4]; // Массив сумки на 4 места
     List<String> storageList = new ArrayList<>();
@@ -60,7 +62,8 @@ public class CharacterCreator extends Unit {
         this.strength = 5;
         this.inventiveness = 5;
         this.luck = 5;
-        this.fame = 5;
+        this.fameMassive = 5;
+        this.fameArmCorp = 5;
         this.mentalHealth = 90;
         this.enduranceMod = 0;
         this.attentivenessMod = 0;
@@ -68,7 +71,8 @@ public class CharacterCreator extends Unit {
         this.strengthMod = 0;
         this.inventivenessMod = 0;
         this.luckMod = 0;
-        this.fameMod = 0;
+        this.fameMassiveMod = 0;
+        this.fameArmCorpMod = 0;
         this.mentalHealthMod = 0;
         this.firstBagPlace = "Пусто";
         this.secondBagPlace = "Пусто";
@@ -203,12 +207,20 @@ public class CharacterCreator extends Unit {
         this.luck = luck;
     }
 
-    public int getFame() {
-        return fame;
+    public int getFameMassive() {
+        return fameMassive;
     }
 
-    public void setFame(int fame) {
-        this.fame = fame;
+    public void setFameMassive(int fameMassive) {
+        this.fameMassive = fameMassive;
+    }
+
+    public int getFameArmCorp() {
+        return fameArmCorp;
+    }
+
+    public void setFameArmCorp(int fameArmCorp) {
+        this.fameArmCorp = fameArmCorp;
     }
 
     public int getMentalHealth() {
@@ -267,12 +279,20 @@ public class CharacterCreator extends Unit {
         this.luckMod = luckMod;
     }
 
-    public int getFameMod() {
-        return fameMod;
+    public int getFameMassiveMod() {
+        return fameMassiveMod;
     }
 
-    public void setFameMod(int fameMod) {
-        this.fameMod = fameMod;
+    public void setFameMassiveMod(int fameMassiveMod) {
+        this.fameMassiveMod = fameMassiveMod;
+    }
+
+    public int getFameArmCorpMod() {
+        return fameArmCorpMod;
+    }
+
+    public void setFameArmCorpMod(int fameArmCorpMod) {
+        this.fameArmCorpMod = fameArmCorpMod;
     }
 
     public int getMentalHealthMod() {

@@ -185,7 +185,7 @@ public class Starter {
 
         QuestConstructor.generateReceivedQuest(quest, character); // создаём и заполняем файл принятого квеста
         logger.info("Создан файл принятого квеста");
-        StageConstructor.generateAllStages(quest,character,stage); // создаём и заполняем базовые параметры этапов квеста
+        StageConstructor.generateAllStages(quest,character,stage,enemyHuman); // создаём и заполняем базовые параметры этапов квеста
 
         for (int i = 0; i < quest.getStagesInQuest(); i++) {
             stage.setStageNumber(i+1);

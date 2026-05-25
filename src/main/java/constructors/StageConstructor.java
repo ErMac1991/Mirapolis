@@ -1,19 +1,20 @@
 package constructors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import enums.Enemies;
 import enums.StageLocations;
 import enums.StageObjects;
 import enums.Systems;
 import operations.Checks;
 import operations.FileManager;
 import operations.Formulas;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class StageConstructor {
     String stageName; // название территории этапа
@@ -27,6 +28,9 @@ public class StageConstructor {
     int stageEnemiesPoints;
     int stageSystemsPoints;
     int stageItemsPoints;
+
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(StageConstructor.class);
+
 
     public String getStageName() {
         return stageName;
@@ -92,7 +96,7 @@ public class StageConstructor {
     }
 
     public static void chooseStage(ObjectMapper objectMapper, CharacterCreator character, QuestConstructor quest, StageConstructor stage) throws IOException {
-        logger.info(quest.getQuestID());
+        logger.info(String.valueOf(quest.getQuestID()));
         if (!Checks.isFileExist("Персонажи\\" + character.getUserLogin() + "\\Квесты\\" + quest.getQuestID() + "\\" + stage.getStageNumber() + "\\StageData.txt")) {
             logger.info("При выборе этапа " + stage.getStageNumber() + " файл этапа квеста: StageData.txt не найден");
             return;

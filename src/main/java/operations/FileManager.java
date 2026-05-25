@@ -5,17 +5,20 @@ import constructors.CharacterCreator;
 import constructors.EnemyHumanCreator;
 import constructors.QuestConstructor;
 import constructors.StageConstructor;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class FileManager {
 
     static int idCounter;
     static final File questCounterFile = new File("F:\\Проекты\\Стримы\\Mirapolis\\Системные файлы\\QuestsCounter.txt");
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(FileManager.class);
 
 
     public static void createActionsQueueFile(File actionsQueueFile) throws IOException {
@@ -140,7 +143,7 @@ public class FileManager {
                         "\"strength\":" + character.getStrength() + "," +
                         "\"inventiveness\":" + character.getInventiveness() + "," +
                         "\"luck\":" + character.getLuck() + "," +
-                        "\"fame\":" + character.getFame() + "," +
+                        "\"fame\":" + character.getFameMassive() + "," +
                         "\"mentalHealth\":" + character.getMentalHealth() + "," +
                         "\"enduranceMod\":" + character.getEnduranceMod() + "," +
                         "\"attentivenessMod\":" + character.getAttentivenessMod() + "," +
@@ -148,7 +151,7 @@ public class FileManager {
                         "\"strengthMod\":" + character.getStrengthMod() + "," +
                         "\"inventivenessMod\":" + character.getInventivenessMod() + "," +
                         "\"luckMod\":" + character.getLuckMod() + "," +
-                        "\"fameMod\":" + character.getFameMod() + "," +
+                        "\"fameMod\":" + character.getFameMassiveMod() + "," +
                         "\"mentalHealthMod\":" + character.getMentalHealthMod() + "," +
                         "\"firstBagPlace\":\"" + character.getFirstBagPlace() + "\"," +
                         "\"secondBagPlace\":\"" + character.getSecondBagPlace() + "\"," +
