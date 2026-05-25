@@ -1,13 +1,17 @@
 package dataBaseOperations;
 
 import constructors.CharacterCreator;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class Inserts {
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(Inserts.class);
+
     DatabaseConnector connector = new DatabaseConnector();
 
     public void insertNewCharacter(CharacterCreator character) {
@@ -63,20 +67,20 @@ public class Inserts {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Установка параметров
-            pstmt.setString(1, "Иван");
+            /*pstmt.setString(1, "Иван");
             pstmt.setString(2, "ivan@example.com");
-            pstmt.setInt(3, 25);
+            pstmt.setInt(3, 25);*/
 
             // Выполнение запроса
             int affectedRows = pstmt.executeUpdate();
 
             if (affectedRows > 0) {
-                System.out.println("Строка успешно добавлена!");
+                logger.info("Строка успешно добавлена!");
             }
 
         } catch (
                 SQLException e) {
-            System.err.println("Ошибка при добавлении строки: " + e.getMessage());
+            logger.info("Ошибка при добавлении строки: " + e.getMessage());
         }
     }
 }
