@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import static java.sql.Types.NULL;
+
 public class Inserts {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(Inserts.class);
 
@@ -38,38 +40,37 @@ public class Inserts {
                 "mental_health_mod, " +
                 "fame_massive_mod, " +
                 "fame_armcorp_mod) " +
-                "VALUES (" + character.getUserLogin() + ", "  +
-                character.getLevel() + ", "  +
-                character.getEndurance() + ", "  +
-                character.getAttentiveness() + ", "  +
-                character.getReaction() + ", " +
-                character.getStrength() + ", "  +
-                character.getEnduranceMod() + ", "  +
-                character.getAttentivenessMod() + ", "  +
-                character.getReactionMod() + ", "  +
-                character.getStrengthMod() + ", "  +
-                character.getJawsBalance() + ", "  +
-                "NULL, "  +
-                "NULL, "  +
-                character.getInventiveness() + ", "  +
-                character.getLuck() + ", "  +
-                character.getMentalHealth() + ", "  +
-                character.getFameMassive() + ", "  +
-                character.getFameArmCorp() + ", "  +
-                character.getInventivenessMod() + ", "  +
-                character.getLuckMod() + ", "  +
-                character.getMentalHealthMod() + ", "  +
-                character.getFameMassiveMod() + ", "  +
-                character.getFameArmCorpMod() + ")";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (
                 Connection conn = DriverManager.getConnection(DatabaseConnector.URL, DatabaseConnector.USER, DatabaseConnector.PASSWORD);
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Установка параметров
-            /*pstmt.setString(1, "Иван");
-            pstmt.setString(2, "ivan@example.com");
-            pstmt.setInt(3, 25);*/
+            pstmt.setString(1, character.getUserLogin());
+            pstmt.setInt(6, character.getLevel());
+            pstmt.setInt(7, character.getEndurance());
+            pstmt.setInt(8, character.getAttentiveness());
+            pstmt.setInt(9, character.getReaction());
+            pstmt.setInt(10, character.getStrength());
+            pstmt.setInt(11, character.getEnduranceMod());
+            pstmt.setInt(12, character.getAttentivenessMod());
+            pstmt.setInt(13, character.getReactionMod());
+            pstmt.setInt(14, character.getStrengthMod());
+            pstmt.setInt(15, character.getJawsBalance());
+            pstmt.setInt(16, NULL);
+            pstmt.setInt(17, NULL);
+            pstmt.setInt(18, character.getInventiveness());
+            pstmt.setInt(19, character.getLuck());
+            pstmt.setInt(20, character.getMentalHealth());
+            pstmt.setInt(21, character.getFameMassive());
+            pstmt.setInt(22, character.getFameArmCorp());
+            pstmt.setInt(23, character.getInventivenessMod());
+            pstmt.setInt(24, character.getLuckMod());
+            pstmt.setInt(25, character.getMentalHealthMod());
+            pstmt.setInt(26, character.getFameMassiveMod());
+            pstmt.setInt(27, character.getFameArmCorpMod());
+
 
             // Выполнение запроса
             int affectedRows = pstmt.executeUpdate();
@@ -83,6 +84,8 @@ public class Inserts {
             logger.info("Ошибка при добавлении строки: " + e.getMessage());
         }
     }
+
+
 }
 
 
